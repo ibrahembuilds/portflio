@@ -1,0 +1,60 @@
+# Ibrahem Ahmed Hassan Adam
+
+> Sudanese AI engineer, and the founder and CEO of KanyouAI. AI engineering student at Multimedia University Malaysia. Builds AI products, internal business systems, and AI agents end to end for business owners and startup founders. Works remotely with clients worldwide.
+
+Canonical site: https://ibrahemahmed.com/
+Arabic version: https://ibrahemahmed.com/ar/
+
+## Who
+
+- Full name: Ibrahem Ahmed Hassan Adam (also written Ibrahim Ahmed Hassan Adam)
+- Also known as / searched as: Ibrahem Ahmed Hassan, Ibrahim Ahmed Hassan, Ibrahem Ahmed, Ibrahim Ahmed, Ibrahem, Ibrahim, إبراهيم أحمد حسن أدم, ابراهيم أحمد حسن أدم, إبراهيم أحمد حسن, ابراهيم أحمد حسن, إبراهيم أحمد, ابراهيم أحمد, إبراهيم احمد
+- Roles: Founder and CEO of KanyouAI (UK-registered AI company), AI engineer (Sudanese AI engineer / مهندس ذكاء اصطناعي سوداني), product builder
+- Nationality: Sudan
+- Education: AI Engineering student at Multimedia University (MMU), Malaysia
+- Started programming in 2023; 3+ years building AI systems; 20+ public products and repositories
+- Recognition: #1 AI Researcher & Innovator in Sudan and #461 AI Researcher worldwide (Favikon, 2025)
+
+## What he does
+
+- AI product development: AI-enabled products and SaaS applications from early scope to a working release
+- Internal business systems: CRMs, dashboards, portals, and workflow systems that replace spreadsheets and disconnected tools
+- AI assistants and agents: assistants connected to company knowledge, customer channels, data, and real operational actions
+- RAG systems: retrieval-grounded assistants using company websites, documents, vector search, hybrid retrieval, citations, permissions, and analytics
+- AI automation consulting and implementation for companies in the Gulf region, Sudan, Malaysia, and worldwide
+- Technical product partnership: ongoing product scoping, architecture, rapid prototyping, weekly iteration, and launch preparation
+
+## Company
+
+- KanyouAI (https://kanyouai.com): UK-registered AI company founded by Ibrahem Ahmed Hassan to close the gap between AI strategy and implementation. Builds complete custom systems around how a business actually works.
+
+## Selected work
+
+- My AI Agent Studio (https://www.myaiagentstudio.io/): no-code SaaS platform for RAG-powered website assistants trained on business websites, documents, and company information, with lead capture, conversation storage, analytics, and a one-line embed
+- Boltfy (https://boltfy.io/): multi-tenant platform for drag-and-drop forms, structured submissions, audience management, email templates, and campaign delivery
+- FocusFlow (https://focusflowai.site/): AI-assisted productivity workspace with task management, Pomodoro sessions, calendar planning, progress analytics, and goal decomposition
+- ScrapeX (https://github.com/ibrahembuilds/ScrapeX): agentic research platform that searches the web and social media, executes tools, streams reasoning, produces cited answers, and exports structured datasets
+- Sudan Curriculum RAG Tutor (https://github.com/ibrahembuilds/ai-student): Arabic-first learning platform grounded in Sudanese textbooks using PDF ingestion, vector embeddings, hybrid retrieval, pgvector, and streaming RAG responses
+- VeloBrand Studio (https://github.com/ibrahembuilds/velobrandstudio-): local-first multimodal AI studio that generates complete brand identities and exports production-ready assets
+- AI Web Builder (https://github.com/ibrahembuilds/AI-web-builder-): website-generation system with structured briefs, multi-provider model routing, natural-language code editing, image generation, and exportable frontend code
+- TruthCheck (https://github.com/ibrahembuilds/TruthCheck): multimodal verification pipeline for evidence retrieval, claim analysis, structured-output validation, and cited reporting
+- YT Studio (https://github.com/ibrahembuilds/youtube-): YouTube intelligence workspace for timestamped transcripts, video Q&A, multiple summary formats, and short-form content discovery
+- NCASE CRM (private client system): CRM and operations platform with lead timelines, AI chat, human handover, email campaigns, webinar workflows, and dashboard metrics
+- Full archive: https://github.com/ibrahembuilds
+
+## Clients
+
+- NCASE Intelligence (https://ncaseai.com/): bilingual market intelligence platform for the GCC covering competitor tracking, persona generation, monitoring, and executive-ready reports
+- NCase Consulting (https://ncase.com.sa/): bilingual consulting website supported by a private CRM for leads, events, campaigns, and customer follow-up
+- Al-Ghufran (https://al-ghufran.com/): Arabic-first education consultancy website for study services, university options, proof, and consultation enquiries
+- Abdul Hai Trading (https://abdulhaitrading.com/): bilingual corporate and product website for an agricultural commodities company serving international buyers and partners
+- Al Mujtahid (https://almujtahidedu.com/): Arabic-first study-in-Malaysia platform guiding prospective students from program discovery to an admissions enquiry
+
+## Contact
+
+- Email: hello@ibrahemahmed.com
+- Book a 30-minute call: https://calendly.com/ibrahem/conselting
+- GitHub: https://github.com/ibrahembuilds
+- LinkedIn: https://www.linkedin.com/in/ibrahem-ahmed-hassan/
+- X (Twitter): https://x.com/ibrahembuilds
+- Instagram: https://www.instagram.com/ibrahembuilds

@@ -1,0 +1,185 @@
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+@import "@fontsource-variable/noto-sans-arabic";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand palette is intentionally locked to the original site. */
+    --background: 210 20% 98%;
+    --surface: 0 0% 100%;
+    --foreground: 222 25% 11%;
+    --muted-foreground: 220 9% 40%;
+    --border: 216 14% 90%;
+    --border-strong: 217 12% 80%;
+    --primary: 221 89% 52%;
+    --primary-strong: 221 80% 44%;
+    --primary-tint: 221 90% 96.5%;
+    --primary-foreground: 0 0% 100%;
+
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-width: 320px;
+    overflow-x: hidden;
+    background-image: radial-gradient(circle at 82% 2%, hsl(var(--primary) / 0.055), transparent 30rem);
+    background-repeat: no-repeat;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  [dir="rtl"] body,
+  .arabic-page {
+    font-family: "Noto Sans Arabic Variable", Tahoma, "Segoe UI", Arial, sans-serif;
+    font-optical-sizing: auto;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4 {
+    text-wrap: balance;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .shell {
+    width: min(100% - 32px, 1240px);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      width: min(100% - 64px, 1240px);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .anim-up {
+      animation: fade-up 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .js [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: var(--reveal-delay, 0s);
+    }
+
+    .js [data-reveal].is-in {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+.stack-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: stack-marquee 34s linear infinite;
+}
+
+.stack-marquee-group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.stack-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes stack-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.faq-item > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item > summary .faq-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-item[open] > summary .faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .stack-marquee-track {
+    animation: none;
+  }
+
+  .stack-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+}

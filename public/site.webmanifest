@@ -1,0 +1,16 @@
+{
+  "name": "Ibrahem Ahmed Hassan",
+  "short_name": "Ibrahem A.",
+  "description": "Founder of KanyouAI and AI engineering student who builds real products.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f7f9fa",
+  "theme_color": "#f7f9fa",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
