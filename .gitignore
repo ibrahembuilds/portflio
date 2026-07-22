@@ -4,9 +4,6 @@ dist-ssr
 *.local
 .DS_Store
 
-# Unrelated stray project folder, not part of this site's build
-founder-portfolio
-
 # Local QA / temp build-check artifacts
 .tmp-ssr-check
 .visual-qa
