@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Glance from "./components/Glance";
@@ -44,6 +45,7 @@ const App = ({ locale = "en" }: { locale?: Locale }) => {
           انتقل إلى المحتوى
         </a>
         <ArabicPage />
+        <Analytics />
       </>
     );
   }
@@ -70,6 +72,7 @@ const App = ({ locale = "en" }: { locale?: Locale }) => {
         <Contact />
       </main>
       <Footer />
+      <Analytics />
     </>
   );
 };
