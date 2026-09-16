@@ -1,3 +1,5 @@
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   analyticsEventSchema,
@@ -159,6 +161,31 @@ describe("analytics events", () => {
     expect(stripped).toEqual({ country: "GB", fit_status: "qualified" });
     expect(stripped).not.toHaveProperty("email");
     expect(stripped).not.toHaveProperty("process_problem");
+  });
+
+  /**
+   * The allow-list above only governs the funnel events this codebase sends. A
+   * third-party analytics script dropped into the assessment would bypass it
+   * entirely and see whatever is on the page — which is the company name, the
+   * described problem and the email address. Vercel Web Analytics runs on the
+   * marketing site (src/App.tsx) and must stay there.
+   */
+  it("keeps third-party analytics out of the assessment and the lead view", () => {
+    const sources = (dir: string, out: string[] = []): string[] => {
+      for (const entry of readdirSync(dir)) {
+        const full = path.join(dir, entry);
+        if (statSync(full).isDirectory()) sources(full, out);
+        else if (/\.tsx?$/.test(entry)) out.push(full);
+      }
+      return out;
+    };
+
+    const guarded = [path.resolve(__dirname, "../src/audit"), path.resolve(__dirname, "../src/admin")];
+    const offenders = guarded
+      .flatMap((dir) => sources(dir))
+      .filter((file) => /@vercel\/analytics|gtag|googletagmanager|posthog|mixpanel|segment\.com/i.test(readFileSync(file, "utf8")));
+
+    expect(offenders, "third-party analytics imported into a page that shows prospect answers").toEqual([]);
   });
 });
 

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import Nav from "./marketing/components/Nav";
 import Footer from "./marketing/components/Footer";
 import Home from "./marketing/pages/Home";
@@ -83,6 +84,7 @@ const App = ({ route = "/" }: { route?: string }) => {
           <ArabicPage />
         </main>
         <ArabicFooter />
+        <Analytics />
       </div>
     );
   }
@@ -99,6 +101,7 @@ const App = ({ route = "/" }: { route?: string }) => {
         <Page />
       </main>
       <Footer />
+      <Analytics />
     </>
   );
 };

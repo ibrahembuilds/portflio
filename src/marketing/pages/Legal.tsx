@@ -30,7 +30,9 @@ export const Privacy = () => (
         <p>
           The pages on ibrahemahmed.com do not set advertising cookies and do not require an account. I record anonymous
           page and funnel counts so I can see which pages lead to an assessment being started. Those counts do not
-          include your name, your email address or anything you typed.
+          include your name, your email address or anything you typed. The page counts are measured by Vercel Web
+          Analytics, which is cookieless and is already the host of this site. It does not run on the assessment at
+          audit.ibrahemahmed.com at all.
         </p>
 
         <h2 className="text-ink">The Systems Teardown assessment</h2>
