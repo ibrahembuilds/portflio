@@ -26,6 +26,8 @@ const rawSubmission = {
     current_tools: ["spreadsheets", "email"],
     previous_attempts: "",
     estimated_value: "significant",
+    decision_timing: "asap",
+    budget_state: "would_find",
   },
   consent: { marketing_consent: false, privacy_policy_version: "2026-09-15" },
   attribution: { source: "audit", utm_source: "linkedin", utm_medium: "", utm_campaign: "", referrer: "" },
@@ -243,12 +245,36 @@ describe("report email", () => {
     expect(report?.text).toContain(outcome.reportUrl);
   });
 
-  it("flags a qualified lead in the internal notification subject", async () => {
+  it("flags a qualified, ready lead as hot so it can be triaged from the inbox", async () => {
     const email = new RecordingEmail();
     await submitLead(parse(), null, { store: new MemoryLeadStore(), email, renderPdf: false });
 
     const notification = email.sent.find((message) => message.subject.includes("Teardown lead"));
+    expect(notification?.subject).toContain("[HOT]");
+    expect(notification?.text).toContain("Fit: qualified · Readiness: ready");
+  });
+
+  it("flags a qualified but unfunded lead as qualified, not hot", async () => {
+    const email = new RecordingEmail();
+    const submission = parse({
+      answers: { ...rawSubmission.answers, decision_timing: "3-6-months", budget_state: "needs_number" },
+    });
+
+    await submitLead(submission, null, { store: new MemoryLeadStore(), email, renderPdf: false });
+
+    const notification = email.sent.find((message) => message.subject.includes("Teardown lead"));
     expect(notification?.subject).toContain("[QUALIFIED]");
+    expect(notification?.subject).not.toContain("[HOT]");
+    expect(notification?.text).toContain("Readiness: exploring");
+  });
+
+  it("records the timing and budget answers for follow-up", async () => {
+    const email = new RecordingEmail();
+    await submitLead(parse(), null, { store: new MemoryLeadStore(), email, renderPdf: false });
+
+    const notification = email.sent.find((message) => message.subject.includes("Teardown lead"));
+    expect(notification?.text).toContain("Timing: As soon as I can");
+    expect(notification?.text).toContain("Budget: Not set aside, but I'd find it for the right fix");
   });
 });
 

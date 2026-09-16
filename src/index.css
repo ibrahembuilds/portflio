@@ -52,16 +52,30 @@
 
 @layer base {
   :root {
+    /* Brand green, sampled from the profile photograph: #02d169.
+       It is used only as a FILL behind dark content — the photo backdrop, the
+       identity block, the social image. Against dark ink it measures 9.3:1;
+       with white text it is 2.0:1, which is unreadable, so it is never used
+       for a button, a link or an icon.
+
+       Interactive elements use --primary, the same hue (150deg) taken down in
+       lightness until white text clears WCAG AA:
+         --primary        #017e40 on white  5.2:1   AA
+         --primary-strong #016030 on white  7.7:1   AAA
+       Reverting to the previous blue is a change to this block alone. */
+    --brand: #02d169;
+    --brand-deep: #01a052;
+
     --ink: #0b1220;
-    --primary: #3157d5;
-    --primary-strong: #2645ac;
+    --primary: #017e40;
+    --primary-strong: #016030;
+    --primary-soft: #e3f9ee;
+    --primary-foreground: #ffffff;
     --background: #f7f7f3;
     --surface: #ffffff;
-    --primary-soft: #e8edff;
-    --primary-foreground: #ffffff;
     --border: #dde1e8;
     --border-strong: #c4cad4;
-    --success: #0f766e;
+    --success: #017e40;
     --muted: #667085;
 
     color-scheme: light;

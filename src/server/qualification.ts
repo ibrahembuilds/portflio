@@ -21,6 +21,16 @@ export type FitAssessment = {
   metCount: number;
 };
 
+/**
+ * Readiness is deliberately a separate axis from fit.
+ *
+ * Fit answers "is this my customer". Readiness answers "are they in a position
+ * to act". Collapsing the two loses a well-suited business that simply is not
+ * buying this quarter — which is a lead worth keeping, not one worth
+ * discarding. The two together decide how directly the report asks for a call.
+ */
+export type Readiness = "ready" | "exploring" | "early";
+
 /** Criterion 1: 5–50 employees. */
 const TARGET_EMPLOYEE_RANGES = new Set(["5-19", "20-50"]);
 
@@ -83,4 +93,21 @@ export const assessFit = (answers: AssessmentAnswers): FitAssessment => {
   const status: FitStatus = metCount === 4 ? "qualified" : metCount === 3 ? "potential" : "not_current_fit";
 
   return { status, criteria, metCount };
+};
+
+const NEAR_TERM = new Set(["asap", "1-3-months"]);
+const HAS_MONEY = new Set(["allocated", "would_find"]);
+
+export const assessReadiness = (answers: AssessmentAnswers): Readiness => {
+  const soon = NEAR_TERM.has(answers.decision_timing);
+  const funded = HAS_MONEY.has(answers.budget_state);
+
+  // Wanting it soon and being able to pay for it is the only "ready".
+  if (soon && funded) return "ready";
+
+  // No date and no budget is someone reading, not buying. Say so honestly
+  // rather than pushing a call they are not going to take.
+  if (answers.decision_timing === "exploring" && answers.budget_state === "none") return "early";
+
+  return "exploring";
 };

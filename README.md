@@ -62,6 +62,38 @@ tests/                  Unit and integration tests
 e2e/                    Browser tests
 ```
 
+## Before launch
+
+Two values are deliberately left blank, because guessing either would put a
+number in front of a prospect that you have not agreed to:
+
+1. **`SYSTEMS_TEARDOWN_BOOKING_URL`** — your cal.com link. Without it the report
+   says "Booking link coming soon" and falls back to your email address.
+2. **`INVESTMENT_BANDS` in `src/config/site.ts`** — the indicative price range
+   per offer. Every entry is `null`, so the cost section publishes no figure.
+   Fill in the ones you are willing to stand behind, e.g.
+
+   ```ts
+   automation_sprint: { range: "from £2,500", note: "Covers one connected workflow, tested and documented." },
+   ```
+
+   A band is presented as a starting range, never as a quote, and the report
+   always says the fixed price comes after the call.
+
+## Brand
+
+The palette derives from the profile photograph (`#02d169`). It is split in two
+because the photo green cannot carry white text:
+
+| Token | Value | Use | Contrast |
+| --- | --- | --- | --- |
+| `--brand` | `#02d169` | Fill only: identity rules, social images | 9.3:1 on ink |
+| `--primary` | `#017e40` | Buttons, links, icons | 5.2:1 on white — AA |
+| `--primary-strong` | `#016030` | Hover | 7.7:1 on white — AAA |
+
+Never use `--brand` for text or an icon: white on it is 2.0:1 and fails AA.
+The whole palette is one block at the top of `src/index.css`.
+
 ## Deployment
 
 1. Attach a Postgres store to the Vercel project and apply the migration:
@@ -89,8 +121,11 @@ These are business constraints, implemented rather than documented:
   (`src/server/report/schema.ts`, `generate.ts`)
 - **No promises.** Guarantees, ROI language and committed timescales are
   rejected by the same guard.
-- **No published prices.** There is no price anywhere on the site, and the
-  services page says why.
+- **No published prices by default.** There is no price anywhere on the
+  marketing site. The report and PDF carry a "What this would cost" section
+  that explains what moves the price and when the fixed figure arrives;
+  a range appears there only once you set a real band in `INVESTMENT_BANDS`
+  (`src/config/site.ts`). Nothing is ever invented to fill the gap.
 - **Marketing consent is separate.** Requesting the report never opts anyone in.
   Consent is stored with its timestamp and the privacy policy version in force.
   (`PRIVACY_POLICY_VERSION` in `src/config/site.ts` — bump it when `/privacy`

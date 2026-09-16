@@ -30,6 +30,8 @@ const answers: AssessmentAnswers = {
   current_tools: ["spreadsheets", "email", "paper"],
   previous_attempts: "We bought a scheduling tool last year but nobody used it.",
   estimated_value: "significant",
+  decision_timing: "asap",
+  budget_state: "would_find",
 };
 
 const validReport = (): SystemsReport => buildFallbackReport(answers);

@@ -12,7 +12,10 @@ const PROBLEM =
   "Every new job gets written on a paper job sheet, then typed into the spreadsheet, then typed again into the invoice. Things get missed and we chase customers twice.";
 
 /** Walks the assessment from the landing page to the preview. */
-const completeAssessment = async (page: Page, options: { website?: string } = {}) => {
+const completeAssessment = async (
+  page: Page,
+  options: { website?: string; timing?: RegExp; budget?: RegExp } = {},
+) => {
   await page.goto("/audit/");
   await page.getByRole("button", { name: "Start the Teardown" }).click();
 
@@ -58,6 +61,12 @@ const completeAssessment = async (page: Page, options: { website?: string } = {}
   await page.getByRole("button", { name: "Continue" }).click();
 
   await page.getByRole("radio", { name: /It's costing us work or customers/ }).check();
+  await page.getByRole("button", { name: "Continue" }).click();
+
+  await page.getByRole("radio", { name: options.timing ?? /As soon as I can/ }).check();
+  await page.getByRole("button", { name: "Continue" }).click();
+
+  await page.getByRole("radio", { name: options.budget ?? /I'd find it for the right fix/ }).check();
   await page.getByRole("button", { name: "See what I found" }).click();
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText(/areas? worth reviewing/, { timeout: 15_000 });
@@ -202,6 +211,48 @@ test.describe("Systems Teardown", () => {
     await page.goto(`/audit/?report=${params.get("id")}&t=${params.get("t")}`);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Systems Report");
     await expect(page.getByText("Riverside Plumbing").first()).toBeVisible();
+  });
+
+  test("an owner with no date and no budget is not pushed into a call", async ({ page }) => {
+    await completeAssessment(page, {
+      timing: /No date — I'm looking into it/,
+      budget: /No budget at the moment/,
+    });
+    await submitEmail(page, "early@riverside.example");
+
+    await expect(page.getByRole("heading", { name: "No call needed yet" })).toBeVisible();
+    // The booking link is withheld entirely, not just de-emphasised.
+    await expect(page.getByRole("link", { name: /Continue with a 20-minute Systems Teardown/ })).toHaveCount(0);
+    // They still get the whole report.
+    await expect(page.getByRole("heading", { name: "Where work is leaking", exact: true })).toBeVisible();
+  });
+
+  test("the report explains cost without publishing an invented price", async ({ page }) => {
+    await completeAssessment(page);
+    await submitEmail(page, "cost@riverside.example");
+
+    await expect(page.getByRole("heading", { name: "What this would cost", exact: true })).toBeVisible();
+    await expect(page.getByText("What moves the price")).toBeVisible();
+
+    const section = await page.locator("article").innerText();
+    expect(section).toContain("one fixed price for a defined piece of work after the 20-minute call");
+    // No band is configured in this environment, so no figure may appear.
+    expect(section).not.toMatch(/[$£€]\s?\d/);
+  });
+
+  test("the report carries contact details and the booking link", async ({ page }) => {
+    await completeAssessment(page);
+    await submitEmail(page, "contact@riverside.example");
+
+    const footer = await page.locator("article footer").innerText();
+    expect(footer).toContain("Ibrahem Ahmed");
+    expect(footer).toContain("hello@ibrahemahmed.com");
+    expect(footer).toContain("LinkedIn");
+    expect(footer).toContain("ibrahemahmed.com");
+
+    await expect(
+      page.locator("article footer").getByRole("link", { name: "Book a 20-minute call" }),
+    ).toHaveAttribute("href", "https://example.com/book-teardown");
   });
 
   test("marketing consent is separate and off by default", async ({ page }) => {

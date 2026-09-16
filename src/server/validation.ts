@@ -1,5 +1,13 @@
 import { z } from "zod";
-import { ALL_COUNTRY_VALUES, EMPLOYEE_RANGES, ROLES, VALUE_BANDS, WEEKLY_FREQUENCY } from "../config/assessment";
+import {
+  ALL_COUNTRY_VALUES,
+  BUDGET_STATE,
+  DECISION_TIMING,
+  EMPLOYEE_RANGES,
+  ROLES,
+  VALUE_BANDS,
+  WEEKLY_FREQUENCY,
+} from "../config/assessment";
 
 /**
  * Server-side validation. The client validates too, for a better experience,
@@ -50,6 +58,8 @@ export const assessmentAnswersSchema = z.object({
     .transform((tools) => tools.filter((tool) => tool.length > 0)),
   previous_attempts: text(1_200).optional().default(""),
   estimated_value: enumOf(VALUE_BANDS, "Please choose an answer."),
+  decision_timing: enumOf(DECISION_TIMING, "Please choose a timeframe."),
+  budget_state: enumOf(BUDGET_STATE, "Please choose an answer."),
 });
 
 export type AssessmentAnswers = z.infer<typeof assessmentAnswersSchema>;
@@ -143,7 +153,10 @@ const ALLOWED_EVENT_PROPERTIES = new Set([
   "country",
   "role",
   "weekly_frequency",
+  "decision_timing",
+  "budget_state",
   "fit_status",
+  "readiness",
   "report_status",
   "has_website",
   "duration_ms",

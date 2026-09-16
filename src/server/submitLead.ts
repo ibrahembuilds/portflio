@@ -1,10 +1,19 @@
-import { countryLabel, EMPLOYEE_RANGES, optionLabel, ROLES, VALUE_BANDS, WEEKLY_FREQUENCY } from "../config/assessment";
+import {
+  BUDGET_STATE,
+  countryLabel,
+  DECISION_TIMING,
+  EMPLOYEE_RANGES,
+  optionLabel,
+  ROLES,
+  VALUE_BANDS,
+  WEEKLY_FREQUENCY,
+} from "../config/assessment";
 import { env } from "./env";
 import { getEmailProvider, type EmailProvider } from "./email/provider";
 import { leadNotificationEmail, reportEmail } from "./email/messages";
 import { newAccessToken, reportUrlFor } from "./http";
 import { pdfFilename, renderReportPdf } from "./pdf/render";
-import { assessFit, type FitStatus } from "./qualification";
+import { assessFit, assessReadiness, type FitStatus, type Readiness } from "./qualification";
 import { generateReport, type ReportStatus } from "./report/generate";
 import { toolLabels } from "./report/heuristics";
 import type { SystemsReport } from "./report/schema";
@@ -34,6 +43,7 @@ export type SubmitOutcome = {
   report: SystemsReport;
   reportStatus: ReportStatus;
   fitStatus: FitStatus;
+  readiness: Readiness;
   nextAction: NextAction;
   /** Surfaced to the client only so it can show an honest fallback message. */
   delivery: { persisted: boolean; emailed: boolean; pdf: boolean };
@@ -41,7 +51,13 @@ export type SubmitOutcome = {
 
 const CONTACT_EMAIL = "hello@ibrahemahmed.com";
 
-export const buildNextAction = (fitStatus: FitStatus): NextAction => {
+/**
+ * Fit decides whether this is the right kind of business. Readiness decides how
+ * directly to ask for the call. A good business with no budget this quarter is
+ * still a good business — pushing a booking at them wastes both sides' time and
+ * costs the relationship.
+ */
+export const buildNextAction = (fitStatus: FitStatus, readiness: Readiness = "exploring"): NextAction => {
   if (fitStatus === "not_current_fit") {
     return {
       kind: "no_pitch",
@@ -51,13 +67,23 @@ export const buildNextAction = (fitStatus: FitStatus): NextAction => {
     };
   }
 
-  const qualified = fitStatus === "qualified";
+  if (readiness === "early") {
+    return {
+      kind: "no_pitch",
+      heading: "No call needed yet",
+      body: "You said there's no date and no budget for this, so I'm not going to ask you to book anything. Keep the report — it will still be accurate when the timing is right. When it is, reply to it and we'll pick up from here.",
+      contactEmail: CONTACT_EMAIL,
+    };
+  }
 
-  const heading = qualified
+  const qualified = fitStatus === "qualified";
+  const ready = readiness === "ready";
+
+  const heading = qualified && ready
     ? "Continue with a 20-minute Systems Teardown"
     : "If it would help, we can go through this properly";
 
-  const body = qualified
+  const body = qualified && ready
     ? "This is the part the report can't do: 20 minutes on one real example, end to end. After that you get a written map and a fixed quote for the highest-priority fix. No obligation, and no pitch deck."
     : "It looks like there may be something here worth 20 minutes. If you'd like to go through one real example together, the call is the next step — and if it turns out I'm not the right fit, I'll say so.";
 
@@ -69,7 +95,7 @@ export const buildNextAction = (fitStatus: FitStatus): NextAction => {
     kind: "book",
     heading,
     body,
-    label: qualified ? "Continue with a 20-minute Systems Teardown" : "Book a 20-minute call",
+    label: qualified && ready ? "Continue with a 20-minute Systems Teardown" : "Book a 20-minute call",
     url: env.bookingUrl,
   };
 };
@@ -90,6 +116,8 @@ const answersSummary = (submission: LeadSubmission): string => {
     `Tools: ${toolLabels(answers.current_tools).join(", ")}`,
     `Already tried: ${answers.previous_attempts || "(not answered)"}`,
     `Stated value: ${optionLabel(VALUE_BANDS, answers.estimated_value)}`,
+    `Timing: ${optionLabel(DECISION_TIMING, answers.decision_timing)}`,
+    `Budget: ${optionLabel(BUDGET_STATE, answers.budget_state)}`,
     "",
     `Marketing consent: ${submission.consent.marketing_consent ? "yes" : "no"}`,
   ].join("\n");
@@ -111,6 +139,7 @@ export const submitLead = async (
   const emailProvider = deps.email ?? getEmailProvider();
 
   const fit = assessFit(submission.answers);
+  const readiness = assessReadiness(submission.answers);
   const accessToken = newAccessToken();
 
   /* 1. Persist first. Everything after this point is best-effort. ---------- */
@@ -198,6 +227,7 @@ export const submitLead = async (
         email: submission.email,
         companyName: submission.answers.company_name,
         fitStatus: fit.status,
+        readiness,
         reportUrl,
         answersSummary: answersSummary(submission),
         persisted,
@@ -229,7 +259,8 @@ export const submitLead = async (
     report: generated.report,
     reportStatus: generated.status,
     fitStatus: fit.status,
-    nextAction: buildNextAction(fit.status),
+    readiness,
+    nextAction: buildNextAction(fit.status, readiness),
     delivery: { persisted, emailed, pdf: Boolean(pdf) },
   };
 };

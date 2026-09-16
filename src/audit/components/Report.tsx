@@ -1,4 +1,6 @@
-import { ArrowRight, Download, Mail } from "lucide-react";
+import { ArrowRight, Download, Linkedin, Mail } from "lucide-react";
+import { buildInvestmentSection } from "../../config/investment";
+import { CONTACT_EMAIL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
 import type { SystemsReport } from "../../server/report/schema";
 import type { NextAction } from "../api";
 
@@ -242,6 +244,67 @@ const Report = ({
           </p>
         </Section>
 
+        <Section title="What this would cost">
+          {(() => {
+            const investment = buildInvestmentSection(report.likely_delivery_path);
+            return (
+              <div className="grid gap-5">
+                <p className="text-[15px] leading-relaxed text-ink">{investment.offer}</p>
+
+                {investment.range && (
+                  <div className="card bg-[var(--primary-soft)] p-5 md:p-6">
+                    <p className="text-[12px] font-medium uppercase tracking-[0.07em] text-muted">
+                      {investment.offerName}
+                    </p>
+                    <p className="mt-1.5 text-[1.5rem] font-semibold tracking-[-0.02em] text-[var(--primary)]">
+                      {investment.range}
+                    </p>
+                    {investment.rangeNote && (
+                      <p className="mt-2 text-[14px] leading-relaxed text-muted">{investment.rangeNote}</p>
+                    )}
+                  </div>
+                )}
+
+                {investment.included.length > 0 && (
+                  <div>
+                    <p className="text-[12px] font-medium uppercase tracking-[0.07em] text-muted">
+                      What {investment.offerName} includes
+                    </p>
+                    <ul className="mt-2.5 grid gap-2">
+                      {investment.included.map((item) => (
+                        <li key={item} className="flex gap-3 text-[14.5px] leading-relaxed text-ink">
+                          <span
+                            className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]"
+                            aria-hidden="true"
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div>
+                  <p className="text-[12px] font-medium uppercase tracking-[0.07em] text-muted">
+                    What moves the price
+                  </p>
+                  <ul className="mt-2.5 grid gap-2">
+                    {investment.drivers.map((driver) => (
+                      <li key={driver} className="flex gap-3 text-[14.5px] leading-relaxed text-muted">
+                        <span className="mt-[10px] h-px w-3 shrink-0 bg-[var(--border-strong)]" aria-hidden="true" />
+                        {driver}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <p className="text-[14.5px] leading-relaxed text-ink">{investment.promise}</p>
+                <p className="text-[13.5px] leading-relaxed text-muted">{investment.disclaimer}</p>
+              </div>
+            );
+          })()}
+        </Section>
+
         <Section title="Questions to resolve during the Teardown">
           <ul className="grid gap-2.5">
             {report.questions_for_call.map((question, index) => (
@@ -310,15 +373,43 @@ const Report = ({
         </Section>
       </div>
 
-      <footer className="mt-12 border-t border-border pt-6">
-        <p className="text-[14px] font-semibold text-ink">Ibrahem Ahmed</p>
-        <p className="mt-0.5 text-[13px] text-muted">Internal Systems for Small Businesses</p>
-        <a
-          href="https://ibrahemahmed.com"
-          className="mt-1 inline-block text-[13px] text-[var(--primary)] underline-offset-4 hover:underline"
-        >
-          ibrahemahmed.com
-        </a>
+      <footer className="mt-12 overflow-hidden rounded-xl border border-border">
+        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+        <div className="flex flex-col gap-5 bg-surface p-6 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-[15px] font-semibold text-ink">{OWNER.name}</p>
+            <p className="mt-0.5 text-[13px] text-muted">{OWNER.discipline}</p>
+          </div>
+          <div className="flex flex-col gap-2 text-[13.5px] sm:items-end">
+            {nextAction.kind === "book" && (
+              <a
+                href={nextAction.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onBookingClick}
+                className="font-medium text-[var(--primary)] underline-offset-4 hover:underline"
+              >
+                Book a 20-minute call
+              </a>
+            )}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-2 text-muted hover:text-ink">
+              <Mail size={14} aria-hidden="true" />
+              {CONTACT_EMAIL}
+            </a>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-muted hover:text-ink"
+            >
+              <Linkedin size={14} aria-hidden="true" />
+              LinkedIn
+            </a>
+            <a href={SITE_URL} className="text-muted hover:text-ink">
+              {SITE_URL.replace(/^https?:\/\//, "")}
+            </a>
+          </div>
+        </div>
       </footer>
     </article>
   );

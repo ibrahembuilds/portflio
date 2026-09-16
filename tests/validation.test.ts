@@ -8,7 +8,8 @@ import {
   stripEventProperties,
   toFieldErrors,
 } from "../src/server/validation";
-import { QUESTIONS } from "../src/config/assessment";
+import { COMMON_TOOLS, QUESTIONS } from "../src/config/assessment";
+import { toSubmissionAnswers } from "../src/audit/state";
 
 /** Built from code points so they stay visible in the source. */
 const NUL = String.fromCharCode(0x00);
@@ -28,6 +29,8 @@ const valid = {
   current_tools: ["spreadsheets"],
   previous_attempts: "",
   estimated_value: "significant",
+  decision_timing: "asap",
+  budget_state: "would_find",
 };
 
 describe("sanitiseText", () => {
@@ -168,5 +171,46 @@ describe("toFieldErrors", () => {
       expect(errors.country).toBeTruthy();
       expect(errors.process_problem).toBeTruthy();
     }
+  });
+});
+
+/**
+ * The client builds its payload from the same question list the server
+ * validates against. This guards the failure mode where a question is added to
+ * the UI, the hand-written client mapping misses it, and every submission is
+ * rejected for a field the user actually answered.
+ */
+describe("client payload matches the server schema", () => {
+  const uiAnswers: Record<string, string | string[]> = {
+    company_name: "Riverside Plumbing",
+    company_website: "riverside.com",
+    country: "GB",
+    employee_range: "5-19",
+    respondent_role: "owner",
+    respondent_name: "Sam Hall",
+    process_problem: "Every job is written on paper, then copied into the spreadsheet, then typed into the invoice.",
+    weekly_frequency: "20-50",
+    people_involved: "Office manager",
+    current_tools: [COMMON_TOOLS[0].value],
+    previous_attempts: "",
+    estimated_value: "significant",
+    decision_timing: "asap",
+    budget_state: "would_find",
+  };
+
+  it("produces a key for every question the UI asks", () => {
+    const payload = toSubmissionAnswers(uiAnswers);
+    expect(Object.keys(payload).sort()).toEqual(QUESTIONS.map((question) => question.id).sort());
+  });
+
+  it("produces a payload the server accepts", () => {
+    const parsed = assessmentAnswersSchema.safeParse(toSubmissionAnswers(uiAnswers));
+    expect(parsed.success, parsed.success ? "" : JSON.stringify(parsed.error.issues)).toBe(true);
+  });
+
+  it("keeps multi-select answers as arrays and everything else as trimmed strings", () => {
+    const payload = toSubmissionAnswers({ ...uiAnswers, company_name: "  Padded  " });
+    expect(payload.company_name).toBe("Padded");
+    expect(Array.isArray(payload.current_tools)).toBe(true);
   });
 });

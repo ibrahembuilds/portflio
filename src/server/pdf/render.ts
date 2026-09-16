@@ -1,4 +1,6 @@
 import PDFDocument from "pdfkit";
+import { LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
+import { buildInvestmentSection } from "../../config/investment";
 import { PRIORITY_LABEL, PRIORITY_ORDER, type SystemsReport } from "../report/schema";
 
 /**
@@ -14,12 +16,14 @@ import { PRIORITY_LABEL, PRIORITY_ORDER, type SystemsReport } from "../report/sc
  * PDF uses Helvetica. It is the one place the brand face is not used.
  */
 
+/** Mirrors the tokens in src/index.css so the PDF reads as the same document
+ *  as the page it came from. BRAND is a fill only — never text. */
 const INK = "#0B1220";
-const PRIMARY = "#3157D5";
+const BRAND = "#02D169";
+const PRIMARY = "#017E40";
 const MUTED = "#667085";
 const BORDER = "#DDE1E8";
-const SOFT = "#E8EDFF";
-const SUCCESS = "#0F766E";
+const SOFT = "#E3F9EE";
 
 const PAGE_MARGIN = 56;
 const FOOTER_HEIGHT = 46;
@@ -207,9 +211,10 @@ export const renderReportPdf = (input: PdfInput): Promise<Buffer> => {
   doc.font("Helvetica").fontSize(9.5).fillColor(MUTED).text(`Prepared for ${input.recipientName} · ${generatedLabel}`);
 
   doc.moveDown(1);
+  // The brand green appears once, as a fill, at the head of the document.
   const ruleY = doc.y;
-  doc.moveTo(PAGE_MARGIN, ruleY).lineTo(doc.page.width - PAGE_MARGIN, ruleY).lineWidth(1.5).strokeColor(PRIMARY).stroke();
-  doc.y = ruleY + 16;
+  doc.rect(PAGE_MARGIN, ruleY, contentWidth(doc), 4).fillColor(BRAND).fill();
+  doc.y = ruleY + 20;
 
   doc.font("Helvetica").fontSize(11).fillColor(INK).text(report.executive_summary, {
     width: contentWidth(doc),
@@ -268,6 +273,47 @@ export const renderReportPdf = (input: PdfInput): Promise<Buffer> => {
     { color: MUTED },
   );
 
+  /* What this would cost -------------------------------------------------- */
+  const investment = buildInvestmentSection(report.likely_delivery_path);
+
+  sectionHeading(doc, "What this would cost");
+  body(doc, investment.offer);
+  doc.moveDown(0.5);
+
+  if (investment.range) {
+    ensureSpace(doc, 76);
+    const boxY = doc.y;
+    doc.roundedRect(PAGE_MARGIN, boxY, contentWidth(doc), 58, 5).fillColor(SOFT).fill();
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(9)
+      .fillColor(MUTED)
+      .text(investment.offerName.toUpperCase(), PAGE_MARGIN + 14, boxY + 12, { characterSpacing: 0.5 });
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(17)
+      .fillColor(PRIMARY)
+      .text(investment.range, PAGE_MARGIN + 14, boxY + 26, { width: contentWidth(doc) - 28 });
+    doc.y = boxY + 58;
+    doc.moveDown(0.6);
+    if (investment.rangeNote) body(doc, investment.rangeNote, { color: MUTED });
+    doc.moveDown(0.4);
+  }
+
+  if (investment.included.length > 0) {
+    label(doc, `What ${investment.offerName} includes`);
+    investment.included.forEach((item) => bullet(doc, item, "—"));
+    doc.moveDown(0.4);
+  }
+
+  label(doc, "What moves the price");
+  investment.drivers.forEach((driver) => bullet(doc, driver, "—"));
+  doc.moveDown(0.5);
+
+  body(doc, investment.promise);
+  doc.moveDown(0.4);
+  body(doc, investment.disclaimer, { color: MUTED, size: 9.5 });
+
   /* Questions for the call ----------------------------------------------- */
   sectionHeading(doc, "Questions to resolve during the Teardown");
   report.questions_for_call.forEach((question) => bullet(doc, question));
@@ -283,16 +329,41 @@ export const renderReportPdf = (input: PdfInput): Promise<Buffer> => {
   /* Next step ------------------------------------------------------------ */
   sectionHeading(doc, "Next step");
   body(doc, report.next_step);
-  doc.moveDown(0.5);
-  if (input.bookingUrl) {
-    doc.font("Helvetica-Bold").fontSize(10.5).fillColor(PRIMARY).text(input.bookingUrl, {
-      link: input.bookingUrl,
-      underline: false,
-    });
-  } else {
-    doc.font("Helvetica").fontSize(10.5).fillColor(INK).text(`Reply to this report or email ${input.contactEmail}.`);
-  }
+  doc.moveDown(0.7);
 
+  /* Contact block --------------------------------------------------------- */
+  ensureSpace(doc, 120);
+  const cardY = doc.y;
+  const cardHeight = input.bookingUrl ? 112 : 96;
+  doc.roundedRect(PAGE_MARGIN, cardY, contentWidth(doc), cardHeight, 5).fillColor(SOFT).fill();
+  doc.rect(PAGE_MARGIN, cardY, 4, cardHeight).fillColor(BRAND).fill();
+
+  const cardLeft = PAGE_MARGIN + 18;
+  const cardWidth = contentWidth(doc) - 32;
+
+  doc.font("Helvetica-Bold").fontSize(12).fillColor(INK).text(OWNER.name, cardLeft, cardY + 14, { width: cardWidth });
+  doc
+    .font("Helvetica")
+    .fontSize(9.5)
+    .fillColor(MUTED)
+    .text(OWNER.discipline, cardLeft, cardY + 30, { width: cardWidth });
+
+  let lineY = cardY + 48;
+  const contactLine = (text: string, link?: string) => {
+    doc
+      .font(link ? "Helvetica-Bold" : "Helvetica")
+      .fontSize(10)
+      .fillColor(link ? PRIMARY : INK)
+      .text(text, cardLeft, lineY, { width: cardWidth, link, underline: false, lineBreak: false });
+    lineY += 15;
+  };
+
+  if (input.bookingUrl) contactLine(`Book the 20-minute call: ${input.bookingUrl}`, input.bookingUrl);
+  contactLine(input.contactEmail, `mailto:${input.contactEmail}`);
+  contactLine(SITE_URL.replace(/^https?:\/\//, ""), SITE_URL);
+  contactLine(LINKEDIN_URL.replace(/^https?:\/\/(www\.)?/, ""), LINKEDIN_URL);
+
+  doc.y = cardY + cardHeight;
   doc.moveDown(0.8);
   ensureSpace(doc, 60);
   const noteY = doc.y;
@@ -359,4 +430,3 @@ export const pdfFilename = (companyName: string): string => {
   return `systems-report-${slug || "business"}.pdf`;
 };
 
-export { SUCCESS as PDF_SUCCESS_COLOUR };

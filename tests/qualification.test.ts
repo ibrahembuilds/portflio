@@ -18,6 +18,8 @@ const baseAnswers = (overrides: Partial<AssessmentAnswers> = {}): AssessmentAnsw
   current_tools: ["spreadsheets", "email"],
   previous_attempts: "",
   estimated_value: "meaningful",
+  decision_timing: "asap",
+  budget_state: "would_find",
   ...overrides,
 });
 

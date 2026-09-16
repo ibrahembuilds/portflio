@@ -37,7 +37,9 @@ const Hero = () => (
 
       {/* A plain operational map, not decoration: this is the shape of the
           problem the offer addresses. */}
-      <figure className="card p-6 md:p-7">
+      <figure className="card overflow-hidden p-0">
+        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+        <div className="p-6 md:p-7">
         <figcaption className="eyebrow">A small business, mapped</figcaption>
         <div className="mt-5">
           <Flow
@@ -64,6 +66,7 @@ const Hero = () => (
               {item}
             </p>
           ))}
+        </div>
         </div>
       </figure>
     </div>
@@ -309,7 +312,9 @@ const FaqSection = () => (
 const FinalCta = () => (
   <section className="section">
     <div className="shell">
-      <div className="card bg-[var(--primary-soft)] p-8 md:p-14" data-reveal>
+      <div className="card overflow-hidden bg-[var(--primary-soft)] p-0" data-reveal>
+        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+        <div className="p-8 md:p-14">
         <div className="max-w-[46rem]">
           <h2 className="h-section max-w-[18ch]">Start with one process that is costing you time.</h2>
           <p className="lede mt-5 max-w-prose text-pretty">
@@ -333,6 +338,7 @@ const FinalCta = () => (
               </li>
             ))}
           </ul>
+        </div>
         </div>
       </div>
     </div>

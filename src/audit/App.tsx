@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
-import { BUSINESS_SECTION_END, QUESTIONS } from "../config/assessment";
+import { BUSINESS_SECTION_END, PROCESS_SECTION_END, QUESTIONS } from "../config/assessment";
 import { CONTACT_EMAIL, PRIVACY_POLICY_VERSION, SITE_URL } from "../config/site";
 import type { SystemsReport } from "../server/report/schema";
 import {
@@ -359,11 +359,18 @@ const App = () => {
       });
     }
 
-    if (state.index >= QUESTIONS.length - 1) {
+    if (state.index === PROCESS_SECTION_END) {
       track("audit_process_completed", state.sessionId, state.attribution, {
         weekly_frequency: String(answers.weekly_frequency ?? ""),
       });
-      track("audit_completed", state.sessionId, state.attribution, { step_count: QUESTIONS.length });
+    }
+
+    if (state.index >= QUESTIONS.length - 1) {
+      track("audit_completed", state.sessionId, state.attribution, {
+        step_count: QUESTIONS.length,
+        decision_timing: String(answers.decision_timing ?? ""),
+        budget_state: String(answers.budget_state ?? ""),
+      });
       setStage("preview");
       return;
     }

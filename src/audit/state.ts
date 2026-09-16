@@ -144,18 +144,26 @@ export const isComplete = (answers: Answers): boolean =>
     return text.length >= (question.minLength ?? 1);
   });
 
-/** Converts UI answers into the shape the API expects. */
-export const toSubmissionAnswers = (answers: Answers) => ({
-  company_name: String(answers.company_name ?? "").trim(),
-  company_website: String(answers.company_website ?? "").trim(),
-  country: String(answers.country ?? ""),
-  employee_range: String(answers.employee_range ?? ""),
-  respondent_role: String(answers.respondent_role ?? ""),
-  respondent_name: String(answers.respondent_name ?? "").trim(),
-  process_problem: String(answers.process_problem ?? "").trim(),
-  weekly_frequency: String(answers.weekly_frequency ?? ""),
-  people_involved: String(answers.people_involved ?? "").trim(),
-  current_tools: Array.isArray(answers.current_tools) ? answers.current_tools : [],
-  previous_attempts: String(answers.previous_attempts ?? "").trim(),
-  estimated_value: String(answers.estimated_value ?? ""),
-});
+/**
+ * Converts UI answers into the shape the API expects.
+ *
+ * Derived from QUESTIONS rather than hand-listed: a hand-written mapping
+ * silently drops any question added later, and the server then rejects the
+ * whole submission for a field the UI did collect.
+ */
+export const toSubmissionAnswers = (answers: Answers): Record<string, string | string[]> => {
+  const payload: Record<string, string | string[]> = {};
+
+  for (const question of QUESTIONS) {
+    const value = answers[question.id];
+
+    if (question.type === "multichoice") {
+      payload[question.id] = Array.isArray(value) ? value : [];
+      continue;
+    }
+
+    payload[question.id] = String(value ?? "").trim();
+  }
+
+  return payload;
+};

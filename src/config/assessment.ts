@@ -6,11 +6,13 @@
 
 export type QuestionType = "text" | "longtext" | "url" | "choice" | "multichoice";
 
+export type Section = "business" | "process" | "decision";
+
 export type Option = { value: string; label: string; hint?: string };
 
 export type Question = {
   id: string;
-  section: "business" | "process";
+  section: Section;
   type: QuestionType;
   prompt: string;
   help?: string;
@@ -54,6 +56,26 @@ export const VALUE_BANDS: Option[] = [
   { value: "meaningful", label: "It costs us real time every week" },
   { value: "significant", label: "It's costing us work or customers" },
   { value: "critical", label: "It's one of the biggest problems in the business" },
+];
+
+/**
+ * Timing and budget: the two answers that separate an owner who wants this
+ * fixed from one who is reading about it. They sit at the very end, after
+ * twelve answers of invested effort, because asking about money early reads as
+ * a sales call and loses people who would otherwise have converted.
+ */
+export const DECISION_TIMING: Option[] = [
+  { value: "asap", label: "As soon as I can", hint: "It's already costing us" },
+  { value: "1-3-months", label: "In the next month or two" },
+  { value: "3-6-months", label: "Later this year" },
+  { value: "exploring", label: "No date — I'm looking into it" },
+];
+
+export const BUDGET_STATE: Option[] = [
+  { value: "allocated", label: "Yes, there's money set aside for it" },
+  { value: "would_find", label: "Not set aside, but I'd find it for the right fix" },
+  { value: "needs_number", label: "I'd need to see the cost first" },
+  { value: "none", label: "No budget at the moment" },
 ];
 
 export const COMMON_TOOLS: Option[] = [
@@ -260,14 +282,38 @@ export const QUESTIONS: Question[] = [
     maxLength: 30,
     options: VALUE_BANDS,
   },
+  {
+    id: "decision_timing",
+    section: "decision",
+    type: "choice",
+    prompt: "When would you want this sorted?",
+    help: "An honest answer here means I don't waste your time, or mine.",
+    required: true,
+    maxLength: 30,
+    options: DECISION_TIMING,
+  },
+  {
+    id: "budget_state",
+    section: "decision",
+    type: "choice",
+    prompt: "Have you put money aside for fixing it?",
+    help: "There's no wrong answer, and nothing is being sold on this screen.",
+    required: true,
+    maxLength: 30,
+    options: BUDGET_STATE,
+  },
 ];
 
 export const QUESTION_BY_ID: Record<string, Question> = Object.fromEntries(
   QUESTIONS.map((question) => [question.id, question]),
 );
 
-/** Index of the last "business" question — the analytics section boundary. */
-export const BUSINESS_SECTION_END = QUESTIONS.filter((question) => question.section === "business").length - 1;
+/** Analytics section boundaries: the index of the last question in each. */
+const lastIndexOfSection = (section: Section) =>
+  QUESTIONS.map((question) => question.section).lastIndexOf(section);
+
+export const BUSINESS_SECTION_END = lastIndexOfSection("business");
+export const PROCESS_SECTION_END = lastIndexOfSection("process");
 
 export const optionLabel = (options: Option[] | undefined, value: string): string =>
   options?.find((option) => option.value === value)?.label ?? value;

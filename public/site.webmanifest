@@ -1,11 +1,11 @@
 {
-  "name": "Ibrahem Ahmed Hassan",
-  "short_name": "Ibrahem A.",
-  "description": "Founder of KanyouAI and AI engineering student who builds real products.",
+  "name": "Ibrahem Ahmed — Internal Systems for Small Businesses",
+  "short_name": "Ibrahem Ahmed",
+  "description": "Custom CRMs, client portals, workflow automation and internal tools for 5-50 person businesses.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#f7f9fa",
-  "theme_color": "#f7f9fa",
+  "background_color": "#f7f7f3",
+  "theme_color": "#f7f7f3",
   "icons": [
     {
       "src": "/apple-touch-icon.png",

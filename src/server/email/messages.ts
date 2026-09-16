@@ -1,5 +1,5 @@
 import { env } from "../env";
-import type { FitStatus } from "../qualification";
+import type { FitStatus, Readiness } from "../qualification";
 import type { SystemsReport } from "../report/schema";
 import type { EmailMessage } from "./provider";
 
@@ -83,6 +83,7 @@ export const leadNotificationEmail = (params: {
   email: string;
   companyName: string;
   fitStatus: FitStatus;
+  readiness: Readiness;
   reportUrl: string;
   answersSummary: string;
   persisted: boolean;
@@ -92,10 +93,10 @@ export const leadNotificationEmail = (params: {
   return {
     to: env.notifyEmail,
     replyTo: params.email,
-    subject: `${params.fitStatus === "qualified" ? "[QUALIFIED] " : ""}Teardown lead — ${params.companyName}`,
+    subject: `${params.fitStatus === "qualified" && params.readiness === "ready" ? "[HOT] " : params.fitStatus === "qualified" ? "[QUALIFIED] " : ""}Teardown lead — ${params.companyName}`,
     text: `${params.firstName} <${params.email}>
 Company: ${params.companyName}
-Fit: ${params.fitStatus}
+Fit: ${params.fitStatus} · Readiness: ${params.readiness}
 Report: ${params.reportUrl}
 ${flag}
 ${params.answersSummary}`,

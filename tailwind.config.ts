@@ -1,10 +1,9 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Brand tokens come from the commercial brand direction: precise, calm,
- * operational. Values are stored as raw hex on :root in src/index.css so the
- * palette in the spec can be read back out of the stylesheet without decoding
- * an HSL triple.
+ * Brand tokens live as raw hex on :root in src/index.css, so the palette can be
+ * read straight out of the stylesheet. The green is sampled from the profile
+ * photograph; see that file for the contrast reasoning behind the two tones.
  */
 export default {
   content: ["./index.html", "./audit/index.html", "./src/**/*.{ts,tsx}"],
@@ -17,6 +16,11 @@ export default {
       },
       colors: {
         ink: "var(--ink)",
+        /* Fill only — never text, never an icon. See src/index.css. */
+        brand: {
+          DEFAULT: "var(--brand)",
+          deep: "var(--brand-deep)",
+        },
         primary: {
           DEFAULT: "var(--primary)",
           strong: "var(--primary-strong)",
