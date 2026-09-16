@@ -2,16 +2,20 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const container = document.getElementById("root")!;
-const locale = window.location.pathname === "/ar" || window.location.pathname.startsWith("/ar/") ? "ar" : "en";
+const container = document.getElementById("root");
 
-document.documentElement.lang = locale;
-document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+if (container) {
+  const path = window.location.pathname;
+  const route = path === "/ar" || path.startsWith("/ar/") ? "/ar/" : path.replace(/\/+$/, "") || "/";
 
-// Production HTML is prerendered at build time (scripts/prerender.mjs), so hydrate it.
-// In dev the container is empty, so render from scratch.
-if (container.hasChildNodes()) {
-  hydrateRoot(container, <App locale={locale} />);
-} else {
-  createRoot(container).render(<App locale={locale} />);
+  document.documentElement.lang = route === "/ar/" ? "ar" : "en";
+  document.documentElement.dir = route === "/ar/" ? "rtl" : "ltr";
+
+  // Production HTML is prerendered per route at build time, so hydrate it.
+  // In dev the container is empty and we render from scratch.
+  if (container.hasChildNodes()) {
+    hydrateRoot(container, <App route={route} />);
+  } else {
+    createRoot(container).render(<App route={route} />);
+  }
 }

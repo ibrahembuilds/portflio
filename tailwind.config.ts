@@ -1,30 +1,47 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Brand tokens come from the commercial brand direction: precise, calm,
+ * operational. Values are stored as raw hex on :root in src/index.css so the
+ * palette in the spec can be read back out of the stylesheet without decoding
+ * an HSL triple.
+ */
 export default {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: ["./index.html", "./audit/index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Space Grotesk", "system-ui", "sans-serif"],
-        mono: ["Space Mono", "ui-monospace", "monospace"],
+        sans: ["Geist Sans", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        mono: ["Geist Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+        arabic: ['"Noto Sans Arabic Variable"', "Tahoma", "Arial", "sans-serif"],
       },
       colors: {
-        background: "hsl(var(--background))",
-        surface: "hsl(var(--surface))",
-        foreground: "hsl(var(--foreground))",
-        muted: "hsl(var(--muted-foreground))",
-        border: "hsl(var(--border))",
-        "border-strong": "hsl(var(--border-strong))",
+        ink: "var(--ink)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          strong: "hsl(var(--primary-strong))",
-          tint: "hsl(var(--primary-tint))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--primary)",
+          strong: "var(--primary-strong)",
+          soft: "var(--primary-soft)",
+          foreground: "var(--primary-foreground)",
         },
+        background: "var(--background)",
+        surface: "var(--surface)",
+        border: "var(--border)",
+        "border-strong": "var(--border-strong)",
+        success: "var(--success)",
+        muted: "var(--muted)",
+      },
+      borderColor: {
+        DEFAULT: "var(--border)",
+      },
+      maxWidth: {
+        prose: "68ch",
       },
       boxShadow: {
-        card: "0 1px 2px hsl(222 25% 11% / 0.04), 0 8px 24px hsl(222 25% 11% / 0.05)",
-        "card-hover": "0 2px 4px hsl(222 25% 11% / 0.05), 0 14px 34px hsl(222 25% 11% / 0.09)",
+        card: "0 1px 2px rgb(11 18 32 / 0.04)",
+        raised: "0 1px 2px rgb(11 18 32 / 0.05), 0 12px 28px rgb(11 18 32 / 0.06)",
+      },
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },
