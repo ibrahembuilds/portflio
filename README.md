@@ -82,17 +82,39 @@ number in front of a prospect that you have not agreed to:
 
 ## Brand
 
-The palette derives from the profile photograph (`#02d169`). It is split in two
-because the photo green cannot carry white text:
+Bone page, ink interactive, lime highlight blocks. The palette is measured, not
+chosen by eye — the table below is asserted by `tests/palette.test.ts`.
 
 | Token | Value | Use | Contrast |
 | --- | --- | --- | --- |
-| `--brand` | `#02d169` | Fill only: identity rules, social images | 9.3:1 on ink |
-| `--primary` | `#017e40` | Buttons, links, icons | 5.2:1 on white — AA |
-| `--primary-strong` | `#016030` | Hover | 7.7:1 on white — AAA |
+| `--background` | `#faf9f6` | The page | 17.8:1 with ink text |
+| `--accent` | `#d4f53c` | Fill only: highlight blocks, social cards | 15.1:1 with ink text |
+| `--primary` | `#0b1220` | Buttons, links, icons | 18.7:1 with white text |
+| `--primary-soft` | `#f1f8d4` | Tinted panels | 10.4:1 with `--primary-strong` |
+| `--muted` | `#6b6862` | Secondary text | 5.3:1 on the page |
 
-Never use `--brand` for text or an icon: white on it is 2.0:1 and fails AA.
+The accent has two hard rules, both enforced by tests:
+
+- **Never type, never an icon.** White on it is 1.24:1, which fails AA outright.
+- **Never a hairline.** Against the page it is 1.18:1, so a 1px rule of it is
+  invisible. It appears as a block that carries dark text — the hero caption
+  strip, the closing call to action, the report footer, the PDF banner.
+
+The primary button flips from ink to accent on hover; both states clear AA,
+which is what makes the flip safe.
+
 The whole palette is one block at the top of `src/index.css`.
+
+### Images
+
+The profile photograph was shot on a green screen. `scripts/portrait.mjs` keys
+the green out and composites the subject onto the brand colours, so nothing has
+to be re-shot when the palette moves:
+
+```bash
+node scripts/portrait.mjs   # src/assets/portrait-*.webp, from portrait-source.png
+node scripts/social.mjs     # public/og-image.png and og-image-ar.png
+```
 
 ## Deployment
 

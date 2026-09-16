@@ -45,8 +45,9 @@ const About = () => (
         </div>
 
         <div data-reveal>
-          {/* The photograph is shot on the brand green, so the card needs no
-              treatment: the image is the identity block. */}
+          {/* The photograph is keyed onto the page colour by scripts/portrait.mjs,
+              so it sits in the layout without a second background showing
+              through behind it. */}
           <figure className="overflow-hidden rounded-xl border border-border">
             <img
               src={portrait960}
@@ -55,7 +56,7 @@ const About = () => (
               width={960}
               height={960}
               alt={`${OWNER.legalName}, who builds the systems described on this site`}
-              className="aspect-square w-full bg-[var(--brand)] object-cover"
+              className="aspect-square w-full bg-[var(--background)] object-cover"
               loading="lazy"
               decoding="async"
             />

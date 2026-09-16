@@ -203,11 +203,10 @@ export const ArabicPageHeader = ({
 export const ArabicCta = ({ title, body }: { title: string; body: string }) => (
   <section className="section border-t border-border">
     <div className="shell">
-      <div className="card overflow-hidden bg-[var(--primary-soft)] p-0" data-reveal>
-        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+      <div className="panel-accent overflow-hidden rounded-xl" data-reveal>
         <div className="p-8 md:p-12">
           <h2 className="h-section max-w-[24ch] leading-[1.35]">{title}</h2>
-          <p className="lede mt-5 max-w-prose leading-[1.9]">{body}</p>
+          <p className="mt-5 max-w-prose text-[1.0625rem] leading-[1.9] text-ink/80 sm:text-[1.1875rem]">{body}</p>
           <a href={AUDIT_URL} className="btn btn-primary mt-8">
             {CTA_AR.primary}
             <ArrowLeft size={17} aria-hidden="true" />

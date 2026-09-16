@@ -17,13 +17,14 @@ import { PRIORITY_LABEL, PRIORITY_ORDER, type SystemsReport } from "../report/sc
  */
 
 /** Mirrors the tokens in src/index.css so the PDF reads as the same document
- *  as the page it came from. BRAND is a fill only — never text. */
+ *  as the page it came from. ACCENT is a fill that carries dark text — it is
+ *  never used for type, and never as a hairline. */
 const INK = "#0B1220";
-const BRAND = "#02D169";
-const PRIMARY = "#017E40";
-const MUTED = "#667085";
-const BORDER = "#DDE1E8";
-const SOFT = "#E3F9EE";
+const ACCENT = "#D4F53C";
+const PRIMARY = "#0B1220";
+const MUTED = "#6B6862";
+const BORDER = "#E5E3DC";
+const SOFT = "#F1F8D4";
 
 const PAGE_MARGIN = 56;
 const FOOTER_HEIGHT = 46;
@@ -202,19 +203,23 @@ export const renderReportPdf = (input: PdfInput): Promise<Buffer> => {
   const { report } = input;
 
   /* Cover block ---------------------------------------------------------- */
-  doc.font("Helvetica-Bold").fontSize(9).fillColor(MUTED).text("PRELIMINARY", { characterSpacing: 1.1 });
-  doc.moveDown(0.3);
   doc.font("Helvetica-Bold").fontSize(26).fillColor(INK).text("Systems Report");
   doc.moveDown(0.25);
-  doc.font("Helvetica").fontSize(13).fillColor(PRIMARY).text(input.companyName);
+  doc.font("Helvetica-Bold").fontSize(13).fillColor(INK).text(input.companyName);
   doc.moveDown(0.2);
   doc.font("Helvetica").fontSize(9.5).fillColor(MUTED).text(`Prepared for ${input.recipientName} · ${generatedLabel}`);
 
-  doc.moveDown(1);
-  // The brand green appears once, as a fill, at the head of the document.
-  const ruleY = doc.y;
-  doc.rect(PAGE_MARGIN, ruleY, contentWidth(doc), 4).fillColor(BRAND).fill();
-  doc.y = ruleY + 20;
+  doc.moveDown(0.8);
+  // The accent appears as a field carrying dark text, never as a rule: against
+  // paper it is 1.18:1, so a hairline of it would be invisible in print.
+  const bannerY = doc.y;
+  doc.rect(PAGE_MARGIN, bannerY, contentWidth(doc), 30).fillColor(ACCENT).fill();
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(10)
+    .fillColor(INK)
+    .text("PRELIMINARY SYSTEMS REPORT", PAGE_MARGIN + 12, bannerY + 10, { characterSpacing: 1 });
+  doc.y = bannerY + 46;
 
   doc.font("Helvetica").fontSize(11).fillColor(INK).text(report.executive_summary, {
     width: contentWidth(doc),
@@ -336,7 +341,7 @@ export const renderReportPdf = (input: PdfInput): Promise<Buffer> => {
   const cardY = doc.y;
   const cardHeight = input.bookingUrl ? 112 : 96;
   doc.roundedRect(PAGE_MARGIN, cardY, contentWidth(doc), cardHeight, 5).fillColor(SOFT).fill();
-  doc.rect(PAGE_MARGIN, cardY, 4, cardHeight).fillColor(BRAND).fill();
+  doc.rect(PAGE_MARGIN, cardY, 4, cardHeight).fillColor(ACCENT).fill();
 
   const cardLeft = PAGE_MARGIN + 18;
   const cardWidth = contentWidth(doc) - 32;

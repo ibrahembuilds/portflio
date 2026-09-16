@@ -16,10 +16,12 @@ export default {
       },
       colors: {
         ink: "var(--ink)",
-        /* Fill only — never text, never an icon. See src/index.css. */
-        brand: {
-          DEFAULT: "var(--brand)",
-          deep: "var(--brand-deep)",
+        /* Fill only — never text, never an icon, never a hairline.
+           See the contrast table in src/index.css. */
+        accent: {
+          DEFAULT: "var(--accent)",
+          deep: "var(--accent-deep)",
+          soft: "var(--accent-soft)",
         },
         primary: {
           DEFAULT: "var(--primary)",

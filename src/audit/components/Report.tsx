@@ -374,12 +374,12 @@ const Report = ({
       </div>
 
       <footer className="mt-12 overflow-hidden rounded-xl border border-border">
-        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+        <div className="panel-accent border-x-0 border-t-0 px-6 py-3">
+          <p className="text-[15px] font-semibold text-ink">{OWNER.name}</p>
+          <p className="mt-0.5 text-[13px] text-ink/70">{OWNER.discipline}</p>
+        </div>
         <div className="flex flex-col gap-5 bg-surface p-6 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-[15px] font-semibold text-ink">{OWNER.name}</p>
-            <p className="mt-0.5 text-[13px] text-muted">{OWNER.discipline}</p>
-          </div>
+          <div className="hidden sm:block" />
           <div className="flex flex-col gap-2 text-[13.5px] sm:items-end">
             {nextAction.kind === "book" && (
               <a

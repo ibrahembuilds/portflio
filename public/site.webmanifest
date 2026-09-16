@@ -4,8 +4,8 @@
   "description": "Custom CRMs, client portals, workflow automation and internal tools for 5-50 person businesses.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#f7f7f3",
-  "theme_color": "#f7f7f3",
+  "background_color": "#faf9f6",
+  "theme_color": "#faf9f6",
   "icons": [
     {
       "src": "/apple-touch-icon.png",

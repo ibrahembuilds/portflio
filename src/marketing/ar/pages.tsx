@@ -57,9 +57,10 @@ export const ArabicHome = () => (
         </div>
 
         <figure className="card overflow-hidden p-0">
-          <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+          <figcaption className="panel-accent border-x-0 border-t-0 px-6 py-3 text-[12px] font-medium text-ink md:px-7">
+            شركة صغيرة، مرسومة
+          </figcaption>
           <div className="p-6 md:p-7">
-            <figcaption className="eyebrow">شركة صغيرة، مرسومة</figcaption>
             <div className="mt-5">
               <Flow
                 rtl
@@ -647,7 +648,7 @@ export const ArabicAbout = () => {
                 width={960}
                 height={960}
                 alt="إبراهيم أحمد حسن أدم، الذي يبني الأنظمة الموصوفة في هذا الموقع"
-                className="aspect-square w-full bg-[var(--brand)] object-cover"
+                className="aspect-square w-full bg-[var(--background)] object-cover"
                 loading="lazy"
                 decoding="async"
               />

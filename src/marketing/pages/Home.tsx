@@ -38,9 +38,10 @@ const Hero = () => (
       {/* A plain operational map, not decoration: this is the shape of the
           problem the offer addresses. */}
       <figure className="card overflow-hidden p-0">
-        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+        <figcaption className="panel-accent border-x-0 border-t-0 px-6 py-3 text-[12px] font-medium uppercase tracking-[0.09em] text-ink md:px-7">
+          A small business, mapped
+        </figcaption>
         <div className="p-6 md:p-7">
-        <figcaption className="eyebrow">A small business, mapped</figcaption>
         <div className="mt-5">
           <Flow
             label="Enquiry to payment"
@@ -312,12 +313,11 @@ const FaqSection = () => (
 const FinalCta = () => (
   <section className="section">
     <div className="shell">
-      <div className="card overflow-hidden bg-[var(--primary-soft)] p-0" data-reveal>
-        <div className="h-1 bg-[var(--brand)]" aria-hidden="true" />
+      <div className="panel-accent overflow-hidden rounded-xl" data-reveal>
         <div className="p-8 md:p-14">
         <div className="max-w-[46rem]">
           <h2 className="h-section max-w-[18ch]">Start with one process that is costing you time.</h2>
-          <p className="lede mt-5 max-w-prose text-pretty">
+          <p className="mt-5 max-w-prose text-pretty text-[1.0625rem] leading-relaxed text-ink/80 sm:text-[1.1875rem]">
             Answer a few questions about how your team works. You get a preliminary Systems Report on screen, and if it
             looks like a fit, we book the 20-minute Teardown.
           </p>
@@ -332,8 +332,8 @@ const FinalCta = () => (
           </div>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
             {["Takes a few minutes", "No technical knowledge required", "No obligation"].map((item) => (
-              <li key={item} className="flex items-center gap-2 text-[14px] text-muted">
-                <Check size={15} className="text-[var(--success)]" aria-hidden="true" />
+              <li key={item} className="flex items-center gap-2 text-[14px] text-ink/75">
+                <Check size={15} className="text-ink" aria-hidden="true" />
                 {item}
               </li>
             ))}

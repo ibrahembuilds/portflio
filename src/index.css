@@ -52,31 +52,34 @@
 
 @layer base {
   :root {
-    /* Brand green, sampled from the profile photograph: #02d169.
-       It is used only as a FILL behind dark content — the photo backdrop, the
-       identity block, the social image. Against dark ink it measures 9.3:1;
-       with white text it is 2.0:1, which is unreadable, so it is never used
-       for a button, a link or an icon.
-
-       Interactive elements use --primary, the same hue (150deg) taken down in
-       lightness until white text clears WCAG AA:
-         --primary        #017e40 on white  5.2:1   AA
-         --primary-strong #016030 on white  7.7:1   AAA
-       Reverting to the previous blue is a change to this block alone. */
-    --brand: #02d169;
-    --brand-deep: #01a052;
+    /* Brand: bone page, ink interactive, lime highlight blocks.
+       Measured, not chosen by eye:
+         lime #d4f53c + white text .... 1.24:1  unusable, never do this
+         lime #d4f53c + ink text ...... 15.1:1  how the lime is meant to work
+         lime on bone page ............ 1.18:1  so lime is a BLOCK, never a rule
+         ink #0b1220 + white text ..... 18.7:1  the interactive colour
+         bone #faf9f6 + ink text ...... 17.8:1  the page
+       The accent is a fill that carries dark text on top of it. It is never a
+       text colour, never an icon, never a thin line — at 1.18:1 against the
+       page a hairline would simply disappear. */
+    --accent: #d4f53c;
+    --accent-deep: #c2e42a;
+    --accent-soft: #f1f8d4;
 
     --ink: #0b1220;
-    --primary: #017e40;
-    --primary-strong: #016030;
-    --primary-soft: #e3f9ee;
+    --primary: #0b1220;
+    --primary-strong: #313a4c;
+    --primary-soft: #f1f8d4;
     --primary-foreground: #ffffff;
-    --background: #f7f7f3;
+
+    --background: #faf9f6;
     --surface: #ffffff;
-    --border: #dde1e8;
-    --border-strong: #c4cad4;
-    --success: #017e40;
-    --muted: #667085;
+    /* Borders and muted text are warmed to sit on bone rather than on a cool
+       grey, which would read as a different white next to it. */
+    --border: #e5e3dc;
+    --border-strong: #cbc8be;
+    --muted: #6b6862;
+    --success: #0b1220;
 
     color-scheme: light;
     -webkit-tap-highlight-color: transparent;
@@ -256,7 +259,8 @@
   }
 
   .btn-primary:hover {
-    background-color: var(--primary-strong);
+    background-color: var(--accent);
+    color: var(--ink);
   }
 
   .btn-secondary {
@@ -322,7 +326,21 @@
 
   .prose-block a {
     color: var(--primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+  }
+
+  .prose-block a:hover {
+    text-decoration-color: var(--accent-deep);
+    text-decoration-thickness: 2px;
+  }
+
+  /* A solid accent field with dark text on it — the one place the lime is
+     allowed to be large and loud. */
+  .panel-accent {
+    background-color: var(--accent);
+    border: 1px solid var(--accent-deep);
   }
 }
 

@@ -32,4 +32,10 @@ export default tseslint.config(
     languageOptions: { globals: { ...globals.node } },
     rules: { "@typescript-eslint/no-unused-vars": "off" },
   },
+  {
+    // The build scripts run in Node but serialise callbacks into a browser via
+    // page.evaluate, so both sets of globals are legitimately in scope.
+    files: ["scripts/**/*.mjs"],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
 );
