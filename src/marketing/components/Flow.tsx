@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export type FlowNode = { label: string; meta?: string };
 
@@ -7,7 +7,13 @@ export type FlowNode = { label: string; meta?: string };
  * reader hears it as a sequence; the arrows are decorative only and collapse to
  * a vertical stack on small screens.
  */
-export const Flow = ({ nodes, label }: { nodes: FlowNode[]; label: string }) => (
+export const Flow = ({ nodes, label, rtl = false }: { nodes: FlowNode[]; label: string; rtl?: boolean }) => {
+  // The connector follows reading order: right in LTR, left in RTL, and down
+  // on phones where the strip stacks in both directions.
+  const Arrow = rtl ? ArrowLeft : ArrowRight;
+  const downward = rtl ? "-rotate-90" : "rotate-90";
+
+  return (
   <div role="group" aria-label={label}>
     <ol className="flex flex-col sm:flex-row sm:items-stretch">
       {nodes.map((node, index) => (
@@ -23,14 +29,15 @@ export const Flow = ({ nodes, label }: { nodes: FlowNode[]; label: string }) => 
               className="grid shrink-0 place-items-center self-center py-1.5 text-[var(--border-strong)] sm:px-2 sm:py-0"
               aria-hidden="true"
             >
-              <ArrowRight size={16} className="rotate-90 sm:rotate-0" />
+              <Arrow size={16} className={`${downward} sm:rotate-0`} />
             </span>
           )}
         </li>
       ))}
     </ol>
   </div>
-);
+  );
+};
 
 export type BreakPoint = { label: string; note: string };
 
@@ -54,14 +61,14 @@ export const BeforeAfter = ({
       <h3 className="eyebrow">{beforeTitle}</h3>
       <ol className="mt-5 space-y-0">
         {before.map((item, index) => (
-          <li key={item.label} className="relative pl-7">
+          <li key={item.label} className="relative ps-7">
             <span
-              className="absolute left-[7px] top-[22px] h-[calc(100%-14px)] w-px border-l border-dashed border-[var(--border-strong)] last:hidden"
+              className="absolute start-[7px] top-[22px] h-[calc(100%-14px)] w-px border-s border-dashed border-[var(--border-strong)] last:hidden"
               aria-hidden="true"
               hidden={index === before.length - 1}
             />
             <span
-              className="absolute left-0 top-[6px] h-[15px] w-[15px] rounded-full border border-[var(--border-strong)] bg-[var(--background)]"
+              className="absolute start-0 top-[6px] h-[15px] w-[15px] rounded-full border border-[var(--border-strong)] bg-[var(--background)]"
               aria-hidden="true"
             />
             <div className="pb-5">
@@ -77,14 +84,14 @@ export const BeforeAfter = ({
       <h3 className="eyebrow text-[var(--primary-strong)]">{afterTitle}</h3>
       <ol className="mt-5 space-y-0">
         {after.map((item, index) => (
-          <li key={item} className="relative pl-7">
+          <li key={item} className="relative ps-7">
             <span
-              className="absolute left-[7px] top-[22px] h-[calc(100%-14px)] w-px bg-[var(--primary)]/35"
+              className="absolute start-[7px] top-[22px] h-[calc(100%-14px)] w-px bg-[var(--primary)]/35"
               aria-hidden="true"
               hidden={index === after.length - 1}
             />
             <span
-              className="absolute left-0 top-[6px] grid h-[15px] w-[15px] place-items-center rounded-full bg-[var(--primary)]"
+              className="absolute start-0 top-[6px] grid h-[15px] w-[15px] place-items-center rounded-full bg-[var(--primary)]"
               aria-hidden="true"
             >
               <span className="h-[5px] w-[5px] rounded-full bg-white" />

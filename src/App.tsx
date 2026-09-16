@@ -7,9 +7,22 @@ import HowItWorks from "./marketing/pages/HowItWorks";
 import Work from "./marketing/pages/Work";
 import About from "./marketing/pages/About";
 import { Privacy, Terms } from "./marketing/pages/Legal";
-import ArabicPage from "./marketing/pages/ArabicPage";
+import { ArabicFooter, ArabicNav } from "./marketing/ar/Layout";
+import { ArabicAbout, ArabicHome, ArabicHowItWorks, ArabicServices, ArabicWork } from "./marketing/ar/pages";
 
-export type Route = "/" | "/services" | "/how-it-works" | "/work" | "/about" | "/privacy" | "/terms" | "/ar/";
+export type Route =
+  | "/"
+  | "/services"
+  | "/how-it-works"
+  | "/work"
+  | "/about"
+  | "/privacy"
+  | "/terms"
+  | "/ar/"
+  | "/ar/services/"
+  | "/ar/how-it-works/"
+  | "/ar/work/"
+  | "/ar/about/";
 
 const PAGES: Record<string, () => JSX.Element> = {
   "/": Home,
@@ -19,6 +32,15 @@ const PAGES: Record<string, () => JSX.Element> = {
   "/about": About,
   "/privacy": Privacy,
   "/terms": Terms,
+};
+
+/** Arabic routes keep a trailing slash, which is how they are already indexed. */
+const ARABIC_PAGES: Record<string, () => JSX.Element> = {
+  "/ar/": ArabicHome,
+  "/ar/services/": ArabicServices,
+  "/ar/how-it-works/": ArabicHowItWorks,
+  "/ar/work/": ArabicWork,
+  "/ar/about/": ArabicAbout,
 };
 
 /** One short reveal on scroll, skipped entirely under reduced motion. */
@@ -46,14 +68,22 @@ const useReveal = () => {
 const App = ({ route = "/" }: { route?: string }) => {
   useReveal();
 
-  if (route === "/ar/" || route === "/ar") {
+  if (route.startsWith("/ar")) {
+    const ArabicPage = ARABIC_PAGES[route] ?? ArabicHome;
     return (
-      <>
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:right-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--primary)] focus:px-4 focus:py-2 focus:text-white">
+      <div dir="rtl" lang="ar">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:right-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--primary)] focus:px-4 focus:py-2 focus:text-white"
+        >
           انتقل إلى المحتوى
         </a>
-        <ArabicPage />
-      </>
+        <ArabicNav current={route} />
+        <main id="main">
+          <ArabicPage />
+        </main>
+        <ArabicFooter />
+      </div>
     );
   }
 

@@ -66,7 +66,7 @@ test.describe("marketing site", () => {
       "intelligent automation",
     ];
 
-    for (const path of ["/", "/services", "/how-it-works", "/work", "/about"]) {
+    for (const path of ["/", "/services", "/how-it-works", "/work", "/about", "/ar/", "/ar/services/"]) {
       await page.goto(path);
       const text = (await page.locator("body").innerText()).toLowerCase();
       for (const phrase of banned) {
@@ -191,15 +191,27 @@ test.describe("marketing site", () => {
 
     const services = await (await request.get("/services")).text();
     expect(services).toContain('<link rel="canonical" href="https://ibrahemahmed.com/services"');
-    // No false translation signal on a page with no Arabic equivalent.
-    expect(services).not.toContain("hreflang");
+    // /services now has a real Arabic counterpart, so it declares the pair.
+    // The "no false signal" case is asserted against /terms below.
+    expect(services).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
 
     const robots = await (await request.get("/robots.txt")).text();
     expect(robots).toContain("Disallow: /audit/");
     expect(robots).toContain("Sitemap: https://ibrahemahmed.com/sitemap.xml");
 
     const sitemap = await (await request.get("/sitemap.xml")).text();
-    for (const path of ["/", "/services", "/how-it-works", "/work", "/about", "/ar/"]) {
+    for (const path of [
+      "/",
+      "/services",
+      "/how-it-works",
+      "/work",
+      "/about",
+      "/ar/",
+      "/ar/services/",
+      "/ar/how-it-works/",
+      "/ar/work/",
+      "/ar/about/",
+    ]) {
       expect(sitemap).toContain(`<loc>https://ibrahemahmed.com${path}</loc>`);
     }
     expect(sitemap).not.toContain("/privacy");
@@ -208,11 +220,101 @@ test.describe("marketing site", () => {
   test("the Arabic route survives and points at the same offer", async ({ page }) => {
     await page.goto("/ar/");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("شركتك");
     await expect(page.getByRole("link", { name: /ابدأ تفكيك الأنظمة/ }).first()).toHaveAttribute(
       "href",
       "https://audit.ibrahemahmed.com",
     );
+  });
+
+  test("every Arabic route renders its own content", async ({ page }) => {
+    for (const [path, heading] of [
+      ["/ar/", "شركتك لا يجب أن تعتمد"],
+      ["/ar/services/", "أربع طرق للعمل معي"],
+      ["/ar/how-it-works/", "الرسم. التسعير. البناء. التسليم."],
+      ["/ar/work/", "افتحها واحكم بنفسك."],
+      ["/ar/about/", "أبني الأنظمة الداخلية"],
+    ] as const) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toContainText(heading);
+      await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+
+      // The Arabic pages must not fall back to English copy.
+      const text = await page.locator("main").innerText();
+      expect(text, `${path} contains untranslated English`).not.toContain("Your business shouldn't depend");
+      expect(text, `${path} contains untranslated English`).not.toContain("Fixed scope, fixed price");
+    }
+  });
+
+  test("Arabic navigation moves between Arabic routes", async ({ page }) => {
+    await page.goto("/ar/");
+
+    const primary = page.getByRole("navigation", { name: "التنقل الرئيسي" });
+    const nav = (await primary.isVisible())
+      ? primary
+      : await (async () => {
+          await page.getByRole("button", { name: "فتح القائمة" }).click();
+          return page.getByRole("navigation", { name: "قائمة الجوال" });
+        })();
+
+    await nav.getByRole("link", { name: "الخدمات", exact: true }).click();
+    await expect(page).toHaveURL(/\/ar\/services\/$/);
+    await expect(page.locator("#systems-teardown")).toBeVisible();
+  });
+
+  test("each language links to its counterpart and nothing else", async ({ request }) => {
+    // A page with a real translation declares the pair on both sides.
+    const arServices = await (await request.get("/ar/services/")).text();
+    expect(arServices).toContain('hreflang="en" href="https://ibrahemahmed.com/services"');
+    expect(arServices).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
+    expect(arServices).toContain('<link rel="canonical" href="https://ibrahemahmed.com/ar/services/"');
+
+    const enServices = await (await request.get("/services")).text();
+    expect(enServices).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
+
+    // A page with no translation claims none.
+    const terms = await (await request.get("/terms")).text();
+    expect(terms).not.toContain("hreflang");
+  });
+
+  test("Arabic pages carry Arabic structured data and the Arabic social card", async ({ request }) => {
+    const home = await (await request.get("/ar/")).text();
+
+    expect(home).toContain('"inLanguage": "ar"');
+    expect(home).toContain("تفكيك الأنظمة");
+    expect(home).toContain('"@type": "FAQPage"');
+    expect(home).toContain("og-image-ar.png");
+    expect(home).toContain('content="ar_AR"');
+
+    // English structured data must not leak into the Arabic graph.
+    expect(home).not.toContain("Software developer building internal business systems");
+  });
+
+  test("answer engines are given a summary in both languages", async ({ request }) => {
+    const en = await (await request.get("/llms.txt")).text();
+    expect(en).toContain("https://ibrahemahmed.com/ar/");
+    expect(en).toContain("Do not infer or generate them.");
+
+    const ar = await (await request.get("/ar/llms.txt")).text();
+    expect(ar).toContain("أنظمة تشغيل داخلية للشركات الصغيرة");
+    expect(ar).toContain("https://ibrahemahmed.com/ar/services/");
+    expect(ar).toContain("لا تستنتج هذه الأرقام ولا تولّدها");
+
+    const robots = await (await request.get("/robots.txt")).text();
+    expect(robots).toContain("/ar/llms.txt");
+  });
+
+  test("the about page shows the portrait", async ({ page }) => {
+    await page.goto("/about");
+
+    const portrait = page.locator("figure img").first();
+    await expect(portrait).toBeVisible();
+    await expect(portrait).toHaveAttribute("alt", /Ibrahem Ahmed Hassan Adam/);
+
+    // It must actually load, not 404 into a broken image.
+    const loaded = await portrait.evaluate((node: HTMLImageElement) => node.naturalWidth > 0);
+    expect(loaded).toBe(true);
   });
 
   test("content is readable without JavaScript", async ({ browser }) => {

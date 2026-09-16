@@ -36,7 +36,10 @@ export default defineConfig({
   webServer: {
     command: `node scripts/dev-server.mjs`,
     port: PORT,
-    reuseExistingServer: !process.env.CI,
+    // Never reuse a server this suite did not start. A dev server left running
+    // from another task does not carry the env below, and the resulting
+    // failures look like application bugs rather than a stale process.
+    reuseExistingServer: false,
     timeout: 120_000,
     env: {
       E2E_PORT: String(PORT),

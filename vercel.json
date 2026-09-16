@@ -20,6 +20,26 @@
       "source": "/ar",
       "destination": "/ar/",
       "permanent": true
+    },
+    {
+      "source": "/ar/services",
+      "destination": "/ar/services/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/how-it-works",
+      "destination": "/ar/how-it-works/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/work",
+      "destination": "/ar/work/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/about",
+      "destination": "/ar/about/",
+      "permanent": true
     }
   ],
   "rewrites": [

@@ -1,6 +1,9 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, CTA, GITHUB_URL, OWNER } from "../../config/site";
+import { AUDIT_URL, CONTACT_EMAIL, CTA, GITHUB_URL, LINKEDIN_URL, OWNER } from "../../config/site";
 import { PageHeader, SectionHeader } from "../components/Section";
+import portrait640 from "../../assets/portrait-640.webp";
+import portrait960 from "../../assets/portrait-960.webp";
+import portrait1280 from "../../assets/portrait-1280.webp";
 
 const FACTS = [
   { label: "Current role", value: `${OWNER.role}, ${OWNER.employer}` },
@@ -42,7 +45,27 @@ const About = () => (
         </div>
 
         <div data-reveal>
-          <dl className="overflow-hidden rounded-xl border border-border">
+          {/* The photograph is shot on the brand green, so the card needs no
+              treatment: the image is the identity block. */}
+          <figure className="overflow-hidden rounded-xl border border-border">
+            <img
+              src={portrait960}
+              srcSet={`${portrait640} 640w, ${portrait960} 960w, ${portrait1280} 1280w`}
+              sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+              width={960}
+              height={960}
+              alt={`${OWNER.legalName}, who builds the systems described on this site`}
+              className="aspect-square w-full bg-[var(--brand)] object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption className="border-t border-border bg-surface px-5 py-4">
+              <p className="text-[15px] font-semibold text-ink">{OWNER.name}</p>
+              <p className="mt-0.5 text-[13px] text-muted">{OWNER.discipline}</p>
+            </figcaption>
+          </figure>
+
+          <dl className="mt-5 overflow-hidden rounded-xl border border-border">
             {FACTS.map((fact) => (
               <div key={fact.label} className="border-b border-border bg-surface p-5 last:border-b-0">
                 <dt className="eyebrow">{fact.label}</dt>
@@ -58,6 +81,10 @@ const About = () => (
             className="btn btn-secondary mt-5 w-full"
           >
             github.com/ibrahembuilds
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-2 w-full">
+            LinkedIn
             <ArrowUpRight size={16} aria-hidden="true" />
           </a>
           <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full">

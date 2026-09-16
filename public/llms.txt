@@ -3,8 +3,16 @@
 > I build custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that do not have an internal technical team. You deal directly with the person writing the code.
 
 Canonical site: https://ibrahemahmed.com/
-Arabic version: https://ibrahemahmed.com/ar/
+Arabic version: https://ibrahemahmed.com/ar/ (and /ar/llms.txt)
 Systems Teardown assessment: https://audit.ibrahemahmed.com/
+
+## Pages
+
+- https://ibrahemahmed.com/ — home
+- https://ibrahemahmed.com/services — the four offers
+- https://ibrahemahmed.com/how-it-works — Map, Quote, Build, Hand over
+- https://ibrahemahmed.com/work — delivered systems and public code
+- https://ibrahemahmed.com/about — about Ibrahem
 
 ## Who
 

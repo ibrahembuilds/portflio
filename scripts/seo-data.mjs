@@ -11,12 +11,12 @@
 const SITE = "https://ibrahemahmed.com";
 const AUDIT = "https://audit.ibrahemahmed.com";
 const OG_IMAGE = `${SITE}/og-image.png`;
+const OG_IMAGE_AR = `${SITE}/og-image-ar.png`;
 const PERSON_ID = `${SITE}/#person`;
 const SITE_ID = `${SITE}/#website`;
 const PUBLIC_REPO_COUNT = 22;
 
-/** The only routes that are translations of one another. */
-const TRANSLATED_ROUTES = new Set(["/", "/ar/"]);
+
 
 export const PAGES = {
   "/": {
@@ -91,15 +91,68 @@ export const PAGES = {
   "/ar/": {
     path: "/ar/",
     locale: "ar",
-    title: "إبراهيم أحمد — أنظمة تشغيل داخلية للشركات الصغيرة",
+    pairedWith: "/",
+    title: "إبراهيم أحمد — أنظمة CRM مخصصة وبوابات عملاء وأتمتة للشركات الصغيرة",
     description:
-      "أبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها فريق تقني.",
+      "أبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها فريق تقني داخلي. ابدأ بتفكيك الأنظمة.",
     ogTitle: "شركتك لا يجب أن تعتمد على جداول البيانات وصناديق البريد وذاكرة أحد الموظفين.",
     ogType: "website",
     changefreq: "monthly",
+    priority: "1.0",
+  },
+  "/ar/services/": {
+    path: "/ar/services/",
+    locale: "ar",
+    pairedWith: "/services",
+    title: "الخدمات — تفكيك الأنظمة، بناء النظام الأساسي، جولة الأتمتة | إبراهيم أحمد",
+    description:
+      "أربع طرق للعمل مع الشركات الصغيرة: تفكيك الأنظمة لمعرفة ما يستحق الإصلاح، وبناء النظام الأساسي، وجولة الأتمتة، وخطة الرعاية المستمرة.",
+    ogTitle: "أربع طرق للعمل معي. ونقطة بداية واحدة.",
+    ogType: "website",
+    changefreq: "monthly",
+    priority: "0.9",
+  },
+  "/ar/how-it-works/": {
+    path: "/ar/how-it-works/",
+    locale: "ar",
+    pairedWith: "/how-it-works",
+    title: "طريقة العمل — الرسم والتسعير والبناء والتسليم | إبراهيم أحمد",
+    description:
+      "نطاق ثابت وسعر ثابت وتاريخ ثابت. ترى النظام يعمل في الأسبوع الأول، وتحتفظ ببياناتك وحساباتك وتوثيقك.",
+    ogTitle: "الرسم. التسعير. البناء. التسليم.",
+    ogType: "website",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  "/ar/work/": {
+    path: "/ar/work/",
+    locale: "ar",
+    pairedWith: "/work",
+    title: "الأعمال — أنظمة لعملاء وكود عام | إبراهيم أحمد",
+    description: `أنظمة تعمل الآن يمكنك فتحها، إضافة إلى ${PUBLIC_REPO_COUNT} مستودعاً عاماً على GitHub تتضمن اختبارات وحدة وواجهات برمجية واختبارات شاملة.`,
+    ogTitle: "افتحها واحكم بنفسك.",
+    ogType: "website",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  "/ar/about/": {
+    path: "/ar/about/",
+    locale: "ar",
+    pairedWith: "/about",
+    title: "عن إبراهيم أحمد — أنظمة تشغيل داخلية للشركات الصغيرة",
+    description:
+      "لست وكالة ولست فريقاً. تتعامل مباشرة مع من يكتب الكود. مطوّر حلول ويب وذكاء اصطناعي في NCASE Consulting Group، ويدرس الذكاء الاصطناعي التطبيقي في جامعة الوسائط المتعددة بماليزيا.",
+    ogTitle: "تتعامل مباشرة مع من يكتب الكود.",
+    ogType: "profile",
+    changefreq: "yearly",
     priority: "0.7",
   },
 };
+
+/** English route -> its Arabic translation. Derived so the two cannot drift. */
+const TRANSLATION_PAIRS = Object.values(PAGES)
+  .filter((page) => page.pairedWith)
+  .reduce((map, page) => map.set(page.pairedWith, page.path), new Map());
 
 /** FAQ answers here must match src/config/content.ts FAQS. */
 const FAQ_ENTRIES = [
@@ -129,16 +182,86 @@ const FAQ_ENTRIES = [
   ],
 ];
 
-const personNode = () => ({
+/** Arabic FAQ entries, kept in step with FAQS_AR in src/config/content.ar.ts. */
+const FAQ_ENTRIES_AR = [
+  [
+    "ما هو تفكيك الأنظمة؟",
+    "مكالمة مدتها عشرون دقيقة حول عملية واحدة في شركتك، تتبعها خريطة مكتوبة لمواضع تسرّب العمل، وما يستحق الإصلاح أولاً، وسعر ثابت لذلك الإصلاح. تصلك الخريطة المكتوبة خلال 48 ساعة من المكالمة.",
+  ],
+  [
+    "هل يجب أن أعرف ما الذي أريد بناءه؟",
+    "لا. أغلب أصحاب الشركات يعرفون أن شيئاً ما يهدر الوقت دون أن يعرفوا أين بالضبط. أنت تصف كيف يسير العمل الآن، وأنا أرسم أين يتسرّب.",
+  ],
+  [
+    "من الذي ينفّذ العمل فعلاً؟",
+    "أنا. تتعامل مباشرة مع من يكتب الكود. لا مدير حسابات بيننا، ولا فريق يُجمَّع خلف الكواليس.",
+  ],
+  [
+    "كم تبلغ التكلفة؟",
+    "كل بناء يُسعَّر بنطاق ثابت وسعر ثابت وتاريخ ثابت، بعد التفكيك، لأن السعر يعتمد على ما تحتاجه العملية فعلاً. ولا أنشر نطاقات أسعار لعمل لم أحدد نطاقه.",
+  ],
+  [
+    "من يملك النظام والبيانات؟",
+    "أنت. النظام يعمل على حسابات باسمك، وبياناتك تبقى ملكك، وتحصل على توثيق مكتوب. وإن توقفت عن العمل معي، لا ينكسر شيء ولا يُحتجز شيء.",
+  ],
+  [
+    "لمن هذه الخدمة؟",
+    "أصحاب الشركات والمؤسسون ومديرو العمليات في شركات يعمل فيها من 5 إلى 50 شخصاً تقريباً وليس لديها فريق تقني داخلي.",
+  ],
+];
+
+const SERVICES_AR_LD = [
+  {
+    id: "systems-teardown",
+    name: "تفكيك الأنظمة",
+    description:
+      "مكالمة عشرين دقيقة تتبعها خريطة مكتوبة توضح أين يتسرّب العمل، وما يستحق الإصلاح أولاً، وسعر ثابت لأعلى إصلاح أولوية، تصل خلال 48 ساعة من المكالمة.",
+  },
+  {
+    id: "core-system-build",
+    name: "بناء النظام الأساسي",
+    description:
+      "نظام تشغيلي واحد مبني حول عملية حقيقية: نظام CRM مخصص أو بوابة عملاء أو نظام مهام وحجوزات أو لوحة تشغيل داخلية أو نظام تسعير، مع النشر ونقل البيانات والتدريب والتوثيق.",
+  },
+  {
+    id: "automation-sprint",
+    name: "جولة الأتمتة",
+    description:
+      "ربط الأنظمة الحالية حتى يتوقف النسخ اليدوي والمتابعة المتكررة، ويُسلَّم العمل كأتمتة مختبرة مع دليل تشغيل.",
+  },
+  {
+    id: "care-plan",
+    name: "خطة الرعاية",
+    description: "مراقبة وإصلاحات وتعديلات صغيرة لنظام قائم، مع تحسين واحد كل شهر.",
+  },
+];
+
+const AR_PERSON = {
+  jobTitle: "مطوّر برمجيات يبني أنظمة تشغيل داخلية للشركات",
+  description:
+    "يبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً تقريباً وليس لديها فريق تقني داخلي.",
+  knowsAbout: [
+    "أنظمة إدارة علاقات العملاء",
+    "بوابات العملاء",
+    "أتمتة العمليات",
+    "برمجيات الأعمال الداخلية",
+    "تصميم سير العمل",
+    "تشغيل الشركات الصغيرة",
+  ],
+};
+
+const personNode = (locale) => ({
   "@type": "Person",
   "@id": PERSON_ID,
   name: "Ibrahem Ahmed Hassan Adam",
   alternateName: ["Ibrahem Ahmed", "Ibrahim Ahmed Hassan Adam", "إبراهيم أحمد حسن أدم", "إبراهيم أحمد"],
   givenName: "Ibrahem",
   familyName: "Adam",
-  jobTitle: "Software developer building internal business systems",
+  jobTitle: locale === "ar" ? AR_PERSON.jobTitle : "Software developer building internal business systems",
   description:
-    "Builds custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that do not have an internal technical team.",
+    locale === "ar"
+      ? AR_PERSON.description
+      : "Builds custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that do not have an internal technical team.",
   url: `${SITE}/`,
   email: "mailto:hello@ibrahemahmed.com",
   sameAs: ["https://github.com/ibrahembuilds", "https://www.linkedin.com/in/ibrahem-ahmed-hassan/"],
@@ -148,17 +271,35 @@ const personNode = () => ({
     name: "Multimedia University",
     address: { "@type": "PostalAddress", addressCountry: "MY" },
   },
-  knowsAbout: [
-    "Customer relationship management systems",
-    "Client portals",
-    "Business process automation",
-    "Internal business software",
-    "Workflow design",
-    "Small business operations",
-  ],
+  knowsAbout:
+    locale === "ar"
+      ? AR_PERSON.knowsAbout
+      : [
+          "Customer relationship management systems",
+          "Client portals",
+          "Business process automation",
+          "Internal business software",
+          "Workflow design",
+          "Small business operations",
+        ],
 });
 
-const serviceNodes = () =>
+const serviceNodes = (locale) =>
+  locale === "ar"
+    ? SERVICES_AR_LD.map((service) => ({
+        "@type": "Service",
+        "@id": `${SITE}/ar/#${service.id}`,
+        name: service.name,
+        description: service.description,
+        provider: { "@id": PERSON_ID },
+        areaServed: ["SA", "AE", "QA", "KW", "BH", "OM", "EG", "JO"],
+        inLanguage: "ar",
+        audience: {
+          "@type": "BusinessAudience",
+          name: "شركات من 5 إلى 50 موظفاً بلا فريق تقني داخلي",
+        },
+      }))
+    :
   [
     {
       id: "systems-teardown",
@@ -195,16 +336,17 @@ const serviceNodes = () =>
   }));
 
 const graphFor = (page) => {
+  const locale = page.locale === "ar" ? "ar" : "en";
   const url = `${SITE}${page.path === "/" ? "/" : page.path}`;
   const graph = [
-    personNode(),
+    personNode(locale),
     {
       "@type": "WebSite",
       "@id": SITE_ID,
       url: `${SITE}/`,
       name: "Ibrahem Ahmed — Internal Systems for Small Businesses",
       publisher: { "@id": PERSON_ID },
-      inLanguage: page.locale === "ar" ? "ar" : "en",
+      inLanguage: locale,
     },
     {
       "@type": page.ogType === "profile" ? "ProfilePage" : "WebPage",
@@ -214,16 +356,19 @@ const graphFor = (page) => {
       description: page.description,
       isPartOf: { "@id": SITE_ID },
       about: { "@id": PERSON_ID },
-      inLanguage: page.locale === "ar" ? "ar" : "en",
+      inLanguage: locale,
     },
   ];
 
-  if (page.path === "/") {
-    graph.push(...serviceNodes());
+  // The homepage of each language carries the service catalogue and the FAQ,
+  // which is what answer engines quote from.
+  if (page.path === "/" || page.path === "/ar/") {
+    graph.push(...serviceNodes(locale));
     graph.push({
       "@type": "FAQPage",
-      "@id": `${SITE}/#faq`,
-      mainEntity: FAQ_ENTRIES.map(([name, text]) => ({
+      "@id": `${url}#faq`,
+      inLanguage: locale,
+      mainEntity: (locale === "ar" ? FAQ_ENTRIES_AR : FAQ_ENTRIES).map(([name, text]) => ({
         "@type": "Question",
         name,
         acceptedAnswer: { "@type": "Answer", text },
@@ -231,9 +376,19 @@ const graphFor = (page) => {
     });
   }
 
-  if (page.path === "/services") graph.push(...serviceNodes());
+  if (page.path === "/services" || page.path === "/ar/services/") graph.push(...serviceNodes(locale));
 
   return { "@context": "https://schema.org", "@graph": graph };
+};
+
+/**
+ * Resolves the English/Arabic pair a page belongs to, from whichever side it is
+ * asked about. Returns null when the page has no translation.
+ */
+const translationPair = (page) => {
+  if (page.pairedWith) return { en: page.pairedWith, ar: page.path };
+  const arabic = TRANSLATION_PAIRS.get(page.path);
+  return arabic ? { en: page.path, ar: arabic } : null;
 };
 
 const escapeAttr = (value) =>
@@ -249,13 +404,14 @@ export const buildSeoBlock = (routePath) => {
   const locale = page.locale === "ar" ? "ar" : "en";
   const robots = page.robots ?? "index, follow, max-image-preview:large, max-snippet:-1";
 
-  // hreflang is only declared where a genuine translation pair exists. The
-  // Arabic route mirrors the homepage; /services and the rest have no Arabic
-  // equivalent, and claiming one would be a false signal.
-  const alternates = TRANSLATED_ROUTES.has(page.path)
-    ? `    <link rel="alternate" hreflang="en" href="${SITE}/" />
-    <link rel="alternate" hreflang="ar" href="${SITE}/ar/" />
-    <link rel="alternate" hreflang="x-default" href="${SITE}/" />
+  // hreflang is declared only where a real translation exists on both sides.
+  // A page with no counterpart declares nothing, because claiming one is a
+  // false signal that search engines act on.
+  const pair = translationPair(page);
+  const alternates = pair
+    ? `    <link rel="alternate" hreflang="en" href="${SITE}${pair.en}" />
+    <link rel="alternate" hreflang="ar" href="${SITE}${pair.ar}" />
+    <link rel="alternate" hreflang="x-default" href="${SITE}${pair.en}" />
 `
     : "";
 
@@ -273,17 +429,21 @@ ${alternates}
     <meta property="og:url" content="${escapeAttr(url)}" />
     <meta property="og:title" content="${escapeAttr(page.ogTitle)}" />
     <meta property="og:description" content="${escapeAttr(page.description)}" />
-    <meta property="og:image" content="${OG_IMAGE}" />
+    <meta property="og:image" content="${locale === "ar" ? OG_IMAGE_AR : OG_IMAGE}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Ibrahem Ahmed — internal systems for small businesses" />
+    <meta property="og:image:alt" content="${
+      locale === "ar"
+        ? "إبراهيم أحمد — أنظمة تشغيل داخلية للشركات الصغيرة"
+        : "Ibrahem Ahmed — internal systems for small businesses"
+    }" />
     <meta property="og:site_name" content="Ibrahem Ahmed" />
     <meta property="og:locale" content="${locale === "ar" ? "ar_AR" : "en_US"}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttr(page.ogTitle)}" />
     <meta name="twitter:description" content="${escapeAttr(page.description)}" />
-    <meta name="twitter:image" content="${OG_IMAGE}" />
+    <meta name="twitter:image" content="${locale === "ar" ? OG_IMAGE_AR : OG_IMAGE}" />
 
     <link rel="dns-prefetch" href="${AUDIT}" />
 
@@ -298,10 +458,11 @@ export const buildSitemap = () => {
     .filter((page) => !(page.robots ?? "").includes("noindex"))
     .map((page) => {
       const url = `${SITE}${page.path === "/" ? "/" : page.path}`;
-      const alternates = TRANSLATED_ROUTES.has(page.path)
-        ? `    <xhtml:link rel="alternate" hreflang="en" href="${SITE}/" />
-    <xhtml:link rel="alternate" hreflang="ar" href="${SITE}/ar/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/" />
+      const pair = translationPair(page);
+      const alternates = pair
+        ? `    <xhtml:link rel="alternate" hreflang="en" href="${SITE}${pair.en}" />
+    <xhtml:link rel="alternate" hreflang="ar" href="${SITE}${pair.ar}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${pair.en}" />
 `
         : "";
       return `  <url>
