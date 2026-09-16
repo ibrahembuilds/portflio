@@ -1,0 +1,5 @@
+# audit.ibrahemahmed.com is an interactive assessment tool, not a document.
+# The public case for the Systems Teardown lives on ibrahemahmed.com, which is
+# the page that should rank.
+User-agent: *
+Disallow: /

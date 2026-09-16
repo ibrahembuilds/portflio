@@ -1,9 +1,160 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/audit/lead.ts": {
+      "includeFiles": "node_modules/pdfkit/js/data/**",
+      "maxDuration": 60
+    },
+    "api/audit/report-pdf.ts": {
+      "includeFiles": "node_modules/pdfkit/js/data/**",
+      "maxDuration": 30
+    },
+    "api/audit/website.ts": {
+      "maxDuration": 15
+    }
+  },
   "redirects": [
     {
       "source": "/ar",
       "destination": "/ar/",
       "permanent": true
+    },
+    {
+      "source": "/ar/services",
+      "destination": "/ar/services/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/how-it-works",
+      "destination": "/ar/how-it-works/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/work",
+      "destination": "/ar/work/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/about",
+      "destination": "/ar/about/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/robots.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "audit.ibrahemahmed.com"
+        }
+      ],
+      "destination": "/audit-robots.txt"
+    },
+    {
+      "source": "/admin",
+      "has": [
+        {
+          "type": "host",
+          "value": "audit.ibrahemahmed.com"
+        }
+      ],
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/",
+      "has": [
+        {
+          "type": "host",
+          "value": "audit.ibrahemahmed.com"
+        }
+      ],
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "audit.ibrahemahmed.com"
+        }
+      ],
+      "destination": "/audit/index.html"
+    },
+    {
+      "source": "/:path((?!api/|assets/|fonts/|audit/|admin|favicon|apple-touch|site.webmanifest|og-image).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "audit.ibrahemahmed.com"
+        }
+      ],
+      "destination": "/audit/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/admin(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     }
   ]
 }

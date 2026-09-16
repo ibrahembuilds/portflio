@@ -2,16 +2,25 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const container = document.getElementById("root")!;
-const locale = window.location.pathname === "/ar" || window.location.pathname.startsWith("/ar/") ? "ar" : "en";
+const container = document.getElementById("root");
 
-document.documentElement.lang = locale;
-document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+if (container) {
+  const path = window.location.pathname;
 
-// Production HTML is prerendered at build time (scripts/prerender.mjs), so hydrate it.
-// In dev the container is empty, so render from scratch.
-if (container.hasChildNodes()) {
-  hydrateRoot(container, <App locale={locale} />);
-} else {
-  createRoot(container).render(<App locale={locale} />);
+  // Arabic routes are addressed with a trailing slash; English routes without.
+  const isArabic = path === "/ar" || path.startsWith("/ar/");
+  const route = isArabic
+    ? `${path.replace(/\/+$/, "")}/`
+    : path.replace(/\/+$/, "") || "/";
+
+  document.documentElement.lang = isArabic ? "ar" : "en";
+  document.documentElement.dir = isArabic ? "rtl" : "ltr";
+
+  // Production HTML is prerendered per route at build time, so hydrate it.
+  // In dev the container is empty and we render from scratch.
+  if (container.hasChildNodes()) {
+    hydrateRoot(container, <App route={route} />);
+  } else {
+    createRoot(container).render(<App route={route} />);
+  }
 }

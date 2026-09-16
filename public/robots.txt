@@ -1,47 +1,67 @@
-# All crawlers welcome
+# ibrahemahmed.com
+#
+# Everything on the marketing site is open. The Systems Teardown assessment at
+# /audit/ is an interactive tool rather than a document, so it is excluded — the
+# page that should rank for it is https://ibrahemahmed.com/services.
+
 User-agent: *
 Allow: /
+Disallow: /audit/
+Disallow: /api/
 
 # Search engines
 User-agent: Googlebot
 Allow: /
+Disallow: /audit/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /audit/
 
 # AI assistants and answer engines (explicitly allowed)
 User-agent: GPTBot
 Allow: /
+Disallow: /audit/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /audit/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /audit/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /audit/
 
 User-agent: Claude-Web
 Allow: /
+Disallow: /audit/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /audit/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /audit/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /audit/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /audit/
 
 User-agent: CCBot
 Allow: /
+Disallow: /audit/
 
 User-agent: meta-externalagent
 Allow: /
+Disallow: /audit/
 
 # Social preview crawlers
 User-agent: Twitterbot
@@ -54,3 +74,7 @@ User-agent: LinkedInBot
 Allow: /
 
 Sitemap: https://ibrahemahmed.com/sitemap.xml
+
+# Plain-language summaries for answer engines
+# https://ibrahemahmed.com/llms.txt
+# https://ibrahemahmed.com/ar/llms.txt

@@ -4,6 +4,19 @@ dist-ssr
 *.local
 .DS_Store
 
+# Environment
+.env
+.env.*
+!.env.example
+
+# Test output
+playwright-report
+test-results
+coverage
+
+# Vercel
+.vercel
+
 # Local QA / temp build-check artifacts
 .tmp-ssr-check
 .visual-qa

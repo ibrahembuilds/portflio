@@ -1,10 +1,74 @@
-@import "@fontsource/space-grotesk/400.css";
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/600.css";
-@import "@fontsource/space-grotesk/700.css";
-@import "@fontsource/space-mono/400.css";
-@import "@fontsource/space-mono/700.css";
-@import "@fontsource-variable/noto-sans-arabic";
+/* Geist is self-hosted from /public/fonts (latin subset only, ~35KB per face)
+   so the two faces used above the fold can be preloaded from index.html with a
+   stable, unhashed path. font-display: swap keeps text painted immediately. */
+@font-face {
+  font-family: "Geist Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/geist-sans-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/geist-sans-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/geist-sans-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/geist-sans-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/geist-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/geist-mono-latin-500-normal.woff2") format("woff2");
+}
+
+/* IBM Plex Sans Arabic carries the Arabic pages. Only the Arabic unicode
+   subset is shipped (~44KB per face), so Latin words and digits inside Arabic
+   copy — CRM, 5, 50, the domain — fall through to Geist and stay the same
+   Latin the English site uses. One Latin face across both languages. */
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-600-normal.woff2") format("woff2");
+}
 
 @tailwind base;
 @tailwind components;
@@ -12,102 +76,320 @@
 
 @layer base {
   :root {
-    /* Brand palette is intentionally locked to the original site. */
-    --background: 210 20% 98%;
-    --surface: 0 0% 100%;
-    --foreground: 222 25% 11%;
-    --muted-foreground: 220 9% 40%;
-    --border: 216 14% 90%;
-    --border-strong: 217 12% 80%;
-    --primary: 221 89% 52%;
-    --primary-strong: 221 80% 44%;
-    --primary-tint: 221 90% 96.5%;
-    --primary-foreground: 0 0% 100%;
+    /* Brand: bone page, ink interactive, lime highlight blocks.
+       Measured, not chosen by eye:
+         lime #d4f53c + white text .... 1.24:1  unusable, never do this
+         lime #d4f53c + ink text ...... 15.1:1  how the lime is meant to work
+         lime on bone page ............ 1.18:1  so lime is a BLOCK, never a rule
+         ink #0b1220 + white text ..... 18.7:1  the interactive colour
+         bone #faf9f6 + ink text ...... 17.8:1  the page
+       The accent is a fill that carries dark text on top of it. It is never a
+       text colour, never an icon, never a thin line — at 1.18:1 against the
+       page a hairline would simply disappear. */
+    --accent: #d4f53c;
+    --accent-deep: #c2e42a;
+    --accent-soft: #f1f8d4;
+
+    --ink: #0b1220;
+    --primary: #0b1220;
+    --primary-strong: #313a4c;
+    --primary-soft: #f1f8d4;
+    --primary-foreground: #ffffff;
+
+    --background: #faf9f6;
+    --surface: #ffffff;
+    /* Borders and muted text are warmed to sit on bone rather than on a cool
+       grey, which would read as a different white next to it. */
+    --border: #e5e3dc;
+    --border-strong: #cbc8be;
+    --muted: #6b6862;
+    --success: #0b1220;
 
     color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    margin: 0;
     min-width: 320px;
-    overflow-x: hidden;
-    background-image: radial-gradient(circle at 82% 2%, hsl(var(--primary) / 0.055), transparent 30rem);
-    background-repeat: no-repeat;
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    background-color: var(--background);
+    color: var(--ink);
+    font-family: "Geist Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  [dir="rtl"] body,
-  .arabic-page {
-    font-family: "Noto Sans Arabic Variable", Tahoma, "Segoe UI", Arial, sans-serif;
-    font-optical-sizing: auto;
-  }
-
-  [dir="rtl"] h1,
-  [dir="rtl"] h2,
-  [dir="rtl"] h3,
-  [dir="rtl"] h4 {
-    text-wrap: balance;
-  }
-
-  img {
-    display: block;
-    max-width: 100%;
+  [dir="rtl"] body {
+    font-family: "Plex Arabic", "Geist Sans", "Segoe UI", Tahoma, sans-serif;
+    /* Arabic has no ascender/descender rhythm to rest on, so the same leading
+       that suits Geist reads cramped here. */
+    line-height: 1.85;
   }
 
   h1,
   h2,
   h3,
   h4 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.022em;
     text-wrap: balance;
+    color: var(--ink);
   }
 
-  section[id] {
-    scroll-margin-top: 88px;
+  p {
+    margin: 0;
   }
 
-  ::selection {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--primary));
+    outline: 2px solid var(--primary);
     outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  section[id],
+  [id] {
+    scroll-margin-top: 88px;
   }
 }
 
-@layer utilities {
+@layer components {
   .shell {
-    width: min(100% - 32px, 1240px);
+    width: min(100% - 32px, 1160px);
     margin-inline: auto;
   }
 
   @media (min-width: 768px) {
     .shell {
-      width: min(100% - 64px, 1240px);
+      width: min(100% - 72px, 1160px);
     }
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .anim-up {
-      animation: fade-up 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+  .shell-narrow {
+    width: min(100% - 32px, 760px);
+    margin-inline: auto;
+  }
 
+  @media (min-width: 768px) {
+    .shell-narrow {
+      width: min(100% - 72px, 760px);
+    }
+  }
+
+  /* Section rhythm: one scale, applied everywhere, so vertical spacing reads
+     as a deliberate system rather than a per-component decision. */
+  .section {
+    padding-block: 72px;
+  }
+
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 104px;
+    }
+  }
+
+  .section-tight {
+    padding-block: 56px;
+  }
+
+  @media (min-width: 768px) {
+    .section-tight {
+      padding-block: 72px;
+    }
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .h-display {
+    font-size: clamp(2rem, 1.35rem + 2.6vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .h-section {
+    font-size: clamp(1.625rem, 1.2rem + 1.7vw, 2.375rem);
+    line-height: 1.12;
+    letter-spacing: -0.026em;
+    font-weight: 600;
+  }
+
+  .h-card {
+    font-size: 1.125rem;
+    line-height: 1.35;
+    letter-spacing: -0.014em;
+    font-weight: 600;
+  }
+
+  .lede {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent);
+    color: var(--ink);
+  }
+
+  .btn-secondary {
+    background-color: var(--surface);
+    border-color: var(--border-strong);
+    color: var(--ink);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--ink);
+  }
+
+  .btn-ghost:hover {
+    color: var(--primary);
+  }
+
+  .btn[disabled],
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  .prose-block p + p {
+    margin-top: 1em;
+  }
+
+  .prose-block h2 {
+    font-size: 1.375rem;
+    margin-top: 2.25em;
+    margin-bottom: 0.6em;
+  }
+
+  .prose-block h3 {
+    font-size: 1.0625rem;
+    margin-top: 1.75em;
+    margin-bottom: 0.4em;
+  }
+
+  .prose-block ul {
+    margin: 1em 0;
+    padding-inline-start: 1.25em;
+    display: grid;
+    gap: 0.45em;
+  }
+
+  .prose-block a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .prose-block a:hover {
+    text-decoration-color: var(--accent-deep);
+    text-decoration-thickness: 2px;
+  }
+
+  /* A solid accent field with dark text on it — the one place the lime is
+     allowed to be large and loud. */
+  .panel-accent {
+    background-color: var(--accent);
+    border: 1px solid var(--accent-deep);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Restrained motion: a single short fade-and-lift used only to mark that a
+     new block of content has entered, and fully disabled under
+     prefers-reduced-motion. No parallax, no scroll-linked effects. */
+  @media (prefers-reduced-motion: no-preference) {
     .js [data-reveal] {
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(10px);
       transition:
-        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       transition-delay: var(--reveal-delay, 0s);
     }
 
@@ -116,58 +398,6 @@
       transform: none;
     }
   }
-
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-}
-
-.stack-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: stack-marquee 34s linear infinite;
-}
-
-.stack-marquee-group {
-  display: flex;
-  flex-shrink: 0;
-}
-
-.stack-marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes stack-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.faq-item > summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-.faq-item > summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq-item > summary .faq-icon {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.faq-item[open] > summary .faq-icon {
-  transform: rotate(45deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -175,11 +405,21 @@
     scroll-behavior: auto;
   }
 
-  .stack-marquee-track {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
   }
 
-  .stack-marquee-group[aria-hidden="true"] {
-    display: none;
+  body {
+    background: #fff;
   }
 }

@@ -1,75 +1,104 @@
 import { useEffect } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import Nav from "./components/Nav";
-import Hero from "./components/Hero";
-import Glance from "./components/Glance";
-import Work from "./components/Work";
-import ClientWork from "./components/ClientWork";
-import Services from "./components/Services";
-import Story from "./components/Story";
-import Stack from "./components/Stack";
-import Process from "./components/Process";
-import Faq from "./components/Faq";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import ArabicPage from "./components/ArabicPage";
+import Nav from "./marketing/components/Nav";
+import Footer from "./marketing/components/Footer";
+import Home from "./marketing/pages/Home";
+import Services from "./marketing/pages/Services";
+import HowItWorks from "./marketing/pages/HowItWorks";
+import Work from "./marketing/pages/Work";
+import About from "./marketing/pages/About";
+import { Privacy, Terms } from "./marketing/pages/Legal";
+import { ArabicFooter, ArabicNav } from "./marketing/ar/Layout";
+import { ArabicAbout, ArabicHome, ArabicHowItWorks, ArabicServices, ArabicWork } from "./marketing/ar/pages";
 
-export type Locale = "en" | "ar";
+export type Route =
+  | "/"
+  | "/services"
+  | "/how-it-works"
+  | "/work"
+  | "/about"
+  | "/privacy"
+  | "/terms"
+  | "/ar/"
+  | "/ar/services/"
+  | "/ar/how-it-works/"
+  | "/ar/work/"
+  | "/ar/about/";
 
-const App = ({ locale = "en" }: { locale?: Locale }) => {
+const PAGES: Record<string, () => JSX.Element> = {
+  "/": Home,
+  "/services": Services,
+  "/how-it-works": HowItWorks,
+  "/work": Work,
+  "/about": About,
+  "/privacy": Privacy,
+  "/terms": Terms,
+};
+
+/** Arabic routes keep a trailing slash, which is how they are already indexed. */
+const ARABIC_PAGES: Record<string, () => JSX.Element> = {
+  "/ar/": ArabicHome,
+  "/ar/services/": ArabicServices,
+  "/ar/how-it-works/": ArabicHowItWorks,
+  "/ar/work/": ArabicWork,
+  "/ar/about/": ArabicAbout,
+};
+
+/** One short reveal on scroll, skipped entirely under reduced motion. */
+const useReveal = () => {
   useEffect(() => {
+    if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const els = document.querySelectorAll("[data-reveal]");
+
+    const nodes = document.querySelectorAll("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-in");
-            observer.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-in");
+          observer.unobserve(entry.target);
         }
       },
-      { rootMargin: "0px 0px -60px 0px" }
+      { rootMargin: "0px 0px -48px 0px" },
     );
-    els.forEach((el) => observer.observe(el));
+    nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, []);
+};
 
-  if (locale === "ar") {
+const App = ({ route = "/" }: { route?: string }) => {
+  useReveal();
+
+  if (route.startsWith("/ar")) {
+    const ArabicPage = ARABIC_PAGES[route] ?? ArabicHome;
     return (
-      <>
+      <div dir="rtl" lang="ar">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:right-4 focus:top-4 focus:z-50 focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+          className="sr-only focus:not-sr-only focus:fixed focus:right-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--primary)] focus:px-4 focus:py-2 focus:text-white"
         >
           انتقل إلى المحتوى
         </a>
-        <ArabicPage />
+        <ArabicNav current={route} />
+        <main id="main">
+          <ArabicPage />
+        </main>
+        <ArabicFooter />
         <Analytics />
-      </>
+      </div>
     );
   }
 
+  const Page = PAGES[route] ?? Home;
+
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
-      >
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--primary)] focus:px-4 focus:py-2 focus:text-white">
         Skip to content
       </a>
-      <Nav />
+      <Nav current={route} />
       <main id="main">
-        <Hero />
-        <Glance />
-        <Work />
-        <ClientWork />
-        <Services />
-        <Story />
-        <Stack />
-        <Process />
-        <Faq />
-        <Contact />
+        <Page />
       </main>
       <Footer />
       <Analytics />
