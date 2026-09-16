@@ -231,6 +231,16 @@ export const CLIENT_SYSTEMS_AR: ClientSystemAr[] = [
 export const OPEN_SOURCE_NOTE_AR =
   "مستودعات عامة على GitHub تتضمن اختبارات وحدة واختبارات لواجهات برمجية واختبارات شاملة ومتعددة اللغات. يمكنك قراءة كيف أكتب البرمجيات وأختبرها قبل أن توظفني.";
 
+export type ExperienceNodeAr = { label: string; meta: string };
+
+/** Mirrors experienceFlow in content.ts — same facts, no dates invented here either. */
+export const experienceFlowAr = (repoCount: number, clientSystemCount: number): ExperienceNodeAr[] => [
+  { label: "الذكاء الاصطناعي التطبيقي", meta: "جامعة الوسائط المتعددة، ماليزيا" },
+  { label: "مطوّر حلول ويب وذكاء اصطناعي", meta: "NCASE Consulting Group" },
+  { label: `${repoCount} مستودعاً عاماً`, meta: "مُختبرة وموثّقة ومتاحة على GitHub" },
+  { label: `${clientSystemCount} أنظمة سُلّمت لعملاء`, meta: "تعمل الآن — راجع صفحة الأعمال" },
+];
+
 export type FaqAr = { q: string; a: string };
 
 export const FAQS_AR: FaqAr[] = [
@@ -280,6 +290,16 @@ export const STACK_GROUPS_AR: Record<string, string> = {
   Automation: "الأتمتة",
   "Language models": "نماذج اللغة",
   Hosting: "الاستضافة",
+};
+
+/** Mirrors the note field on each STACK entry in site.ts, keyed the same way. */
+export const STACK_NOTES_AR: Record<string, string> = {
+  Interfaces: "ما يتعامل معه مستخدمو النظام مباشرة — الموظفون، وعملاؤك إن حصلوا على حساب خاص بهم.",
+  Services: "المنطق خلف الواجهة: القواعد والتحقق التي يجب أن تكون صحيحة فعلاً، لا أن تبدو صحيحة فقط.",
+  Data: "مصدر حقيقة واحد للشركة، بدل أن تعيش الحقيقة نفسها في ثلاثة جداول بيانات.",
+  Automation: "ربط الأدوات التي تدفع اشتراكها بالفعل، حتى ينتقل التغيير في مكان واحد إلى البقية دون أن يعيد أحد كتابته.",
+  "Language models": "تُستخدم حيث يستحق النموذج مكانه — الصياغة والتلخيص والاستخراج. لا تُترك لتقرر بصمت أمراً يجب أن يكون قاعدة.",
+  Hosting: "يعمل على حسابات باسمك أنت، لا باسمي، فيصبح النظام ملكك من يوم إطلاقه.",
 };
 
 export const NAV_LINKS_AR = [

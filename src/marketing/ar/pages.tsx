@@ -1,9 +1,10 @@
 import { ArrowLeft, ArrowUpLeft, Check } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
+import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL, STACK } from "../../config/site";
 import {
   ABOUT_AR,
   CLIENT_SYSTEMS_AR,
   CTA_AR,
+  experienceFlowAr,
   FAQS_AR,
   HERO_AR,
   OPEN_SOURCE_NOTE_AR,
@@ -11,6 +12,8 @@ import {
   PROBLEM_QUOTES_AR,
   PROCESS_AR,
   SERVICES_AR,
+  STACK_GROUPS_AR,
+  STACK_NOTES_AR,
   TEARDOWN_STEPS_AR,
   WHAT_I_BUILD_AR,
 } from "../../config/content.ar";
@@ -632,8 +635,14 @@ export const ArabicAbout = () => {
       <section className="section">
         <div className="shell grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div className="max-w-prose text-[16px] leading-[1.95] text-muted" data-reveal>
-            {ABOUT_AR.paragraphs.map((paragraph, index) => (
-              <p key={paragraph.slice(0, 24)} className={index === 0 ? "text-ink" : "mt-5"}>
+            <p className="text-ink">
+              أنا إبراهيم أحمد. أدرس الذكاء الاصطناعي التطبيقي في جامعة الوسائط المتعددة بماليزيا، وأعمل مطوّر
+              حلول ويب وذكاء اصطناعي في {OWNER.employer}. وإلى جانب هذا وذاك، أبني برمجيات وأنشرها للعامة —{" "}
+              {OWNER.publicRepoCount} مستودعاً، أغلبها باختبارات حقيقية، لأنني أفضّل أن تقرأ كيف أعمل بدل أن تأخذ
+              كلامي فقط.
+            </p>
+            {ABOUT_AR.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 24)} className="mt-5">
                 {paragraph}
               </p>
             ))}
@@ -676,6 +685,44 @@ export const ArabicAbout = () => {
             <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full" dir="ltr">
               {CONTACT_EMAIL}
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section border-t border-border bg-surface">
+        <div className="shell">
+          <ArabicSectionHeader
+            eyebrow="الخبرة"
+            title="ما أعمل عليه الآن، لا سيرة ذاتية لما فعلته سابقاً."
+            body="بلا تواريخ أدناه. أفضّل أن أريك أربعة أمور يمكنك التحقق منها بدل جدول زمني أخمّن فيه سنة."
+          />
+          <div className="mt-10" data-reveal>
+            <Flow
+              label="الخبرة"
+              rtl
+              nodes={experienceFlowAr(OWNER.publicRepoCount, CLIENT_SYSTEMS_AR.length)}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="section border-t border-border">
+        <div className="shell">
+          <ArabicSectionHeader
+            eyebrow="الأدوات"
+            title="ما أبني به، ولماذا كل واحدة منها موجودة."
+            body="مذكورة هنا لا في الصدر الرئيسي، لأنك توظفني لإصلاح عملية، لا لشراء حزمة تقنية. المهم أنها تعمل على حسابات باسمك."
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-2" data-reveal>
+            {STACK.map((group) => (
+              <div key={group.group} className="card p-6 md:p-7">
+                <h3 className="h-card">{STACK_GROUPS_AR[group.group] ?? group.group}</h3>
+                <p className="mt-2 font-mono text-[13px] text-[var(--primary-strong)]" dir="ltr">
+                  {group.items.join(" · ")}
+                </p>
+                <p className="mt-3 text-[14px] leading-[1.9] text-muted">{STACK_NOTES_AR[group.group] ?? group.note}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

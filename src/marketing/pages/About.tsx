@@ -1,6 +1,8 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, CTA, GITHUB_URL, LINKEDIN_URL, OWNER } from "../../config/site";
+import { AUDIT_URL, CONTACT_EMAIL, CTA, GITHUB_URL, LINKEDIN_URL, OWNER, STACK } from "../../config/site";
+import { experienceFlow } from "../../config/content";
 import { PageHeader, SectionHeader } from "../components/Section";
+import { Flow } from "../components/Flow";
 import portrait640 from "../../assets/portrait-640.webp";
 import portrait960 from "../../assets/portrait-960.webp";
 import portrait1280 from "../../assets/portrait-1280.webp";
@@ -24,23 +26,29 @@ const About = () => (
       <div className="shell grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         <div className="prose-block max-w-prose text-[16px] leading-relaxed text-muted" data-reveal>
           <p className="text-ink">
-            Most businesses between 5 and 50 people run on a set of tools that were each added to solve one problem, and
-            never designed to work together. A spreadsheet here, an inbox there, a booking tool that does part of the
-            job, and a person who remembers the rest.
+            I'm {OWNER.name}. I study {OWNER.study} at {OWNER.university}, and I work as a {OWNER.role} at{" "}
+            {OWNER.employer}. Outside both, I build and ship software in public — {OWNER.publicRepoCount}{" "}
+            repositories, most with real test suites, because I'd rather you read how I work than take my word for
+            it.
           </p>
           <p>
-            It works, until it does not. A lead sits unanswered. An invoice never gets raised. The one person who knows
-            how a process runs takes a week off. Nobody set out to build it this way — it accumulated.
+            Most businesses between 5 and 50 people run on a set of tools that were each added to solve one problem,
+            and never designed to work together. A spreadsheet here, an inbox there, a booking tool that does part of
+            the job, and a person who remembers the rest.
           </p>
           <p>
-            I build the system that replaces that: a custom CRM, a client portal, a job or booking system, an internal
-            dashboard, or the automation that connects what you already pay for. Built around a process you already run,
-            deployed on accounts in your name, documented so your team can use it without me.
+            It works, until it does not. A lead sits unanswered. An invoice never gets raised. The one person who
+            knows how a process runs takes a week off. Nobody set out to build it this way — it accumulated.
           </p>
           <p>
-            I work on a fixed scope, a fixed price and a fixed date, quoted after I have seen the process. If I do not
-            think I can fix the problem, I say so and we stop. That is a better outcome for both of us than a project
-            that should not have started.
+            I build the system that replaces that: a custom CRM, a client portal, a job or booking system, an
+            internal dashboard, or the automation that connects what you already pay for. Built around a process you
+            already run, deployed on accounts in your name, documented so your team can use it without me.
+          </p>
+          <p>
+            I work on a fixed scope, a fixed price and a fixed date, quoted after I have seen the process. If I do
+            not think I can fix the problem, I say so and we stop. That is a better outcome for both of us than a
+            project that should not have started.
           </p>
         </div>
 
@@ -91,6 +99,38 @@ const About = () => (
           <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full">
             {CONTACT_EMAIL}
           </a>
+        </div>
+      </div>
+    </section>
+
+    <section className="section border-t border-border bg-surface">
+      <div className="shell">
+        <SectionHeader
+          eyebrow="Experience"
+          title="What I'm doing right now, not a résumé of what I used to do."
+          body="No dates below. I'd rather show you four things you can check than a timeline with a year I'm guessing at."
+        />
+        <div className="mt-10" data-reveal>
+          <Flow label="Experience" nodes={experienceFlow(OWNER.publicRepoCount)} />
+        </div>
+      </div>
+    </section>
+
+    <section className="section border-t border-border">
+      <div className="shell">
+        <SectionHeader
+          eyebrow="Tools"
+          title="What I build with, and why each one is there."
+          body="Named here, not in the hero, because you're hiring me to fix a process, not to buy a stack. What matters is that it's deployed on accounts in your name."
+        />
+        <div className="mt-10 grid gap-5 md:grid-cols-2" data-reveal>
+          {STACK.map((group) => (
+            <div key={group.group} className="card p-6 md:p-7">
+              <h3 className="h-card">{group.group}</h3>
+              <p className="mt-2 font-mono text-[13px] text-[var(--primary-strong)]">{group.items.join(" · ")}</p>
+              <p className="mt-3 text-[14px] leading-snug text-muted">{group.note}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

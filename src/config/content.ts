@@ -262,6 +262,23 @@ export const CLIENT_SYSTEMS: ClientSystem[] = [
 export const OPEN_SOURCE_NOTE =
   "Public repositories on GitHub, including unit, API, end-to-end and multi-language test suites. You can read how I write and test software before you hire me.";
 
+/**
+ * The /about "Experience" strip. Every node is a fact that resolves to a real,
+ * checkable thing — a role, a university, a repository count, a page on this
+ * site. No dates are stated because none are confirmed; a timeline with an
+ * invented year is worse than no timeline.
+ */
+export type ExperienceNode = { label: string; meta: string };
+
+/** repoCount comes from OWNER.publicRepoCount in site.ts, the one place that
+ *  number is allowed to change, so this list never states it independently. */
+export const experienceFlow = (repoCount: number): ExperienceNode[] => [
+  { label: "Applied AI", meta: "Multimedia University, Malaysia" },
+  { label: "Web & AI Solutions Developer", meta: "NCASE Consulting Group" },
+  { label: `${repoCount} public repositories`, meta: "Tested, documented, open on GitHub" },
+  { label: `${CLIENT_SYSTEMS.length} systems shipped for clients`, meta: "Live — see /work" },
+];
+
 /* -------------------------------------------------------------------------- */
 /* FAQ — kept in sync with the FAQPage structured data in scripts/seo-data.mjs  */
 /* -------------------------------------------------------------------------- */

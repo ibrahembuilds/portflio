@@ -70,13 +70,37 @@ export type Route = (typeof ROUTES)[number];
  * Technology stack. Deliberately surfaced only at the bottom of /about and
  * /how-it-works — never near a hero, and never named in a headline.
  */
-export const STACK: { group: string; items: string[] }[] = [
-  { group: "Interfaces", items: ["React", "Next.js", "TypeScript"] },
-  { group: "Services", items: ["Python", "FastAPI", "Node"] },
-  { group: "Data", items: ["Supabase", "Firebase", "Postgres"] },
-  { group: "Automation", items: ["n8n", "Make.com", "Twilio"] },
-  { group: "Language models", items: ["OpenRouter / LLM APIs", "RAG pipelines"] },
-  { group: "Hosting", items: ["Vercel", "Cloudflare", "Docker"] },
+export const STACK: { group: string; items: string[]; note: string }[] = [
+  {
+    group: "Interfaces",
+    items: ["React", "Next.js", "TypeScript"],
+    note: "What the people using the system click on — staff, and your customers where they get a login of their own.",
+  },
+  {
+    group: "Services",
+    items: ["Python", "FastAPI", "Node"],
+    note: "The logic behind the interface: the rules and validation that have to be right, not just look right.",
+  },
+  {
+    group: "Data",
+    items: ["Supabase", "Firebase", "Postgres"],
+    note: "One source of truth for the business, instead of the same fact living in three spreadsheets.",
+  },
+  {
+    group: "Automation",
+    items: ["n8n", "Make.com", "Twilio"],
+    note: "Connecting tools you already pay for, so a change in one place updates the rest without anyone re-typing it.",
+  },
+  {
+    group: "Language models",
+    items: ["OpenRouter / LLM APIs", "RAG pipelines"],
+    note: "Used where a model earns its place — drafting, summarising, extracting. Never left to invisibly decide something that should be a rule.",
+  },
+  {
+    group: "Hosting",
+    items: ["Vercel", "Cloudflare", "Docker"],
+    note: "Deployed on accounts in your name, not mine, so the system is yours the day it ships.",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
