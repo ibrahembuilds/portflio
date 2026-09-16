@@ -22,7 +22,8 @@ const read = (file) => readFileSync(path.join(root, file)).toString("base64");
 const photo = read("src/assets/portrait-accent-1280.webp");
 const geistBold = read("public/fonts/geist-sans-latin-600-normal.woff2");
 const geistRegular = read("public/fonts/geist-sans-latin-400-normal.woff2");
-const arabicFont = read("node_modules/@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2");
+const plexArabicRegular = read("public/fonts/plex-arabic-400-normal.woff2");
+const plexArabicBold = read("public/fonts/plex-arabic-600-normal.woff2");
 
 const ACCENT = "#d4f53c";
 const INK = "#0b1220";
@@ -38,9 +39,11 @@ const card = ({ dir, eyebrow, title, sub, font }) => {
   return `<!doctype html><html dir="${dir}"><head><meta charset="utf-8"><style>
 @font-face{font-family:G;src:url(data:font/woff2;base64,${geistBold}) format('woff2');font-weight:600}
 @font-face{font-family:G;src:url(data:font/woff2;base64,${geistRegular}) format('woff2');font-weight:400}
-@font-face{font-family:A;src:url(data:font/woff2;base64,${arabicFont}) format('woff2')}
+@font-face{font-family:A;src:url(data:font/woff2;base64,${plexArabicBold}) format('woff2');font-weight:600}
+@font-face{font-family:A;src:url(data:font/woff2;base64,${plexArabicRegular}) format('woff2');font-weight:400}
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1200px;height:630px;background:${ACCENT};font-family:${font};color:${INK};overflow:hidden;position:relative}
+body{background:${ACCENT}}
+.card{width:1200px;height:630px;background:${ACCENT};font-family:${font},G;color:${INK};overflow:hidden;position:relative}
 .photo{position:absolute;top:-30px;${position};width:620px;height:700px;
   background-image:url(data:image/webp;base64,${photo});background-size:cover;background-position:top center;
   -webkit-mask-image:${fade};mask-image:${fade};}
@@ -50,13 +53,15 @@ h1{font-size:${photoOnLeft ? 48 : 55}px;line-height:${photoOnLeft ? 1.38 : 1.07}
 .sub{font-size:21px;line-height:${photoOnLeft ? 1.85 : 1.5};margin-top:22px;opacity:.72;font-weight:400}
 .rule{position:absolute;bottom:0;left:0;right:0;height:9px;background:${INK};z-index:3}
 </style></head><body>
-<div class="photo"></div>
-<div class="text">
-  <div class="eyebrow">${eyebrow}</div>
-  <h1>${title}</h1>
-  <div class="sub">${sub}</div>
+<div class="card">
+  <div class="photo"></div>
+  <div class="text">
+    <div class="eyebrow">${eyebrow}</div>
+    <h1>${title}</h1>
+    <div class="sub">${sub}</div>
+  </div>
+  <div class="rule"></div>
 </div>
-<div class="rule"></div>
 </body></html>`;
 };
 
@@ -87,7 +92,13 @@ const cards = [
 for (const { file, ...content } of cards) {
   await page.setContent(card(content));
   await page.waitForTimeout(500);
-  const buffer = await page.screenshot({ type: "png" });
+  // The card is screenshotted as an element, not as the viewport. The portrait
+  // is deliberately hung past the card's edge, which makes the document wider
+  // than the viewport — and an RTL document parks its scroll origin at the
+  // right, so a viewport capture silently slid the Arabic card sideways and
+  // sheared the text off its own gutter. Clipping to the element has no scroll
+  // origin to get wrong.
+  const buffer = await page.locator(".card").screenshot({ type: "png" });
   writeFileSync(path.join(root, file), buffer);
   console.log(`${file}  ${(buffer.length / 1024).toFixed(0)}KB`);
 }

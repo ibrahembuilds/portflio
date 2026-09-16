@@ -1,5 +1,3 @@
-@import "@fontsource-variable/noto-sans-arabic";
-
 /* Geist is self-hosted from /public/fonts (latin subset only, ~35KB per face)
    so the two faces used above the fold can be preloaded from index.html with a
    stable, unhashed path. font-display: swap keeps text painted immediately. */
@@ -44,6 +42,32 @@
   font-weight: 500;
   font-display: swap;
   src: url("/fonts/geist-mono-latin-500-normal.woff2") format("woff2");
+}
+
+/* IBM Plex Sans Arabic carries the Arabic pages. Only the Arabic unicode
+   subset is shipped (~44KB per face), so Latin words and digits inside Arabic
+   copy — CRM, 5, 50, the domain — fall through to Geist and stay the same
+   Latin the English site uses. One Latin face across both languages. */
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plex Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/plex-arabic-600-normal.woff2") format("woff2");
 }
 
 @tailwind base;
@@ -109,7 +133,10 @@
   }
 
   [dir="rtl"] body {
-    font-family: "Noto Sans Arabic Variable", Tahoma, Arial, sans-serif;
+    font-family: "Plex Arabic", "Geist Sans", "Segoe UI", Tahoma, sans-serif;
+    /* Arabic has no ascender/descender rhythm to rest on, so the same leading
+       that suits Geist reads cramped here. */
+    line-height: 1.85;
   }
 
   h1,

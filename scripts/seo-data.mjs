@@ -396,6 +396,18 @@ const escapeAttr = (value) =>
 
 const escapeText = (value) => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+/**
+ * index.html preloads the two Geist faces for every route. An Arabic route's
+ * primary typeface is a different file again, so without this the Arabic pages
+ * paint in the fallback and reflow once the real face lands. Geist stays
+ * preloaded there too — Latin words and digits inside Arabic copy use it.
+ */
+const fontPreloads = (locale) =>
+  locale === "ar"
+    ? `    <link rel="preload" href="/fonts/plex-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin />`
+    : "";
+
 export const buildSeoBlock = (routePath) => {
   const page = PAGES[routePath];
   if (!page) throw new Error(`No SEO entry for route ${routePath}`);
@@ -445,6 +457,7 @@ ${alternates}
     <meta name="twitter:description" content="${escapeAttr(page.description)}" />
     <meta name="twitter:image" content="${locale === "ar" ? OG_IMAGE_AR : OG_IMAGE}" />
 
+${fontPreloads(locale)}
     <link rel="dns-prefetch" href="${AUDIT}" />
 
     <script type="application/ld+json">

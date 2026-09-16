@@ -291,6 +291,71 @@ test.describe("marketing site", () => {
     expect(home).not.toContain("Software developer building internal business systems");
   });
 
+  // The social card is a generated image: nothing about it type-checks, and a
+  // clipped headline looks fine in the build log. This measures the artifact.
+  for (const { card, side, label } of [
+    { card: "/og-image.png", side: "left" as const, label: "English" },
+    { card: "/og-image-ar.png", side: "right" as const, label: "Arabic" },
+  ]) {
+    test(`the ${label} social card keeps its type inside the gutter`, async ({ page }) => {
+      // Same origin, so the canvas stays readable.
+      await page.goto("/");
+
+      const ink = await page.evaluate(async (src) => {
+        const img = new Image();
+        img.src = src;
+        await img.decode();
+
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0);
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        // The type is near-black on a very light accent; the portrait is the
+        // only other dark thing, and it lives on the opposite half.
+        const isInk = (i: number) => data[i] < 90 && data[i + 1] < 90 && data[i + 2] < 90;
+
+        let leftmost = canvas.width;
+        let rightmost = -1;
+        for (let y = 150; y <= 480; y += 1) {
+          for (let x = 0; x < canvas.width; x += 1) {
+            if (!isInk((y * canvas.width + x) * 4)) continue;
+            if (x < leftmost) leftmost = x;
+            if (x > rightmost) rightmost = x;
+          }
+        }
+        return { width: canvas.width, height: canvas.height, leftmost, rightmost };
+      }, card);
+
+      expect(ink.width).toBe(1200);
+      expect(ink.height).toBe(630);
+
+      // 66px of padding, so ink must stop short of the edge on the text side.
+      // The portrait is allowed to bleed off the other side.
+      const margin = side === "left" ? ink.leftmost : ink.width - 1 - ink.rightmost;
+      expect(margin, `${label} card: type is clipped at the ${side} edge`).toBeGreaterThanOrEqual(40);
+    });
+  }
+
+  test("Arabic pages preload the Arabic face, English pages do not", async ({ request }) => {
+    // Arabic is set in a different file from the one index.html preloads for
+    // every route, so without this the Arabic pages paint in a fallback and
+    // reflow. The English side must not pay for a face it never renders.
+    const ar = await (await request.get("/ar/")).text();
+    expect(ar).toContain('rel="preload" href="/fonts/plex-arabic-400-normal.woff2"');
+    expect(ar).toContain('rel="preload" href="/fonts/plex-arabic-600-normal.woff2"');
+    expect(ar).toContain('rel="preload" href="/fonts/geist-sans-latin-400-normal.woff2"');
+
+    const en = await (await request.get("/")).text();
+    expect(en).not.toContain("plex-arabic");
+
+    // The face itself has to be served, not just referenced.
+    const face = await request.get("/fonts/plex-arabic-400-normal.woff2");
+    expect(face.status()).toBe(200);
+  });
+
   test("answer engines are given a summary in both languages", async ({ request }) => {
     const en = await (await request.get("/llms.txt")).text();
     expect(en).toContain("https://ibrahemahmed.com/ar/");

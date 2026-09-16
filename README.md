@@ -105,6 +105,27 @@ which is what makes the flip safe.
 
 The whole palette is one block at the top of `src/index.css`.
 
+### Type
+
+Two faces, both self-hosted from `public/fonts` with unhashed paths so they can
+be preloaded:
+
+| Face | Carries | Shipped |
+| --- | --- | --- |
+| Geist Sans | The English site, and every Latin run inside Arabic copy | Latin subset, 400/500/600/700 |
+| IBM Plex Sans Arabic | The Arabic site | Arabic subset, 400/500/600 |
+
+Only the Arabic unicode subset of Plex is shipped, so `CRM`, `5`, `50` and the
+domain fall through to Geist rather than switching typeface mid-sentence. That
+is the point of the stack order in `[dir="rtl"] body` — `tests/fonts.test.ts`
+asserts Geist sits immediately after the Arabic face, that every declared face
+has a file on disk, and that every preload matches a declared face. A missing
+font file is otherwise invisible: the browser 404s it and falls back to a system
+font without failing anything.
+
+Arabic routes preload the Arabic faces; English routes do not
+(`fontPreloads` in `scripts/seo-data.mjs`).
+
 ### Images
 
 The profile photograph was shot on a green screen. `scripts/portrait.mjs` keys
@@ -115,6 +136,13 @@ to be re-shot when the palette moves:
 node scripts/portrait.mjs   # src/assets/portrait-*.webp, from portrait-source.png
 node scripts/social.mjs     # public/og-image.png and og-image-ar.png
 ```
+
+The cards are screenshotted as an element, not as the viewport. The portrait is
+deliberately hung past the card edge, which makes the document wider than the
+viewport, and an RTL document parks its scroll origin on the right — a viewport
+capture silently slid the Arabic card sideways and sheared the type off its own
+gutter. `e2e/marketing.spec.ts` now measures the generated PNGs and fails if ink
+reaches the edge on the text side.
 
 ## Deployment
 

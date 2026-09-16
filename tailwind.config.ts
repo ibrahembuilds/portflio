@@ -12,7 +12,6 @@ export default {
       fontFamily: {
         sans: ["Geist Sans", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ["Geist Mono", "ui-monospace", "SFMono-Regular", "monospace"],
-        arabic: ['"Noto Sans Arabic Variable"', "Tahoma", "Arial", "sans-serif"],
       },
       colors: {
         ink: "var(--ink)",
