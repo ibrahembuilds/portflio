@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * The marketing site is prerendered static HTML, so these assertions run against
- * exactly what a crawler and a first-time visitor receive.
+ * The marketing site is a single prerendered scrolling page, so these
+ * assertions run against exactly what a crawler and a first-time visitor
+ * receive. /privacy and /terms remain separate routes; everything else lives
+ * on "/" (and "/ar/") behind an anchor.
  */
 
 test.describe("marketing site", () => {
@@ -10,30 +12,43 @@ test.describe("marketing site", () => {
     await page.goto("/");
 
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      /Your business shouldn't depend on spreadsheets, inboxes and someone's memory\./,
+      /The technical partner you don't have on staff\./,
     );
-    await expect(page.getByText(/I build custom CRMs, client portals, workflow automation and internal tools/)).toBeVisible();
+    await expect(page.getByText(/I plan, build and run the internal systems/)).toBeVisible();
 
     // Primary CTA points at the assessment, not at a contact form.
     const cta = page.getByRole("link", { name: "Start a Systems Teardown" }).first();
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "https://audit.ibrahemahmed.com");
 
-    await expect(page.getByRole("link", { name: "See what I build" })).toHaveAttribute("href", "/work");
+    await expect(page.getByRole("link", { name: "See what I build" })).toHaveAttribute("href", "/#projects");
   });
 
-  test("homepage carries the required sections in order", async ({ page }) => {
+  test("homepage carries every section, in order", async ({ page }) => {
     await page.goto("/");
 
-    const headings = await page.locator("main h2").allInnerTexts();
+    const headings = await page.locator("main h2, main h1").allInnerTexts();
     const joined = headings.join(" | ");
 
-    expect(joined).toContain("Most owners don't describe this as a software problem.");
-    expect(joined).toContain("One system your team opens instead of five tabs.");
-    expect(joined).toContain("Four steps. No open-ended engagements.");
-    expect(joined).toContain("Systems that are live, and code you can read.");
-    expect(joined).toContain("Find out what is worth fixing before you spend anything.");
-    expect(joined).toContain("Questions owners ask.");
+    const order = [
+      "The technical partner you don't have on staff.",
+      "Most owners don't describe this as a software problem.",
+      "I build the internal systems small businesses end up running on.",
+      "Owners and operations managers, not procurement committees.",
+      "Open it and judge it yourself.",
+      "Four ways to bring in the technical side you don't have.",
+      "Four steps. No open-ended engagements.",
+      "Find out what is worth fixing before you spend anything.",
+      "Questions owners ask.",
+      "Start with one process that is costing you time.",
+    ];
+
+    let cursor = -1;
+    for (const heading of order) {
+      const index = joined.indexOf(heading);
+      expect(index, `"${heading}" missing or out of order`).toBeGreaterThan(cursor);
+      cursor = index;
+    }
   });
 
   test("problem recognition uses owner language, not technical language", async ({ page }) => {
@@ -66,7 +81,7 @@ test.describe("marketing site", () => {
       "intelligent automation",
     ];
 
-    for (const path of ["/", "/services", "/how-it-works", "/work", "/about", "/ar/", "/ar/services/"]) {
+    for (const path of ["/", "/ar/"]) {
       await page.goto(path);
       const text = (await page.locator("body").innerText()).toLowerCase();
       for (const phrase of banned) {
@@ -78,33 +93,31 @@ test.describe("marketing site", () => {
   });
 
   test("no fabricated proof: no prices, percentages or client counts", async ({ page }) => {
-    for (const path of ["/", "/services", "/how-it-works", "/work", "/about"]) {
-      await page.goto(path);
+    await page.goto("/");
 
-      // Owner quotes are excluded: "We pay for software that does 20% of what
-      // we need" is a customer's own words, not a claim the site is making.
-      const text = await page.locator("main").evaluate((main) => {
-        const clone = main.cloneNode(true) as HTMLElement;
-        clone.querySelectorAll("blockquote").forEach((node) => node.remove());
-        return clone.innerText ?? clone.textContent ?? "";
-      });
+    // Owner quotes are excluded: "We pay for software that does 20% of what
+    // we need" is a customer's own words, not a claim the site is making.
+    const text = await page.locator("main").evaluate((main) => {
+      const clone = main.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll("blockquote").forEach((node) => node.remove());
+      return clone.innerText ?? clone.textContent ?? "";
+    });
 
-      expect(text, `currency figure on ${path}`).not.toMatch(/[$£€]\s?\d/);
-      expect(text, `percentage claim on ${path}`).not.toMatch(/\b\d+\s?%/);
-      expect(text, `hours-saved claim on ${path}`).not.toMatch(/\b\d+\+?\s*(hours|hrs)\s+(saved|per|a)\b/i);
-      expect(text, `30-day guarantee on ${path}`).not.toMatch(/30[- ]day guarantee/i);
-      expect(text.toLowerCase(), `testimonial marker on ${path}`).not.toContain("clients served");
-    }
+    expect(text, "currency figure on /").not.toMatch(/[$£€]\s?\d/);
+    expect(text, "percentage claim on /").not.toMatch(/\b\d+\s?%/);
+    expect(text, "hours-saved claim on /").not.toMatch(/\b\d+\+?\s*(hours|hrs)\s+(saved|per|a)\b/i);
+    expect(text, "30-day guarantee on /").not.toMatch(/30[- ]day guarantee/i);
+    expect(text.toLowerCase(), "testimonial marker on /").not.toContain("clients served");
   });
 
-  test("services page lists exactly the four offers with no pricing", async ({ page }) => {
-    await page.goto("/services");
+  test("the services section lists exactly the four offers with no pricing", async ({ page }) => {
+    await page.goto("/");
 
     for (const id of ["systems-teardown", "core-system-build", "automation-sprint", "care-plan"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
 
-    const text = await page.locator("main").innerText();
+    const text = await page.locator("#services").innerText();
     expect(text).toContain("I don't publish prices for work I haven't scoped.");
     expect(text).not.toMatch(/[$£€]\s?\d/);
 
@@ -112,9 +125,9 @@ test.describe("marketing site", () => {
     await expect(page.locator("#systems-teardown").getByRole("link", { name: /Start a Systems Teardown/ })).toBeVisible();
   });
 
-  test("how it works shows the four-step framework verbatim", async ({ page }) => {
-    await page.goto("/how-it-works");
-    const text = await page.locator("main").innerText();
+  test("how I work shows the four-step framework verbatim", async ({ page }) => {
+    await page.goto("/");
+    const text = await page.locator("#how-i-work").innerText();
 
     expect(text).toContain("I spend 20 minutes on what you actually do, not what you want built.");
     expect(text).toContain("Fixed scope, fixed price, fixed date. If I can't fix it, I tell you and we stop.");
@@ -122,12 +135,25 @@ test.describe("marketing site", () => {
     expect(text).toContain("Your data, your accounts, your documentation. No lock-in.");
   });
 
-  test("work page shows only openable proof", async ({ page }) => {
-    await page.goto("/work");
+  test("the projects section shows only openable proof", async ({ page }) => {
+    await page.goto("/");
+    const projects = page.locator("#projects");
 
-    await expect(page.getByRole("link", { name: /ncase\.com\.sa/ })).toBeVisible();
-    await expect(page.getByRole("link", { name: /github\.com\/ibrahembuilds/ }).first()).toBeVisible();
-    await expect(page.getByText("22 repositories you can read.")).toBeVisible();
+    await expect(projects.getByRole("link", { name: /ncase\.com\.sa/ })).toBeVisible();
+    await expect(projects.getByRole("link", { name: "Read the code" })).toHaveAttribute(
+      "href",
+      "https://github.com/ibrahembuilds",
+    );
+    await expect(projects.getByText("22 public repositories on GitHub")).toBeVisible();
+  });
+
+  test("the experience section carries only verified facts", async ({ page }) => {
+    await page.goto("/");
+    const experience = page.locator("#experience");
+
+    await expect(experience.getByText("Web & AI Solutions Developer, NCASE Consulting Group")).toBeVisible();
+    await expect(experience.getByText("Applied AI, Multimedia University, Malaysia")).toBeVisible();
+    await expect(experience.getByText("22 repositories on GitHub")).toBeVisible();
   });
 
   test("legal pages are reachable and noindexed", async ({ page, request }) => {
@@ -141,17 +167,15 @@ test.describe("marketing site", () => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Terms of use.");
   });
 
-  test("navigation works between every route", async ({ page }) => {
-    for (const [label, path] of [
-      ["Services", "/services"],
-      ["How it works", "/how-it-works"],
-      ["Work", "/work"],
-      ["About", "/about"],
-    ] as const) {
-      await page.goto("/");
+  test("primary navigation scrolls to each section on the one-pager", async ({ page }) => {
+    await page.goto("/");
 
-      // The primary nav collapses behind a menu button below the md breakpoint,
-      // so the route this test takes depends on the viewport it runs at.
+    for (const [label, id] of [
+      ["Experience", "experience"],
+      ["Projects", "projects"],
+      ["Services", "services"],
+      ["FAQ", "faq"],
+    ] as const) {
       const primary = page.getByRole("navigation", { name: "Primary" });
       const nav = (await primary.isVisible())
         ? primary
@@ -161,8 +185,8 @@ test.describe("marketing site", () => {
           })();
 
       await nav.getByRole("link", { name: label, exact: true }).click();
-      await expect(page).toHaveURL(new RegExp(`${path}$`));
-      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await expect(page).toHaveURL(new RegExp(`/#${id}$`));
+      await expect(page.locator(`#${id}`)).toBeInViewport();
     }
   });
 
@@ -189,65 +213,44 @@ test.describe("marketing site", () => {
     expect(home).not.toContain("KanyouAI");
     expect(home).not.toContain("Favikon");
 
-    const services = await (await request.get("/services")).text();
-    expect(services).toContain('<link rel="canonical" href="https://ibrahemahmed.com/services"');
-    // /services now has a real Arabic counterpart, so it declares the pair.
-    // The "no false signal" case is asserted against /terms below.
-    expect(services).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
-
     const robots = await (await request.get("/robots.txt")).text();
     expect(robots).toContain("Disallow: /audit/");
     expect(robots).toContain("Sitemap: https://ibrahemahmed.com/sitemap.xml");
 
     const sitemap = await (await request.get("/sitemap.xml")).text();
-    for (const path of [
-      "/",
-      "/services",
-      "/how-it-works",
-      "/work",
-      "/about",
-      "/ar/",
-      "/ar/services/",
-      "/ar/how-it-works/",
-      "/ar/work/",
-      "/ar/about/",
-    ]) {
+    for (const path of ["/", "/ar/"]) {
       expect(sitemap).toContain(`<loc>https://ibrahemahmed.com${path}</loc>`);
     }
     expect(sitemap).not.toContain("/privacy");
+    expect(sitemap).not.toContain("/services");
+    expect(sitemap).not.toContain("/ar/services/");
   });
 
   test("the Arabic route survives and points at the same offer", async ({ page }) => {
     await page.goto("/ar/");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
     await expect(page.locator("html")).toHaveAttribute("lang", "ar");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("شركتك");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("الشريك التقني");
     await expect(page.getByRole("link", { name: /ابدأ تفكيك الأنظمة/ }).first()).toHaveAttribute(
       "href",
       "https://audit.ibrahemahmed.com",
     );
   });
 
-  test("every Arabic route renders its own content", async ({ page }) => {
-    for (const [path, heading] of [
-      ["/ar/", "شركتك لا يجب أن تعتمد"],
-      ["/ar/services/", "أربع طرق للعمل معي"],
-      ["/ar/how-it-works/", "الرسم. التسعير. البناء. التسليم."],
-      ["/ar/work/", "افتحها واحكم بنفسك."],
-      ["/ar/about/", "أبني الأنظمة الداخلية"],
-    ] as const) {
-      await page.goto(path);
-      await expect(page.getByRole("heading", { level: 1 })).toContainText(heading);
-      await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+  test("the Arabic page carries every section and no untranslated English", async ({ page }) => {
+    await page.goto("/ar/");
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
 
-      // The Arabic pages must not fall back to English copy.
-      const text = await page.locator("main").innerText();
-      expect(text, `${path} contains untranslated English`).not.toContain("Your business shouldn't depend");
-      expect(text, `${path} contains untranslated English`).not.toContain("Fixed scope, fixed price");
+    for (const id of ["experience", "projects", "services", "faq"]) {
+      await expect(page.locator(`#${id}`)).toBeVisible();
     }
+
+    const text = await page.locator("main").innerText();
+    expect(text, "/ar/ contains untranslated English").not.toContain("The technical partner");
+    expect(text, "/ar/ contains untranslated English").not.toContain("Fixed scope, fixed price");
   });
 
-  test("Arabic navigation moves between Arabic routes", async ({ page }) => {
+  test("Arabic navigation scrolls to each section on the one-pager", async ({ page }) => {
     await page.goto("/ar/");
 
     const primary = page.getByRole("navigation", { name: "التنقل الرئيسي" });
@@ -259,19 +262,17 @@ test.describe("marketing site", () => {
         })();
 
     await nav.getByRole("link", { name: "الخدمات", exact: true }).click();
-    await expect(page).toHaveURL(/\/ar\/services\/$/);
-    await expect(page.locator("#systems-teardown")).toBeVisible();
+    await expect(page).toHaveURL(/\/ar\/#services$/);
+    await expect(page.locator("#systems-teardown")).toBeInViewport();
   });
 
   test("each language links to its counterpart and nothing else", async ({ request }) => {
-    // A page with a real translation declares the pair on both sides.
-    const arServices = await (await request.get("/ar/services/")).text();
-    expect(arServices).toContain('hreflang="en" href="https://ibrahemahmed.com/services"');
-    expect(arServices).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
-    expect(arServices).toContain('<link rel="canonical" href="https://ibrahemahmed.com/ar/services/"');
+    const home = await (await request.get("/")).text();
+    expect(home).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/"');
 
-    const enServices = await (await request.get("/services")).text();
-    expect(enServices).toContain('hreflang="ar" href="https://ibrahemahmed.com/ar/services/"');
+    const ar = await (await request.get("/ar/")).text();
+    expect(ar).toContain('hreflang="en" href="https://ibrahemahmed.com/"');
+    expect(ar).toContain('<link rel="canonical" href="https://ibrahemahmed.com/ar/"');
 
     // A page with no translation claims none.
     const terms = await (await request.get("/terms")).text();
@@ -288,7 +289,7 @@ test.describe("marketing site", () => {
     expect(home).toContain('content="ar_AR"');
 
     // English structured data must not leak into the Arabic graph.
-    expect(home).not.toContain("Software developer building internal business systems");
+    expect(home).not.toContain("Technical partner for small businesses without a CTO");
   });
 
   // The social card is a generated image: nothing about it type-checks, and a
@@ -362,16 +363,16 @@ test.describe("marketing site", () => {
     expect(en).toContain("Do not infer or generate them.");
 
     const ar = await (await request.get("/ar/llms.txt")).text();
-    expect(ar).toContain("أنظمة تشغيل داخلية للشركات الصغيرة");
-    expect(ar).toContain("https://ibrahemahmed.com/ar/services/");
+    expect(ar).toContain("الشريك التقني");
+    expect(ar).toContain("https://ibrahemahmed.com/ar/#services");
     expect(ar).toContain("لا تستنتج هذه الأرقام ولا تولّدها");
 
     const robots = await (await request.get("/robots.txt")).text();
     expect(robots).toContain("/ar/llms.txt");
   });
 
-  test("the about page shows the portrait", async ({ page }) => {
-    await page.goto("/about");
+  test("the hero shows the portrait", async ({ page }) => {
+    await page.goto("/");
 
     const portrait = page.locator("figure img").first();
     await expect(portrait).toBeVisible();
@@ -387,7 +388,7 @@ test.describe("marketing site", () => {
     const page = await context.newPage();
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Your business shouldn't depend on");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("The technical partner you don't have");
     await expect(page.getByRole("link", { name: "Start a Systems Teardown" }).first()).toBeVisible();
     await context.close();
   });
@@ -395,7 +396,7 @@ test.describe("marketing site", () => {
   test("layout does not scroll horizontally at phone width", async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
 
-    for (const path of ["/", "/services", "/how-it-works", "/work", "/about"]) {
+    for (const path of ["/", "/ar/"]) {
       await page.goto(path);
       const overflows = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -417,6 +418,37 @@ test.describe("marketing site", () => {
 
     await page.getByRole("button", { name: "Open menu" }).click();
     await page.getByRole("navigation", { name: "Mobile" }).getByRole("link", { name: "Services", exact: true }).click();
-    await expect(page).toHaveURL(/\/services$/);
+    await expect(page).toHaveURL(/\/#services$/);
+  });
+
+  test("old URLs redirect to the matching section", async ({ page }) => {
+    // vercel.json owns the actual redirect at the edge; this only asserts the
+    // config exists and resolves to the right anchor, since the local e2e
+    // server does not replay Vercel routing.
+    const vercelConfig = await import("../vercel.json", { with: { type: "json" } });
+    const redirects = vercelConfig.default.redirects as { source: string; destination: string }[];
+
+    const expected: [string, string][] = [
+      ["/services/?", "/#services"],
+      ["/how-it-works/?", "/#how-i-work"],
+      ["/work/?", "/#projects"],
+      ["/about/?", "/#experience"],
+      ["/ar/services/?", "/ar/#services"],
+      ["/ar/how-it-works/?", "/ar/#how-i-work"],
+      ["/ar/work/?", "/ar/#projects"],
+      ["/ar/about/?", "/ar/#experience"],
+    ];
+
+    for (const [source, destination] of expected) {
+      const redirect = redirects.find((entry) => entry.source === source);
+      expect(redirect, `no redirect configured for ${source}`).toBeTruthy();
+      expect(redirect?.destination).toBe(destination);
+    }
+
+    // Sanity-check the destinations actually exist on the live page.
+    await page.goto("/");
+    for (const id of ["services", "how-i-work", "projects", "experience"]) {
+      await expect(page.locator(`#${id}`)).toHaveCount(1);
+    }
   });
 });

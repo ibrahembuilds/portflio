@@ -128,9 +128,11 @@ Arabic routes preload the Arabic faces; English routes do not
 
 ### Images
 
-The profile photograph was shot on a green screen. `scripts/portrait.mjs` keys
-the green out and composites the subject onto the brand colours, so nothing has
-to be re-shot when the palette moves:
+`scripts/portrait.mjs` samples the backdrop directly from the source photo's own
+top corners and keys out whatever is close to that colour, then composites the
+subject onto the brand colours. That works whether the backdrop is a saturated
+green screen or a plain studio backdrop, so nothing has to be re-shot when the
+palette moves — only re-run when the photo does:
 
 ```bash
 node scripts/portrait.mjs   # src/assets/portrait-*.webp, from portrait-source.png

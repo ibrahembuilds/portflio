@@ -1,17 +1,23 @@
-import { ArrowRight, Check } from "lucide-react";
-import { AUDIT_URL, CTA, GITHUB_URL, OWNER } from "../../config/site";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { AUDIT_URL, CONTACT_EMAIL, CTA, GITHUB_URL, LINKEDIN_URL, OWNER } from "../../config/site";
 import {
   CLIENT_SYSTEMS,
+  EXPERIENCE_INTRO,
   FAQS,
+  GOOD_FIT,
   HERO,
+  NOT_A_FIT,
   OPEN_SOURCE_NOTE,
+  PRICING_NOTE,
   PROBLEM_QUOTES,
   PROCESS,
+  SERVICES,
   TEARDOWN_STEPS,
-  WHAT_I_BUILD,
 } from "../../config/content";
 import { SectionHeader } from "../components/Section";
-import { BeforeAfter, Flow } from "../components/Flow";
+import portrait640 from "../../assets/portrait-640.webp";
+import portrait960 from "../../assets/portrait-960.webp";
+import portrait1280 from "../../assets/portrait-1280.webp";
 
 const Hero = () => (
   <section className="border-b border-border">
@@ -35,40 +41,21 @@ const Hero = () => (
         </p>
       </div>
 
-      {/* A plain operational map, not decoration: this is the shape of the
-          problem the offer addresses. */}
-      <figure className="card overflow-hidden p-0">
-        <figcaption className="panel-accent border-x-0 border-t-0 px-6 py-3 text-[12px] font-medium uppercase tracking-[0.09em] text-ink md:px-7">
-          A small business, mapped
+      <figure className="overflow-hidden rounded-xl border border-border" data-reveal>
+        <img
+          src={portrait960}
+          srcSet={`${portrait640} 640w, ${portrait960} 960w, ${portrait1280} 1280w`}
+          sizes="(min-width: 1024px) 420px, (min-width: 640px) 60vw, 100vw"
+          width={960}
+          height={960}
+          alt={`${OWNER.legalName}, who builds the systems described on this site`}
+          className="aspect-square w-full bg-[var(--background)] object-cover"
+          decoding="async"
+        />
+        <figcaption className="border-t border-border bg-surface px-6 py-4">
+          <p className="text-[15px] font-semibold text-ink">{OWNER.name}</p>
+          <p className="mt-0.5 text-[13px] text-muted">{OWNER.role}, {OWNER.employer}</p>
         </figcaption>
-        <div className="p-6 md:p-7">
-        <div className="mt-5">
-          <Flow
-            label="Enquiry to payment"
-            nodes={[
-              { label: "Enquiry", meta: "Phone, form, WhatsApp" },
-              { label: "Quote", meta: "Spreadsheet" },
-              { label: "Job", meta: "Someone's notes" },
-              { label: "Invoice", meta: "Accounting tool" },
-            ]}
-          />
-        </div>
-        <div className="mt-6 space-y-3 border-t border-border pt-5">
-          {[
-            "Information re-typed at every step",
-            "No single place to see where a job is",
-            "One person holds the process in their head",
-          ].map((item) => (
-            <p key={item} className="flex items-start gap-2.5 text-[13px] leading-snug text-muted">
-              <span
-                className="mt-[6px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--border-strong)]"
-                aria-hidden="true"
-              />
-              {item}
-            </p>
-          ))}
-        </div>
-        </div>
       </figure>
     </div>
   </section>
@@ -104,108 +91,83 @@ const ProblemRecognition = () => (
   </section>
 );
 
-const WhatIBuild = () => (
-  <section className="section border-b border-border" id="what-i-build">
-    <div className="shell">
-      <SectionHeader
-        eyebrow="What I build"
-        title="One system your team opens instead of five tabs."
-        body="Every build starts from a process you already run. Nothing here is a template you have to bend your business around."
-      />
-
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
-        {WHAT_I_BUILD.map((item, index) => (
-          <article
-            key={item.title}
-            className="card flex flex-col p-6 md:p-7"
-            data-reveal
-            style={{ "--reveal-delay": `${(index % 2) * 0.05}s` } as React.CSSProperties}
-          >
-            <h3 className="h-card">{item.title}</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">{item.body}</p>
-            <ul className="mt-5 flex flex-wrap gap-2 border-t border-border pt-5">
-              {item.examples.map((example) => (
-                <li
-                  key={example}
-                  className="rounded-md bg-[var(--primary-soft)] px-2.5 py-1 text-[12.5px] font-medium text-[var(--primary-strong)]"
-                >
-                  {example}
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
-
-      <div className="mt-10" data-reveal>
-        <BeforeAfter
-          beforeTitle="How client onboarding usually runs"
-          before={[
-            { label: "Enquiry arrives", note: "Phone, form and WhatsApp, in three places" },
-            { label: "Details re-typed", note: "Into a spreadsheet, then into the quoting tool" },
-            { label: "Documents emailed", note: "A PDF, a form and a follow-up chase" },
-            { label: "Nobody can see the status", note: "Someone has to be asked" },
-          ]}
-          afterTitle="How it runs after"
-          after={[
-            "Enquiry lands in one record, from any channel",
-            "Details entered once, reused everywhere",
-            "Client completes onboarding in a portal",
-            "Status visible to you without asking anyone",
-          ]}
-        />
-      </div>
-    </div>
-  </section>
-);
-
-const HowIWork = () => (
-  <section className="section border-b border-border" id="how-i-work">
-    <div className="shell">
-      <SectionHeader
-        eyebrow="How I work"
-        title="Four steps. No open-ended engagements."
-        body="You always know what happens next, what it includes, and what it does not."
-      />
-
-      <ol className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] md:grid-cols-2 lg:grid-cols-4">
-        {PROCESS.map((step, index) => (
-          <li
-            key={step.title}
-            className="flex flex-col bg-surface p-6 md:p-7"
-            data-reveal
-            style={{ "--reveal-delay": `${(index % 4) * 0.05}s` } as React.CSSProperties}
-          >
-            <span className="font-mono text-[12px] text-muted">{step.step}</span>
-            <h3 className="h-card mt-3">{step.title}</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-ink">“{step.quote}”</p>
-          </li>
-        ))}
-      </ol>
-
-      <p className="mt-8" data-reveal>
-        <a
-          href="/how-it-works"
-          className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--primary)] underline-offset-4 hover:underline"
-        >
-          See how a build actually runs
-          <ArrowRight size={16} aria-hidden="true" />
-        </a>
-      </p>
-    </div>
-  </section>
-);
-
-const SelectedProof = () => {
-  const featured = CLIENT_SYSTEMS.filter((item) => item.featured);
+const Experience = () => {
+  const facts = [
+    { label: "Current role", value: `${OWNER.role}, ${OWNER.employer}` },
+    { label: "Studying", value: `${OWNER.study}, ${OWNER.university}` },
+    { label: "Public code", value: `${OWNER.publicRepoCount} repositories on GitHub` },
+    { label: "You work with", value: "Me. Directly." },
+  ];
 
   return (
-    <section className="section border-b border-border" id="proof">
+    <section className="section border-b border-border" id="experience">
+      <div className="shell grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div data-reveal>
+          <p className="eyebrow">Experience</p>
+          <h2 className="h-section mt-3 max-w-[22ch]">I build the internal systems small businesses end up running on.</h2>
+          <div className="prose-block mt-6 max-w-prose text-[16px] leading-relaxed text-muted">
+            {EXPERIENCE_INTRO.map((paragraph, index) => (
+              <p key={paragraph.slice(0, 24)} className={index === 0 ? "text-ink" : "mt-4"}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div data-reveal>
+          <dl className="overflow-hidden rounded-xl border border-border">
+            {facts.map((fact) => (
+              <div key={fact.label} className="border-b border-border bg-surface p-5 last:border-b-0">
+                <dt className="eyebrow">{fact.label}</dt>
+                <dd className="mt-2 text-[15px] leading-snug text-ink">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-5 w-full">
+            github.com/ibrahembuilds
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-2 w-full">
+            LinkedIn
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full">
+            {CONTACT_EMAIL}
+          </a>
+        </div>
+      </div>
+
+      <div className="shell mt-16">
+        <SectionHeader eyebrow="Who this is for" title="Owners and operations managers, not procurement committees." />
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {[GOOD_FIT, NOT_A_FIT].map((fit) => (
+            <div key={fit.title} className="card p-6 md:p-7" data-reveal>
+              <h3 className="h-card">{fit.title}</h3>
+              <ul className="mt-4 space-y-2.5 text-[15px] leading-snug text-muted">
+                {fit.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Projects = () => {
+  const featured = CLIENT_SYSTEMS.filter((item) => item.featured);
+  const other = CLIENT_SYSTEMS.filter((item) => !item.featured);
+
+  return (
+    <section className="section border-b border-border" id="projects">
       <div className="shell">
         <SectionHeader
-          eyebrow="Selected proof"
-          title="Systems that are live, and code you can read."
-          body="Open any of these. I would rather you check the work than read a claim about it."
+          eyebrow="Projects"
+          title="Open it and judge it yourself."
+          body="Live client systems and public source code. No client numbers, savings figures or testimonials — what I can show you is the work."
         />
 
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -227,30 +189,148 @@ const SelectedProof = () => {
           ))}
         </div>
 
+        <div className="mt-10" data-reveal>
+          <h3 className="eyebrow">Also delivered</h3>
+          <ul className="mt-4 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] sm:grid-cols-2">
+            {other.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-col bg-surface p-6 transition-colors hover:bg-[var(--primary-soft)]"
+                >
+                  <span className="font-mono text-[12px] text-muted">{item.domain}</span>
+                  <span className="h-card mt-2 group-hover:text-[var(--primary)]">{item.name}</span>
+                  <span className="mt-1 text-[13px] text-muted">{item.kind}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div className="card mt-5 flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-7" data-reveal>
           <div>
-            <h3 className="h-card">
-              {OWNER.publicRepoCount} public repositories on GitHub
-            </h3>
+            <h3 className="h-card">{OWNER.publicRepoCount} public repositories on GitHub</h3>
             <p className="mt-2 max-w-prose text-[14px] leading-relaxed text-muted">{OPEN_SOURCE_NOTE}</p>
           </div>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary shrink-0">
             Read the code
           </a>
         </div>
-
-        <p className="mt-6 text-[14px] text-muted" data-reveal>
-          <a href="/work" className="text-[var(--primary)] underline-offset-4 hover:underline">
-            See everything I have delivered
-          </a>
-        </p>
       </div>
     </section>
   );
 };
 
+const Offers = () => (
+  <section className="section border-b border-border" id="services">
+    <div className="shell">
+      <SectionHeader
+        eyebrow="Services"
+        title="Four ways to bring in the technical side you don't have."
+        body="Every engagement starts with a Systems Teardown, because I will not quote a build for a process I have not seen."
+      />
+
+      <div className="mt-12 grid gap-5">
+        {SERVICES.map((service, index) => (
+          <article
+            key={service.id}
+            id={service.id}
+            className={`card p-7 md:p-10 ${service.primary ? "border-[var(--primary)] bg-[var(--primary-soft)]" : ""}`}
+            data-reveal
+            style={{ "--reveal-delay": `${Math.min(index, 2) * 0.05}s` } as React.CSSProperties}
+          >
+            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="h-section !text-[1.5rem] md:!text-[1.75rem]">{service.name}</h3>
+                  {service.primary && (
+                    <span className="rounded-md bg-[var(--primary)] px-2 py-1 text-[11px] font-medium uppercase tracking-[0.07em] text-white">
+                      Start here
+                    </span>
+                  )}
+                </div>
+                <p className="mt-2 text-[14px] font-medium text-[var(--primary-strong)]">{service.tagline}</p>
+                <p className="mt-5 max-w-prose text-[15px] leading-relaxed text-ink">{service.body}</p>
+                {service.note && <p className="mt-4 max-w-prose text-[14px] leading-relaxed text-muted">{service.note}</p>}
+              </div>
+
+              <div className="grid gap-7 sm:grid-cols-2 lg:gap-8">
+                <div>
+                  <h4 className="eyebrow">For you if</h4>
+                  <ul className="mt-4 space-y-2.5">
+                    {service.forYouIf.map((item) => (
+                      <li key={item} className="text-[14px] leading-snug text-muted">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="eyebrow">What you get</h4>
+                  <ul className="mt-4 space-y-2.5">
+                    {service.deliverables.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-[14px] leading-snug text-ink">
+                        <Check size={15} className="mt-[3px] shrink-0 text-[var(--success)]" aria-hidden="true" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {service.primary && (
+              <div className="mt-9 border-t border-[var(--primary)]/25 pt-7">
+                <a href={AUDIT_URL} className="btn btn-primary">
+                  {CTA.primary}
+                  <ArrowRight size={17} aria-hidden="true" />
+                </a>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-8 max-w-prose" data-reveal>
+        <h3 className="h-card">On price</h3>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted">{PRICING_NOTE}</p>
+      </div>
+    </div>
+  </section>
+);
+
+const HowIWork = () => (
+  <section className="section border-b border-border" id="how-i-work">
+    <div className="shell">
+      <SectionHeader
+        eyebrow="How I work"
+        title="Four steps. No open-ended engagements."
+        body="You always know what happens next, what it includes, and what it does not."
+      />
+
+      <ol className="mt-12 grid gap-5 md:grid-cols-2">
+        {PROCESS.map((step, index) => (
+          <li
+            key={step.title}
+            className="card flex flex-col p-6 md:p-7"
+            data-reveal
+            style={{ "--reveal-delay": `${(index % 4) * 0.05}s` } as React.CSSProperties}
+          >
+            <span className="font-mono text-[12px] text-muted">{step.step}</span>
+            <h3 className="h-card mt-3">{step.title}</h3>
+            <p className="mt-3 text-[15px] leading-relaxed text-ink">“{step.quote}”</p>
+            <p className="mt-3 text-[14px] leading-relaxed text-muted">{step.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
+
 const TeardownExplainer = () => (
-  <section className="section border-b border-border bg-surface" id="systems-teardown">
+  <section className="section border-b border-border bg-surface">
     <div className="shell">
       <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <div data-reveal>
@@ -326,7 +406,7 @@ const FinalCta = () => (
               {CTA.primary}
               <ArrowRight size={17} aria-hidden="true" />
             </a>
-            <a href="/services" className="btn btn-secondary">
+            <a href="/#services" className="btn btn-secondary">
               See the four ways I work
             </a>
           </div>
@@ -349,9 +429,10 @@ const Home = () => (
   <>
     <Hero />
     <ProblemRecognition />
-    <WhatIBuild />
+    <Experience />
+    <Projects />
+    <Offers />
     <HowIWork />
-    <SelectedProof />
     <TeardownExplainer />
     <FaqSection />
     <FinalCta />

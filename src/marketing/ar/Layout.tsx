@@ -14,7 +14,7 @@ import { CTA_AR, NAV_LINKS_AR, STACK_GROUPS_AR } from "../../config/content.ar";
  * are Arabic.
  */
 
-export const ArabicNav = ({ current }: { current: string }) => {
+export const ArabicNav = () => {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
@@ -43,10 +43,7 @@ export const ArabicNav = ({ current }: { current: string }) => {
               <a
                 key={link.href}
                 href={link.href}
-                aria-current={current === link.href ? "page" : undefined}
-                className={`text-[14px] transition-colors hover:text-[var(--primary)] ${
-                  current === link.href ? "font-medium text-ink" : "text-muted"
-                }`}
+                className="text-[14px] text-muted transition-colors hover:text-[var(--primary)]"
               >
                 {link.label}
               </a>
@@ -79,7 +76,7 @@ export const ArabicNav = ({ current }: { current: string }) => {
             <a
               key={link.href}
               href={link.href}
-              aria-current={current === link.href ? "page" : undefined}
+              onClick={() => setOpen(false)}
               className="border-b border-border py-3.5 text-[15px]"
             >
               {link.label}
@@ -176,27 +173,6 @@ export const ArabicSectionHeader = ({
     <h2 className={`h-section leading-[1.35] ${eyebrow ? "mt-3" : ""}`}>{title}</h2>
     {body && <p className="lede mt-4 max-w-prose leading-[1.9]">{body}</p>}
   </div>
-);
-
-export const ArabicPageHeader = ({
-  eyebrow,
-  title,
-  body,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  body?: string;
-  children?: React.ReactNode;
-}) => (
-  <section className="border-b border-border">
-    <div className="shell pb-12 pt-14 md:pb-16 md:pt-20">
-      <p className="eyebrow">{eyebrow}</p>
-      <h1 className="h-display mt-4 max-w-[22ch] leading-[1.3]">{title}</h1>
-      {body && <p className="lede mt-6 max-w-prose leading-[1.9]">{body}</p>}
-      {children}
-    </div>
-  </section>
 );
 
 /** Final call to action, repeated at the foot of every Arabic page. */

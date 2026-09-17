@@ -1,18 +1,18 @@
-# Ibrahem Ahmed — Internal Systems for Small Businesses
+# Ibrahem Ahmed — Technical Partner for Small Businesses Without a CTO
 
-> I build custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that do not have an internal technical team. You deal directly with the person writing the code.
+> I plan, build and run custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that have no CTO and no engineers of their own. You deal directly with the person writing the code.
 
-Canonical site: https://ibrahemahmed.com/
+Canonical site: https://ibrahemahmed.com/ (a single scrolling page)
 Arabic version: https://ibrahemahmed.com/ar/ (and /ar/llms.txt)
 Systems Teardown assessment: https://audit.ibrahemahmed.com/
 
-## Pages
+## Sections on the page
 
-- https://ibrahemahmed.com/ — home
-- https://ibrahemahmed.com/services — the four offers
-- https://ibrahemahmed.com/how-it-works — Map, Quote, Build, Hand over
-- https://ibrahemahmed.com/work — delivered systems and public code
-- https://ibrahemahmed.com/about — about Ibrahem
+- https://ibrahemahmed.com/#experience — role, background, who this is for
+- https://ibrahemahmed.com/#projects — delivered client systems and public code
+- https://ibrahemahmed.com/#services — the four offers
+- https://ibrahemahmed.com/#how-i-work — Map, Quote, Build, Hand over
+- https://ibrahemahmed.com/#faq — questions owners ask
 
 ## Who
 
@@ -48,10 +48,10 @@ Systems Teardown assessment: https://audit.ibrahemahmed.com/
 
 ## Services
 
-1. Systems Teardown — a 20-minute call, then a written map of where work leaks, what is worth fixing first, and a fixed quote for that fix. The written map arrives within 48 hours of the call. This is the starting point. https://ibrahemahmed.com/services#systems-teardown
-2. Core System Build — one custom operational system built around a real process, including deployment, data migration, team training and documentation. https://ibrahemahmed.com/services#core-system-build
-3. Automation Sprint — connecting existing systems so repeated manual copying and follow-up stops, delivered as live tested automations plus a runbook. https://ibrahemahmed.com/services#automation-sprint
-4. Care Plan — ongoing monitoring, fixes, small changes and one improvement per month, after a build. https://ibrahemahmed.com/services#care-plan
+1. Systems Teardown — a 20-minute call, then a written map of where work leaks, what is worth fixing first, and a fixed quote for that fix. The written map arrives within 48 hours of the call. This is the starting point. https://ibrahemahmed.com/#systems-teardown
+2. Core System Build — one custom operational system built around a real process, including deployment, data migration, team training and documentation. https://ibrahemahmed.com/#core-system-build
+3. Automation Sprint — connecting existing systems so repeated manual copying and follow-up stops, delivered as live tested automations plus a runbook. https://ibrahemahmed.com/#automation-sprint
+4. Care Plan — ongoing monitoring, fixes, small changes and one improvement per month, after a build. https://ibrahemahmed.com/#care-plan
 
 Prices are not published. Every build is quoted as fixed scope, fixed price and fixed date after the Systems Teardown.
 

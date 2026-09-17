@@ -42,33 +42,28 @@ export const CTA = {
   primary: "Start a Systems Teardown",
   primaryHref: AUDIT_URL,
   secondary: "See what I build",
-  secondaryHref: "/work",
+  secondaryHref: "/#projects",
 } as const;
 
 export type NavLink = { href: string; label: string };
 
+/** The site is a single scrolling page now; every link below is an anchor on
+ *  "/", not a separate route. They are written as "/#id" rather than "#id" so
+ *  they still resolve correctly from /privacy and /terms. */
 export const NAV_LINKS: NavLink[] = [
-  { href: "/services", label: "Services" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#services", label: "Services" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
-export const ROUTES = [
-  "/",
-  "/services",
-  "/how-it-works",
-  "/work",
-  "/about",
-  "/privacy",
-  "/terms",
-] as const;
+export const ROUTES = ["/", "/privacy", "/terms"] as const;
 
 export type Route = (typeof ROUTES)[number];
 
 /**
- * Technology stack. Deliberately surfaced only at the bottom of /about and
- * /how-it-works — never near a hero, and never named in a headline.
+ * Technology stack. Deliberately surfaced only in the footer — never near a
+ * hero, and never named in a headline.
  */
 export const STACK: { group: string; items: string[] }[] = [
   { group: "Interfaces", items: ["React", "Next.js", "TypeScript"] },

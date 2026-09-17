@@ -76,7 +76,7 @@ const cards = [
     dir: "ltr",
     font: "G",
     eyebrow: "ibrahemahmed.com",
-    title: "Internal systems for<br>small businesses.",
+    title: "The technical partner<br>you don't have on staff.",
     sub: "Custom CRMs, client portals<br>and workflow automation.",
   },
   {
@@ -84,7 +84,7 @@ const cards = [
     dir: "rtl",
     font: "A",
     eyebrow: "ibrahemahmed.com",
-    title: "أنظمة تشغيل داخلية<br>للشركات الصغيرة.",
+    title: "الشريك التقني الذي<br>تفتقده شركتك.",
     sub: "أنظمة CRM مخصصة وبوابات عملاء<br>وأتمتة لسير العمل.",
   },
 ];

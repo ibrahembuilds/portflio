@@ -22,23 +22,43 @@
       "permanent": true
     },
     {
-      "source": "/ar/services",
-      "destination": "/ar/services/",
+      "source": "/services/?",
+      "destination": "/#services",
       "permanent": true
     },
     {
-      "source": "/ar/how-it-works",
-      "destination": "/ar/how-it-works/",
+      "source": "/how-it-works/?",
+      "destination": "/#how-i-work",
       "permanent": true
     },
     {
-      "source": "/ar/work",
-      "destination": "/ar/work/",
+      "source": "/work/?",
+      "destination": "/#projects",
       "permanent": true
     },
     {
-      "source": "/ar/about",
-      "destination": "/ar/about/",
+      "source": "/about/?",
+      "destination": "/#experience",
+      "permanent": true
+    },
+    {
+      "source": "/ar/services/?",
+      "destination": "/ar/#services",
+      "permanent": true
+    },
+    {
+      "source": "/ar/how-it-works/?",
+      "destination": "/ar/#how-i-work",
+      "permanent": true
+    },
+    {
+      "source": "/ar/work/?",
+      "destination": "/ar/#projects",
+      "permanent": true
+    },
+    {
+      "source": "/ar/about/?",
+      "destination": "/ar/#experience",
       "permanent": true
     }
   ],

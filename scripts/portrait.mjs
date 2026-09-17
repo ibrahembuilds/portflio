@@ -1,19 +1,25 @@
 /**
- * Builds the portrait assets from the original green-screen photograph.
+ * Builds the portrait assets from the source photograph.
  *
  *   node scripts/portrait.mjs
  *
- * The source is shot on a saturated green, which clashed with the brand once
- * the palette moved to lime and bone. Rather than ask for a re-shoot, the green
- * is keyed out here and the subject is composited onto the brand colours:
+ * The source is shot on a plain, near-uniform studio backdrop rather than a
+ * green screen, so the key does not assume any particular backdrop colour.
+ * Instead it samples the backdrop directly from the photo's own top corners
+ * (above the subject's shoulders, where the backdrop always shows) and keys
+ * out whatever is close to that sampled colour. That makes the same script
+ * work whether the backdrop is a saturated green screen or, as here, a pale
+ * studio grey close to the page colour — reshoot on a different backdrop and
+ * this still keys correctly with no code change.
+ *
+ * The subject is then composited onto the brand colours:
  *
  *   src/assets/portrait-{640,960,1280}.webp   subject on the page colour
  *   src/assets/portrait-accent-1280.webp      subject on the accent, for social
  *
- * The key is a soft alpha ramp on "greenness" (g minus the stronger of r and b)
+ * The key is a soft alpha ramp on colour distance from the sampled backdrop
  * rather than a hard threshold, so curly hair keeps its edge instead of being
- * cut into a stencil. Green spill on that edge is then pulled back down, which
- * is what stops a keyed subject reading as a sticker.
+ * cut into a stencil.
  */
 import { chromium } from "@playwright/test";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -27,9 +33,10 @@ const PAGE = "#faf9f6";
 const ACCENT = "#d4f53c";
 
 /** Below this the pixel is the subject, above it the background; between the
- *  two it is a partially transparent edge. */
-const KEY_LOW = 24;
-const KEY_HIGH = 78;
+ *  two it is a partially transparent edge. Measured in RGB Euclidean distance
+ *  from the sampled backdrop colour (0-441). */
+const KEY_LOW = 34;
+const KEY_HIGH = 92;
 
 const key = async (page, base64, { width, background }) =>
   page.evaluate(
@@ -50,24 +57,34 @@ const key = async (page, base64, { width, background }) =>
 
       const back = [1, 3, 5].map((i) => parseInt(bg.slice(i, i + 2), 16));
 
+      // Sample the backdrop from points across the top strip, above the
+      // subject's shoulders, and average them — that is the one region every
+      // portrait crop shares regardless of framing or backdrop colour.
+      const sampleAt = (x, y) => {
+        const o = (y * size + x) * 4;
+        return [px[o], px[o + 1], px[o + 2]];
+      };
+      const samplePoints = [0.05, 0.25, 0.5, 0.75, 0.95].map((f) => sampleAt(Math.round(f * (size - 1)), 3));
+      const backdrop = [0, 1, 2].map(
+        (c) => samplePoints.reduce((sum, sample) => sum + sample[c], 0) / samplePoints.length,
+      );
+
       for (let i = 0; i < px.length; i += 4) {
         const r = px[i];
         const g = px[i + 1];
         const b = px[i + 2];
 
-        const greenness = g - Math.max(r, b);
+        const distance = Math.hypot(r - backdrop[0], g - backdrop[1], b - backdrop[2]);
         let alpha = 1;
-        if (greenness >= high) alpha = 0;
-        else if (greenness > low) alpha = 1 - (greenness - low) / (high - low);
+        if (distance <= low) alpha = 0;
+        else if (distance < high) alpha = (distance - low) / (high - low);
 
-        // Despill: on a keyed edge the green screen has tinted the subject, so
-        // the green channel is pulled back to what the other channels support.
-        let gg = g;
-        if (greenness > 0) gg = Math.max(r, b) + greenness * alpha * 0.35;
-
-        // Composite over the target background in one pass.
+        // Composite over the target background in one pass. Blending toward
+        // the true target colour on a partially transparent edge is what
+        // keeps that edge from reading as a grey fringe against either
+        // background.
         px[i] = Math.round(r * alpha + back[0] * (1 - alpha));
-        px[i + 1] = Math.round(gg * alpha + back[1] * (1 - alpha));
+        px[i + 1] = Math.round(g * alpha + back[1] * (1 - alpha));
         px[i + 2] = Math.round(b * alpha + back[2] * (1 - alpha));
         px[i + 3] = 255;
       }

@@ -11,8 +11,8 @@
  */
 
 export const HERO_AR = {
-  headline: "شركتك لا يجب أن تعتمد على جداول البيانات وصناديق البريد وذاكرة أحد الموظفين.",
-  body: "أبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها فريق تقني داخلي.",
+  headline: "الشريك التقني الذي تفتقده شركتك.",
+  body: "أخطط وأبني وأدير الأنظمة الداخلية — أنظمة CRM مخصصة، وبوابات عملاء، وأتمتة سير العمل، وأدوات تشغيل داخلية — للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها CTO ولا مهندسون داخليون. شخص واحد يتولى الجانب التقني بالكامل، كما يفعل موظف داخلي، دون أن تضطر إلى توظيفه.",
   trust: "تتعامل مباشرة مع من يكتب الكود. حساباتك، وبياناتك، وتوثيق واضح، وبلا ارتباط إجباري.",
 } as const;
 
@@ -24,31 +24,6 @@ export const PROBLEM_QUOTES_AR = [
   "ندفع اشتراك برنامج يغطي 20% مما نحتاجه فعلاً.",
   "شخص واحد فقط يعرف كيف يسير هذا العمل، وهو في إجازة.",
 ] as const;
-
-export type BuildItemAr = { title: string; body: string; examples: string[] };
-
-export const WHAT_I_BUILD_AR: BuildItemAr[] = [
-  {
-    title: "أنظمة CRM مخصصة",
-    body: "مكان واحد يجتمع فيه كل عميل محتمل وعرض سعر ومهمة وعميل حالي، مبني على طريقة بيعك وتسليمك أنت.",
-    examples: ["متابعة العملاء المحتملين", "عروض الأسعار والمتابعة", "سجل العميل في مكان واحد"],
-  },
-  {
-    title: "بوابات العملاء",
-    body: "حساب يدخل منه عميلك ليرى مهامه ومستنداته وفواتيره وتحديثاته، بدل أن يراسلك ليسأل.",
-    examples: ["حالة المهمة أو الطلب", "المستندات والملفات", "الموافقات والاعتماد"],
-  },
-  {
-    title: "أتمتة سير العمل",
-    body: "النسخ والمتابعة والتذكير المتكرر يحدث من تلقاء نفسه، فلا ينتظر شيء أن يتذكره أحد.",
-    examples: ["استقبال العملاء والرد عليهم", "متابعة المكالمات الفائتة", "التقارير والتذكيرات"],
-  },
-  {
-    title: "أدوات تشغيل داخلية",
-    body: "الشاشة التي يفتحها فريقك كل صباح: المهام، الحجوزات، المخزون، الموظفون، أو ما يقوم عليه تشغيلك فعلاً.",
-    examples: ["لوحات المهام والحجوزات", "لوحات متابعة العمليات", "أدوات التسعير"],
-  },
-];
 
 export type ProcessStepAr = { step: string; title: string; quote: string; detail: string };
 
@@ -282,17 +257,20 @@ export const STACK_GROUPS_AR: Record<string, string> = {
   Hosting: "الاستضافة",
 };
 
+/** The Arabic site is a single scrolling page now; every link below is an
+ *  anchor on "/ar/", written as "/ar/#id" so it still resolves correctly if
+ *  a page other than the home page is ever added back. */
 export const NAV_LINKS_AR = [
-  { href: "/ar/services/", label: "الخدمات" },
-  { href: "/ar/how-it-works/", label: "طريقة العمل" },
-  { href: "/ar/work/", label: "الأعمال" },
-  { href: "/ar/about/", label: "عني" },
+  { href: "/ar/#experience", label: "الخبرة" },
+  { href: "/ar/#projects", label: "المشاريع" },
+  { href: "/ar/#services", label: "الخدمات" },
+  { href: "/ar/#faq", label: "الأسئلة" },
 ];
 
 export const CTA_AR = {
   primary: "ابدأ تفكيك الأنظمة",
   secondary: "اطّلع على ما أبنيه",
-  secondaryHref: "/ar/work/",
+  secondaryHref: "/ar/#projects",
 } as const;
 
 export const ABOUT_AR = {

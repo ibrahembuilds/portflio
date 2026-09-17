@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowUpLeft, Check } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
+import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER } from "../../config/site";
 import {
   ABOUT_AR,
   CLIENT_SYSTEMS_AR,
@@ -12,26 +12,21 @@ import {
   PROCESS_AR,
   SERVICES_AR,
   TEARDOWN_STEPS_AR,
-  WHAT_I_BUILD_AR,
 } from "../../config/content.ar";
-import { ArabicCta, ArabicPageHeader, ArabicSectionHeader } from "./Layout";
-import { BeforeAfter, Flow } from "../components/Flow";
+import { ArabicCta, ArabicSectionHeader } from "./Layout";
 import portrait640 from "../../assets/portrait-640.webp";
 import portrait960 from "../../assets/portrait-960.webp";
 import portrait1280 from "../../assets/portrait-1280.webp";
 
 /**
- * The Arabic marketing pages.
+ * The Arabic marketing page.
  *
- * Structurally parallel to the English pages and sharing the same layout
- * primitives, but written rather than translated: line heights are looser,
- * connectors point right-to-left, and Latin strings (domains, stack names,
- * email) carry dir="ltr" so they are not reordered inside Arabic text.
+ * A single scrolling page, structurally parallel to the English one-pager and
+ * sharing the same layout primitives, but written rather than translated:
+ * line heights are looser, connectors point right-to-left, and Latin strings
+ * (domains, stack names, email, CTO) carry dir="ltr" so they are not
+ * reordered inside Arabic text.
  */
-
-/* -------------------------------------------------------------------------- */
-/* Home                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const ArabicHome = () => (
   <>
@@ -56,39 +51,21 @@ export const ArabicHome = () => (
           </p>
         </div>
 
-        <figure className="card overflow-hidden p-0">
-          <figcaption className="panel-accent border-x-0 border-t-0 px-6 py-3 text-[12px] font-medium text-ink md:px-7">
-            شركة صغيرة، مرسومة
+        <figure className="overflow-hidden rounded-xl border border-border" data-reveal>
+          <img
+            src={portrait960}
+            srcSet={`${portrait640} 640w, ${portrait960} 960w, ${portrait1280} 1280w`}
+            sizes="(min-width: 1024px) 420px, (min-width: 640px) 60vw, 100vw"
+            width={960}
+            height={960}
+            alt={`${OWNER.legalName}، الذي يبني الأنظمة الموصوفة في هذا الموقع`}
+            className="aspect-square w-full bg-[var(--background)] object-cover"
+            decoding="async"
+          />
+          <figcaption className="border-t border-border bg-surface px-6 py-4">
+            <p className="text-[15px] font-semibold text-ink">إبراهيم أحمد</p>
+            <p className="mt-0.5 text-[13px] text-muted">أنظمة تشغيل داخلية للشركات الصغيرة</p>
           </figcaption>
-          <div className="p-6 md:p-7">
-            <div className="mt-5">
-              <Flow
-                rtl
-                label="من الطلب إلى الدفع"
-                nodes={[
-                  { label: "طلب", meta: "هاتف أو نموذج" },
-                  { label: "عرض سعر", meta: "جدول بيانات" },
-                  { label: "مهمة", meta: "ملاحظات أحدهم" },
-                  { label: "فاتورة", meta: "برنامج محاسبة" },
-                ]}
-              />
-            </div>
-            <div className="mt-6 space-y-3 border-t border-border pt-5">
-              {[
-                "المعلومة تُعاد كتابتها في كل خطوة",
-                "لا مكان واحد يُعرف منه أين وصلت المهمة",
-                "شخص واحد يحمل العملية في رأسه",
-              ].map((item) => (
-                <p key={item} className="flex items-start gap-2.5 text-[13px] leading-[1.9] text-muted">
-                  <span
-                    className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--border-strong)]"
-                    aria-hidden="true"
-                  />
-                  {item}
-                </p>
-              ))}
-            </div>
-          </div>
         </figure>
       </div>
     </section>
@@ -116,60 +93,88 @@ export const ArabicHome = () => (
       </div>
     </section>
 
-    <section className="section border-b border-border">
+    <ArabicExperience />
+    <ArabicProjects />
+
+    <section className="section border-b border-border" id="services">
       <div className="shell">
         <ArabicSectionHeader
-          eyebrow="ما الذي أبنيه"
-          title="نظام واحد يفتحه فريقك بدل خمس نوافذ."
-          body="كل بناء يبدأ من عملية تديرها بالفعل. لا شيء هنا قالب جاهز تضطر لتطويع شركتك حوله."
+          eyebrow="الخدمات"
+          title="أربع طرق لإحضار الجانب التقني الذي تفتقده."
+          body="كل تعاون يبدأ بتفكيك الأنظمة، لأنني لا أسعّر بناءً لعملية لم أرها."
         />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {WHAT_I_BUILD_AR.map((item, index) => (
+        <div className="mt-12 grid gap-5">
+          {SERVICES_AR.map((service, index) => (
             <article
-              key={item.title}
-              className="card flex flex-col p-6 md:p-7"
+              key={service.id}
+              id={service.id}
+              className={`card p-7 md:p-10 ${service.primary ? "border-[var(--primary)] bg-[var(--primary-soft)]" : ""}`}
               data-reveal
-              style={{ "--reveal-delay": `${(index % 2) * 0.05}s` } as React.CSSProperties}
+              style={{ "--reveal-delay": `${Math.min(index, 2) * 0.05}s` } as React.CSSProperties}
             >
-              <h3 className="h-card">{item.title}</h3>
-              <p className="mt-3 text-[15px] leading-[1.9] text-muted">{item.body}</p>
-              <ul className="mt-5 flex flex-wrap gap-2 border-t border-border pt-5">
-                {item.examples.map((example) => (
-                  <li
-                    key={example}
-                    className="rounded-md bg-[var(--primary-soft)] px-2.5 py-1 text-[12.5px] font-medium text-[var(--primary-strong)]"
-                  >
-                    {example}
-                  </li>
-                ))}
-              </ul>
+              <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+                <div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h3 className="h-section !text-[1.5rem] leading-[1.4] md:!text-[1.75rem]">{service.name}</h3>
+                    {service.primary && (
+                      <span className="rounded-md bg-[var(--primary)] px-2 py-1 text-[11px] font-medium text-white">
+                        ابدأ من هنا
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[14px] font-medium text-[var(--primary-strong)]">{service.tagline}</p>
+                  <p className="mt-5 max-w-prose text-[15px] leading-[1.95] text-ink">{service.body}</p>
+                  {service.note && (
+                    <p className="mt-4 max-w-prose text-[14px] leading-[1.9] text-muted">{service.note}</p>
+                  )}
+                </div>
+
+                <div className="grid gap-7 sm:grid-cols-2 lg:gap-8">
+                  <div>
+                    <h4 className="eyebrow">مناسبة لك إن كنت</h4>
+                    <ul className="mt-4 space-y-2.5">
+                      {service.forYouIf.map((item) => (
+                        <li key={item} className="text-[14px] leading-[1.9] text-muted">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="eyebrow">ما الذي تحصل عليه</h4>
+                    <ul className="mt-4 space-y-2.5">
+                      {service.deliverables.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-[14px] leading-[1.9] text-ink">
+                          <Check size={15} className="mt-[6px] shrink-0 text-[var(--success)]" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {service.primary && (
+                <div className="mt-9 border-t border-[var(--primary)]/25 pt-7">
+                  <a href={AUDIT_URL} className="btn btn-primary">
+                    {CTA_AR.primary}
+                    <ArrowLeft size={17} aria-hidden="true" />
+                  </a>
+                </div>
+              )}
             </article>
           ))}
         </div>
 
-        <div className="mt-10" data-reveal>
-          <BeforeAfter
-            beforeTitle="كيف تسير تهيئة العميل عادةً"
-            before={[
-              { label: "يصل الطلب", note: "هاتف ونموذج وواتساب، في ثلاثة أماكن" },
-              { label: "تُعاد كتابة التفاصيل", note: "في جدول بيانات، ثم في أداة التسعير" },
-              { label: "تُرسل المستندات بالبريد", note: "ملف PDF ونموذج ورسالة متابعة" },
-              { label: "لا أحد يرى الحالة", note: "لا بد من سؤال أحدهم" },
-            ]}
-            afterTitle="كيف تسير بعد ذلك"
-            after={[
-              "الطلب يصل إلى سجل واحد، من أي قناة",
-              "التفاصيل تُدخل مرة واحدة وتُستخدم في كل مكان",
-              "العميل يكمل التهيئة عبر بوابة خاصة",
-              "الحالة ظاهرة لك دون أن تسأل أحداً",
-            ]}
-          />
+        <div className="mt-8 max-w-prose" data-reveal>
+          <h3 className="h-card">عن السعر</h3>
+          <p className="mt-3 text-[15px] leading-[1.95] text-muted">{PRICING_NOTE_AR}</p>
         </div>
       </div>
     </section>
 
-    <section className="section border-b border-border">
+    <section className="section border-b border-border" id="how-i-work">
       <div className="shell">
         <ArabicSectionHeader
           eyebrow="طريقة العمل"
@@ -177,34 +182,23 @@ export const ArabicHome = () => (
           body="تعرف دائماً ما الخطوة التالية، وما الذي تشمله، وما الذي لا تشمله."
         />
 
-        <ol className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] md:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-12 grid gap-5 md:grid-cols-2">
           {PROCESS_AR.map((step, index) => (
             <li
               key={step.title}
-              className="flex flex-col bg-surface p-6 md:p-7"
+              className="card flex flex-col p-6 md:p-7"
               data-reveal
               style={{ "--reveal-delay": `${(index % 4) * 0.05}s` } as React.CSSProperties}
             >
               <span className="font-mono text-[12px] text-muted">{step.step}</span>
               <h3 className="h-card mt-3">{step.title}</h3>
-              <p className="mt-3 text-[15px] leading-[1.9] text-ink">«{step.quote}»</p>
+              <p className="mt-3 text-[15px] leading-[1.8] text-ink">«{step.quote}»</p>
+              <p className="mt-3 text-[14px] leading-[1.9] text-muted">{step.detail}</p>
             </li>
           ))}
         </ol>
-
-        <p className="mt-8" data-reveal>
-          <a
-            href="/ar/how-it-works/"
-            className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--primary)] underline-offset-4 hover:underline"
-          >
-            اطّلع على كيف يسير البناء فعلاً
-            <ArrowLeft size={16} aria-hidden="true" />
-          </a>
-        </p>
       </div>
     </section>
-
-    <ArabicProof />
 
     <section className="section border-b border-border bg-surface">
       <div className="shell grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
@@ -239,7 +233,7 @@ export const ArabicHome = () => (
       </div>
     </section>
 
-    <section className="section border-b border-border">
+    <section className="section border-b border-border" id="faq">
       <div className="shell grid gap-10 lg:grid-cols-[0.6fr_1.4fr] lg:gap-16">
         <ArabicSectionHeader title="أسئلة يطرحها أصحاب الشركات." />
         <div className="border-t border-border">
@@ -271,19 +265,100 @@ export const ArabicHome = () => (
 );
 
 /* -------------------------------------------------------------------------- */
-/* Shared proof block                                                         */
+/* Experience                                                                 */
 /* -------------------------------------------------------------------------- */
 
-const ArabicProof = () => {
-  const featured = CLIENT_SYSTEMS_AR.filter((item) => item.featured);
+const ArabicExperience = () => {
+  const facts = [
+    { label: "العمل الحالي", value: "مطوّر حلول ويب وذكاء اصطناعي، NCASE Consulting Group" },
+    { label: "الدراسة", value: "الذكاء الاصطناعي التطبيقي، جامعة الوسائط المتعددة، ماليزيا" },
+    { label: "كود عام", value: `${OWNER.publicRepoCount} مستودعاً على GitHub` },
+    { label: "من تتعامل معه", value: "أنا. مباشرة." },
+  ];
 
   return (
-    <section className="section border-b border-border">
+    <section className="section border-b border-border" id="experience">
+      <div className="shell grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div data-reveal>
+          <p className="eyebrow">الخبرة</p>
+          <h2 className="h-section mt-3 max-w-[22ch] leading-[1.35]">{ABOUT_AR.title}</h2>
+          <div className="mt-6 max-w-prose text-[16px] leading-[1.95] text-muted">
+            {ABOUT_AR.paragraphs.map((paragraph, index) => (
+              <p key={paragraph.slice(0, 24)} className={index === 0 ? "text-ink" : "mt-5"}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div data-reveal>
+          <dl className="overflow-hidden rounded-xl border border-border">
+            {facts.map((fact) => (
+              <div key={fact.label} className="border-b border-border bg-surface p-5 last:border-b-0">
+                <dt className="eyebrow">{fact.label}</dt>
+                <dd className="mt-2 text-[15px] leading-[1.85] text-ink">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary mt-5 w-full"
+            dir="ltr"
+          >
+            github.com/ibrahembuilds
+          </a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-2 w-full">
+            LinkedIn
+          </a>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full" dir="ltr">
+            {CONTACT_EMAIL}
+          </a>
+        </div>
+      </div>
+
+      <div className="shell mt-16">
+        <ArabicSectionHeader eyebrow="لمن هذا" title="أصحاب الشركات ومديرو العمليات، لا لجان المشتريات." />
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          <div className="card p-6 md:p-7" data-reveal>
+            <h3 className="h-card">{ABOUT_AR.goodFitTitle}</h3>
+            <ul className="mt-4 space-y-2.5 text-[15px] leading-[1.9] text-muted">
+              {ABOUT_AR.goodFit.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="card p-6 md:p-7" data-reveal>
+            <h3 className="h-card">{ABOUT_AR.badFitTitle}</h3>
+            <ul className="mt-4 space-y-2.5 text-[15px] leading-[1.9] text-muted">
+              {ABOUT_AR.badFit.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/* Projects                                                                   */
+/* -------------------------------------------------------------------------- */
+
+const ArabicProjects = () => {
+  const featured = CLIENT_SYSTEMS_AR.filter((item) => item.featured);
+  const other = CLIENT_SYSTEMS_AR.filter((item) => !item.featured);
+
+  return (
+    <section className="section border-b border-border" id="projects">
       <div className="shell">
         <ArabicSectionHeader
-          eyebrow="أعمال مختارة"
-          title="أنظمة تعمل الآن، وكود يمكنك قراءته."
-          body="افتح أياً منها بنفسك. أفضّل أن تفحص العمل على أن تقرأ ادعاءً عنه."
+          eyebrow="المشاريع"
+          title="افتحها واحكم بنفسك."
+          body="أنظمة تعمل الآن، وكود مفتوح المصدر. لا أنشر أعداد عملاء ولا أرقام توفير ولا شهادات — ما أستطيع أن أريك إياه هو العمل نفسه."
         />
 
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -309,6 +384,30 @@ const ArabicProof = () => {
           ))}
         </div>
 
+        <div className="mt-10" data-reveal>
+          <h3 className="eyebrow">أعمال أخرى مُسلَّمة</h3>
+          <ul className="mt-4 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] sm:grid-cols-2">
+            {other.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-col bg-surface p-6 transition-colors hover:bg-[var(--primary-soft)]"
+                >
+                  <span className="font-mono text-[12px] text-muted" dir="ltr">
+                    {item.domain}
+                  </span>
+                  <span className="h-card mt-2 group-hover:text-[var(--primary)]" dir="ltr">
+                    {item.name}
+                  </span>
+                  <span className="mt-1 text-[13px] text-muted">{item.kind}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div
           className="card mt-5 flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-7"
           data-reveal
@@ -319,401 +418,10 @@ const ArabicProof = () => {
           </div>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary shrink-0">
             اقرأ الكود
+            <ArrowUpLeft size={16} aria-hidden="true" />
           </a>
         </div>
       </div>
     </section>
-  );
-};
-
-/* -------------------------------------------------------------------------- */
-/* Services                                                                   */
-/* -------------------------------------------------------------------------- */
-
-export const ArabicServices = () => (
-  <>
-    <ArabicPageHeader
-      eyebrow="الخدمات"
-      title="أربع طرق للعمل معي. ونقطة بداية واحدة."
-      body="كل تعاون يبدأ بتفكيك الأنظمة، لأنني لا أسعّر بناءً لعملية لم أرها."
-    >
-      <a href={AUDIT_URL} className="btn btn-primary mt-8">
-        {CTA_AR.primary}
-        <ArrowLeft size={17} aria-hidden="true" />
-      </a>
-    </ArabicPageHeader>
-
-    <section className="section">
-      <div className="shell grid gap-5">
-        {SERVICES_AR.map((service, index) => (
-          <article
-            key={service.id}
-            id={service.id}
-            className={`card p-7 md:p-10 ${service.primary ? "border-[var(--primary)] bg-[var(--primary-soft)]" : ""}`}
-            data-reveal
-            style={{ "--reveal-delay": `${Math.min(index, 2) * 0.05}s` } as React.CSSProperties}
-          >
-            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <h2 className="h-section !text-[1.5rem] leading-[1.4] md:!text-[1.75rem]">{service.name}</h2>
-                  {service.primary && (
-                    <span className="rounded-md bg-[var(--primary)] px-2 py-1 text-[11px] font-medium text-white">
-                      ابدأ من هنا
-                    </span>
-                  )}
-                </div>
-                <p className="mt-2 text-[14px] font-medium text-[var(--primary-strong)]">{service.tagline}</p>
-                <p className="mt-5 max-w-prose text-[15px] leading-[1.95] text-ink">{service.body}</p>
-                {service.note && (
-                  <p className="mt-4 max-w-prose text-[14px] leading-[1.9] text-muted">{service.note}</p>
-                )}
-              </div>
-
-              <div className="grid gap-7 sm:grid-cols-2 lg:gap-8">
-                <div>
-                  <h3 className="eyebrow">مناسبة لك إن كنت</h3>
-                  <ul className="mt-4 space-y-2.5">
-                    {service.forYouIf.map((item) => (
-                      <li key={item} className="text-[14px] leading-[1.9] text-muted">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="eyebrow">ما الذي تحصل عليه</h3>
-                  <ul className="mt-4 space-y-2.5">
-                    {service.deliverables.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-[14px] leading-[1.9] text-ink">
-                        <Check size={15} className="mt-[6px] shrink-0 text-[var(--success)]" aria-hidden="true" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {service.primary && (
-              <div className="mt-9 border-t border-[var(--primary)]/25 pt-7">
-                <a href={AUDIT_URL} className="btn btn-primary">
-                  {CTA_AR.primary}
-                  <ArrowLeft size={17} aria-hidden="true" />
-                </a>
-              </div>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <section className="section-tight border-t border-border">
-      <div className="shell">
-        <div className="max-w-prose" data-reveal>
-          <h2 className="h-card">عن السعر</h2>
-          <p className="mt-3 text-[15px] leading-[1.95] text-muted">{PRICING_NOTE_AR}</p>
-        </div>
-      </div>
-    </section>
-  </>
-);
-
-/* -------------------------------------------------------------------------- */
-/* How it works                                                               */
-/* -------------------------------------------------------------------------- */
-
-export const ArabicHowItWorks = () => (
-  <>
-    <ArabicPageHeader
-      eyebrow="طريقة العمل"
-      title="الرسم. التسعير. البناء. التسليم."
-      body="أربع خطوات بهذا الترتيب. يمكنك التوقف بعد أي واحدة منها، وتملك كل ما أُنتج حتى تلك النقطة."
-    />
-
-    <section className="section">
-      <div className="shell">
-        <ol className="grid gap-5">
-          {PROCESS_AR.map((step, index) => (
-            <li
-              key={step.title}
-              className="card grid gap-7 p-7 md:grid-cols-[auto_1fr] md:gap-12 md:p-10"
-              data-reveal
-              style={{ "--reveal-delay": `${Math.min(index, 2) * 0.05}s` } as React.CSSProperties}
-            >
-              <div className="flex items-baseline gap-4 md:w-[9rem] md:flex-col md:gap-2">
-                <span className="font-mono text-[12px] text-muted">{step.step}</span>
-                <h2 className="h-section !text-[1.5rem] leading-[1.4]">{step.title}</h2>
-              </div>
-              <div>
-                <p className="max-w-prose text-[17px] leading-[1.8] text-ink">«{step.quote}»</p>
-                <p className="mt-4 max-w-prose text-[15px] leading-[1.95] text-muted">{step.detail}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <section className="section border-t border-border bg-surface">
-      <div className="shell">
-        <ArabicSectionHeader
-          eyebrow="كيف يبدو البناء"
-          title="ترى برمجيات تعمل مبكراً، لا تقرير تقدّم."
-          body="لا شيء يبقى مخفياً حتى النهاية. النظام شيء تفتحه وتضغط عليه وهو ما يزال قيد البناء."
-        />
-        <div className="mt-10" data-reveal>
-          <Flow
-            rtl
-            label="تسلسل البناء"
-            nodes={[
-              { label: "الاتفاق على النطاق", meta: "نطاق وسعر وتاريخ ثابت" },
-              { label: "تفتح النسخة الأولى", meta: "الأسبوع الأول، على شكل بياناتك" },
-              { label: "تُشكَّل حول فريقك", meta: "وفق طريقة سير العمل فعلاً" },
-              { label: "تعمل مباشرة", meta: "حساباتك، بياناتك" },
-              { label: "تُسلَّم إليك", meta: "تدريب وتوثيق" },
-            ]}
-          />
-        </div>
-      </div>
-    </section>
-
-    <section className="section border-t border-border">
-      <div className="shell">
-        <ArabicSectionHeader eyebrow="ما الذي يتغير" title="الهدف ليس برنامجاً جديداً، بل عملاً يتوقف عن التسرّب." />
-        <div className="mt-10" data-reveal>
-          <BeforeAfter
-            beforeTitle="قبل"
-            before={[
-              { label: "يصل عميل محتمل", note: "يُرى حين يفتح أحدهم البريد" },
-              { label: "تُنسخ التفاصيل", note: "إلى جدول بيانات، ثم إلى عرض السعر" },
-              { label: "المتابعة", note: "إن تذكّرها أحد" },
-              { label: "تطلب تحديثاً", note: "لا بد أن يذهب أحدهم ليبحث" },
-            ]}
-            afterTitle="بعد"
-            after={[
-              "كل طلب يصل إلى سجل واحد، بوقت محدد",
-              "التفاصيل تُدخل مرة واحدة وتُستخدم",
-              "المتابعة تحدث دون أن يتذكرها أحد",
-              "ترى الحالة دون أن تسأل أحداً",
-            ]}
-          />
-        </div>
-      </div>
-    </section>
-
-    <ArabicCta
-      title="يبدأ الأمر بعشرين دقيقة على عملية واحدة."
-      body="أجب عن بضعة أسئلة أولاً، حتى تبدأ المكالمة من شيء ملموس لا من الصفر."
-    />
-  </>
-);
-
-/* -------------------------------------------------------------------------- */
-/* Work                                                                       */
-/* -------------------------------------------------------------------------- */
-
-export const ArabicWork = () => {
-  const featured = CLIENT_SYSTEMS_AR.filter((item) => item.featured);
-  const other = CLIENT_SYSTEMS_AR.filter((item) => !item.featured);
-
-  return (
-    <>
-      <ArabicPageHeader
-        eyebrow="الأعمال"
-        title="افتحها واحكم بنفسك."
-        body="كل ما في الأسفل رابط يعمل أو كود مفتوح. لا أنشر أعداد عملاء ولا أرقام توفير ولا شهادات — ما أستطيع أن أريك إياه هو العمل نفسه."
-      />
-
-      <section className="section">
-        <div className="shell">
-          <ArabicSectionHeader eyebrow="أنظمة لعملاء" title="مُسلَّمة وتعمل." />
-
-          <div className="mt-10 grid gap-5">
-            {featured.map((item, index) => (
-              <a
-                key={item.name}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card group grid gap-6 p-7 transition-colors hover:border-[var(--primary)] md:grid-cols-[1fr_1.35fr] md:gap-12 md:p-10"
-                data-reveal
-                style={{ "--reveal-delay": `${Math.min(index, 2) * 0.05}s` } as React.CSSProperties}
-              >
-                <div>
-                  <span className="font-mono text-[12px] text-muted" dir="ltr">
-                    {item.domain}
-                  </span>
-                  <h3 className="h-section mt-2 !text-[1.375rem] group-hover:text-[var(--primary)]" dir="ltr">
-                    {item.name}
-                  </h3>
-                  <p className="mt-2 text-[14px] font-medium text-[var(--primary-strong)]">{item.kind}</p>
-                </div>
-                <div className="flex items-start justify-between gap-6">
-                  <p className="max-w-prose text-[15px] leading-[1.95] text-muted">{item.body}</p>
-                  <ArrowUpLeft
-                    size={20}
-                    className="mt-1 shrink-0 text-muted group-hover:text-[var(--primary)]"
-                    aria-hidden="true"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-
-          <div className="mt-10" data-reveal>
-            <h3 className="eyebrow">أعمال أخرى مُسلَّمة</h3>
-            <ul className="mt-4 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] sm:grid-cols-2">
-              {other.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex h-full flex-col bg-surface p-6 transition-colors hover:bg-[var(--primary-soft)]"
-                  >
-                    <span className="font-mono text-[12px] text-muted" dir="ltr">
-                      {item.domain}
-                    </span>
-                    <span className="h-card mt-2 group-hover:text-[var(--primary)]" dir="ltr">
-                      {item.name}
-                    </span>
-                    <span className="mt-1 text-[13px] text-muted">{item.kind}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="section border-t border-border bg-surface">
-        <div className="shell">
-          <ArabicSectionHeader
-            eyebrow="كود عام"
-            title={`${OWNER.publicRepoCount} مستودعاً يمكنك قراءتها.`}
-            body={OPEN_SOURCE_NOTE_AR}
-          />
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center" data-reveal>
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" dir="ltr">
-              github.com/ibrahembuilds
-            </a>
-            <p className="text-[14px] leading-[1.9] text-muted">
-              قراءة اختبارات أحدهم تخبرك عن طريقة بنائه أكثر من أي دراسة حالة.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <ArabicCta
-        title="تريد أن تعرف كيف سيبدو هذا في شركتك؟"
-        body="ابدأ بعملية واحدة. تحصل على تقرير مكتوب يوضح ما الذي يبدو جديراً بالإصلاح أولاً."
-      />
-    </>
-  );
-};
-
-/* -------------------------------------------------------------------------- */
-/* About                                                                      */
-/* -------------------------------------------------------------------------- */
-
-export const ArabicAbout = () => {
-  const facts = [
-    { label: "العمل الحالي", value: "مطوّر حلول ويب وذكاء اصطناعي، NCASE Consulting Group" },
-    { label: "الدراسة", value: "الذكاء الاصطناعي التطبيقي، جامعة الوسائط المتعددة، ماليزيا" },
-    { label: "كود عام", value: `${OWNER.publicRepoCount} مستودعاً على GitHub` },
-    { label: "من تتعامل معه", value: "أنا. مباشرة." },
-  ];
-
-  return (
-    <>
-      <ArabicPageHeader eyebrow="عني" title={ABOUT_AR.title} body={ABOUT_AR.lede} />
-
-      <section className="section">
-        <div className="shell grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          <div className="max-w-prose text-[16px] leading-[1.95] text-muted" data-reveal>
-            {ABOUT_AR.paragraphs.map((paragraph, index) => (
-              <p key={paragraph.slice(0, 24)} className={index === 0 ? "text-ink" : "mt-5"}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          <div data-reveal>
-            <figure className="overflow-hidden rounded-xl border border-border">
-              <img
-                src={portrait960}
-                srcSet={`${portrait640} 640w, ${portrait960} 960w, ${portrait1280} 1280w`}
-                sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
-                width={960}
-                height={960}
-                alt="إبراهيم أحمد حسن أدم، الذي يبني الأنظمة الموصوفة في هذا الموقع"
-                className="aspect-square w-full bg-[var(--background)] object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption className="border-t border-border bg-surface px-5 py-4">
-                <p className="text-[15px] font-semibold text-ink">إبراهيم أحمد</p>
-                <p className="mt-0.5 text-[13px] text-muted">أنظمة تشغيل داخلية للشركات الصغيرة</p>
-              </figcaption>
-            </figure>
-
-            <dl className="mt-5 overflow-hidden rounded-xl border border-border">
-              {facts.map((fact) => (
-                <div key={fact.label} className="border-b border-border bg-surface p-5 last:border-b-0">
-                  <dt className="eyebrow">{fact.label}</dt>
-                  <dd className="mt-2 text-[15px] leading-[1.85] text-ink">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-5 w-full" dir="ltr">
-              github.com/ibrahembuilds
-            </a>
-            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-2 w-full">
-              LinkedIn
-            </a>
-            <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-ghost mt-2 w-full" dir="ltr">
-              {CONTACT_EMAIL}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="section border-t border-border bg-surface">
-        <div className="shell">
-          <ArabicSectionHeader eyebrow="لمن هذا" title="أصحاب الشركات ومديرو العمليات، لا لجان المشتريات." />
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            <div className="card p-6 md:p-7" data-reveal>
-              <h3 className="h-card">{ABOUT_AR.goodFitTitle}</h3>
-              <ul className="mt-4 space-y-2.5 text-[15px] leading-[1.9] text-muted">
-                {ABOUT_AR.goodFit.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="card p-6 md:p-7" data-reveal>
-              <h3 className="h-card">{ABOUT_AR.badFitTitle}</h3>
-              <ul className="mt-4 space-y-2.5 text-[15px] leading-[1.9] text-muted">
-                {ABOUT_AR.badFit.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <ArabicCta
-        title="أسرع طريقة لمعرفة إن كنت أستطيع المساعدة."
-        body="أجب عن بضعة أسئلة حول عملية واحدة. تحصل على تقرير مكتوب على الشاشة، ونكمل من هناك."
-      />
-
-      <p className="sr-only">
-        <a href={`${SITE_URL}/about`} hrefLang="en">
-          English version
-        </a>
-      </p>
-    </>
   );
 };

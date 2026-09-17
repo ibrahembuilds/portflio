@@ -3,34 +3,14 @@ import { Analytics } from "@vercel/analytics/react";
 import Nav from "./marketing/components/Nav";
 import Footer from "./marketing/components/Footer";
 import Home from "./marketing/pages/Home";
-import Services from "./marketing/pages/Services";
-import HowItWorks from "./marketing/pages/HowItWorks";
-import Work from "./marketing/pages/Work";
-import About from "./marketing/pages/About";
 import { Privacy, Terms } from "./marketing/pages/Legal";
 import { ArabicFooter, ArabicNav } from "./marketing/ar/Layout";
-import { ArabicAbout, ArabicHome, ArabicHowItWorks, ArabicServices, ArabicWork } from "./marketing/ar/pages";
+import { ArabicHome } from "./marketing/ar/pages";
 
-export type Route =
-  | "/"
-  | "/services"
-  | "/how-it-works"
-  | "/work"
-  | "/about"
-  | "/privacy"
-  | "/terms"
-  | "/ar/"
-  | "/ar/services/"
-  | "/ar/how-it-works/"
-  | "/ar/work/"
-  | "/ar/about/";
+export type Route = "/" | "/privacy" | "/terms" | "/ar/";
 
 const PAGES: Record<string, () => JSX.Element> = {
   "/": Home,
-  "/services": Services,
-  "/how-it-works": HowItWorks,
-  "/work": Work,
-  "/about": About,
   "/privacy": Privacy,
   "/terms": Terms,
 };
@@ -38,10 +18,6 @@ const PAGES: Record<string, () => JSX.Element> = {
 /** Arabic routes keep a trailing slash, which is how they are already indexed. */
 const ARABIC_PAGES: Record<string, () => JSX.Element> = {
   "/ar/": ArabicHome,
-  "/ar/services/": ArabicServices,
-  "/ar/how-it-works/": ArabicHowItWorks,
-  "/ar/work/": ArabicWork,
-  "/ar/about/": ArabicAbout,
 };
 
 /** One short reveal on scroll, skipped entirely under reduced motion. */
@@ -79,7 +55,7 @@ const App = ({ route = "/" }: { route?: string }) => {
         >
           انتقل إلى المحتوى
         </a>
-        <ArabicNav current={route} />
+        <ArabicNav />
         <main id="main">
           <ArabicPage />
         </main>
@@ -96,7 +72,7 @@ const App = ({ route = "/" }: { route?: string }) => {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--primary)] focus:px-4 focus:py-2 focus:text-white">
         Skip to content
       </a>
-      <Nav current={route} />
+      <Nav />
       <main id="main">
         <Page />
       </main>
