@@ -1,27 +1,7 @@
-import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, NAV_LINKS, OWNER, STACK } from "../../config/site";
+import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, NAV_LINKS, OWNER } from "../../config/site";
 
-/**
- * The stack lives here, at the very bottom of every page — never near a hero
- * and never in a headline. Owners buy the outcome; the tooling is a footnote.
- */
-const Footer = ({ showStack = true }: { showStack?: boolean }) => (
+const Footer = () => (
   <footer className="border-t border-border bg-surface">
-    {showStack && (
-      <div className="shell border-b border-border py-10">
-        <h2 className="eyebrow">Built with</h2>
-        <div className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-          {STACK.map((group) => (
-            <div key={group.group} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="w-full text-[12px] font-medium uppercase tracking-[0.08em] text-muted sm:w-auto">
-                {group.group}
-              </span>
-              <span className="font-mono text-[13px] text-ink">{group.items.join(" · ")}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
     <div className="shell flex flex-col gap-8 py-10 sm:flex-row sm:justify-between">
       <div>
         <p className="text-[15px] font-semibold">{OWNER.name}</p>

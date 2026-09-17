@@ -62,8 +62,9 @@ export const ROUTES = ["/", "/privacy", "/terms"] as const;
 export type Route = (typeof ROUTES)[number];
 
 /**
- * Technology stack. Deliberately surfaced only in the footer — never near a
- * hero, and never named in a headline.
+ * Technology stack. Surfaced as a logo row in the Experience section
+ * (src/marketing/components/TechMarquee.tsx) — proof shown after the offer
+ * is made, never in the hero and never named in a headline.
  */
 export const STACK: { group: string; items: string[] }[] = [
   { group: "Interfaces", items: ["React", "Next.js", "TypeScript"] },

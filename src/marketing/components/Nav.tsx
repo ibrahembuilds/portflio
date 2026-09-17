@@ -37,6 +37,9 @@ const Nav = () => {
                 {link.label}
               </a>
             ))}
+            <a href="/ar/" hrefLang="ar" lang="ar" dir="rtl" className="text-[14px] text-muted hover:text-ink">
+              العربية
+            </a>
             <a href={AUDIT_URL} className="btn btn-primary !px-4 !py-2.5 !text-[14px]">
               {CTA.primary}
             </a>
@@ -73,6 +76,9 @@ const Nav = () => {
               {link.label}
             </a>
           ))}
+          <a href="/ar/" hrefLang="ar" lang="ar" dir="rtl" className="border-b border-border py-3.5 text-[15px]">
+            العربية
+          </a>
           <a href={AUDIT_URL} className="btn btn-primary my-4 w-full">
             {CTA.primary}
           </a>

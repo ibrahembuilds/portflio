@@ -190,7 +190,7 @@ test.describe("marketing site", () => {
     }
   });
 
-  test("technology names stay out of the hero and appear only in the footer", async ({ page }) => {
+  test("technology names stay out of the hero and appear only as proof in Experience", async ({ page }) => {
     await page.goto("/");
 
     const heroText = await page.locator("main section").first().innerText();
@@ -198,9 +198,9 @@ test.describe("marketing site", () => {
       expect(heroText, `${tech} appears in the hero`).not.toContain(tech);
     }
 
-    const footerText = await page.locator("footer").innerText();
-    expect(footerText).toContain("React");
-    expect(footerText).toContain("Postgres");
+    const experienceText = await page.locator("#experience").innerText();
+    expect(experienceText).toContain("React");
+    expect(experienceText).toContain("Postgres");
   });
 
   test("SEO essentials are in the static HTML", async ({ request }) => {

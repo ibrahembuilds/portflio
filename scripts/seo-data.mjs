@@ -170,7 +170,13 @@ const personNode = (locale) => ({
   "@type": "Person",
   "@id": PERSON_ID,
   name: "Ibrahem Ahmed Hassan Adam",
-  alternateName: ["Ibrahem Ahmed", "Ibrahim Ahmed Hassan Adam", "إبراهيم أحمد حسن أدم", "إبراهيم أحمد"],
+  alternateName: [
+    "Ibrahem Ahmed",
+    "Ibrahim Ahmed Hassan Adam",
+    "ibrahembuilds",
+    "إبراهيم أحمد حسن أدم",
+    "إبراهيم أحمد",
+  ],
   givenName: "Ibrahem",
   familyName: "Adam",
   jobTitle: locale === "ar" ? AR_PERSON.jobTitle : "Technical partner for small businesses without a CTO",
@@ -366,7 +372,7 @@ ${alternates}
     }" />
     <meta property="og:site_name" content="Ibrahem Ahmed" />
     <meta property="og:locale" content="${locale === "ar" ? "ar_AR" : "en_US"}" />
-
+${pair ? `    <meta property="og:locale:alternate" content="${locale === "ar" ? "en_US" : "ar_AR"}" />\n` : ""}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttr(page.ogTitle)}" />
     <meta name="twitter:description" content="${escapeAttr(page.description)}" />

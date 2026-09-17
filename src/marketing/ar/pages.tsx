@@ -14,6 +14,7 @@ import {
   TEARDOWN_STEPS_AR,
 } from "../../config/content.ar";
 import { ArabicCta, ArabicSectionHeader } from "./Layout";
+import { TechMarquee } from "../components/TechMarquee";
 import portrait640 from "../../assets/portrait-640.webp";
 import portrait960 from "../../assets/portrait-960.webp";
 import portrait1280 from "../../assets/portrait-1280.webp";
@@ -338,6 +339,13 @@ const ArabicExperience = () => {
               ))}
             </ul>
           </div>
+        </div>
+      </div>
+
+      <div className="shell mt-16" data-reveal>
+        <p className="eyebrow">الأدوات التي أعمل بها</p>
+        <div className="mt-5">
+          <TechMarquee />
         </div>
       </div>
     </section>

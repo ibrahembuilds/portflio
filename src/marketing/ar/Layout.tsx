@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Menu, X } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL, STACK } from "../../config/site";
-import { CTA_AR, NAV_LINKS_AR, STACK_GROUPS_AR } from "../../config/content.ar";
+import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
+import { CTA_AR, NAV_LINKS_AR } from "../../config/content.ar";
 
 /**
  * Chrome for the Arabic routes.
@@ -96,22 +96,6 @@ export const ArabicNav = () => {
 
 export const ArabicFooter = () => (
   <footer className="border-t border-border bg-surface">
-    <div className="shell border-b border-border py-10">
-      <h2 className="eyebrow">مبني باستخدام</h2>
-      <div className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-        {STACK.map((group) => (
-          <div key={group.group} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <span className="w-full text-[12px] font-medium text-muted sm:w-auto">
-              {STACK_GROUPS_AR[group.group] ?? group.group}
-            </span>
-            <span className="font-mono text-[13px] text-ink" dir="ltr">
-              {group.items.join(" · ")}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-
     <div className="shell flex flex-col gap-8 py-10 sm:flex-row sm:justify-between">
       <div>
         <p className="text-[15px] font-semibold">إبراهيم أحمد</p>

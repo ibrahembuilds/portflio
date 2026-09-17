@@ -247,16 +247,6 @@ export const FAQS_AR: FaqAr[] = [
   },
 ];
 
-/** Mirrors STACK in site.ts, with the group names translated. */
-export const STACK_GROUPS_AR: Record<string, string> = {
-  Interfaces: "الواجهات",
-  Services: "الخدمات",
-  Data: "البيانات",
-  Automation: "الأتمتة",
-  "Language models": "نماذج اللغة",
-  Hosting: "الاستضافة",
-};
-
 /** The Arabic site is a single scrolling page now; every link below is an
  *  anchor on "/ar/", written as "/ar/#id" so it still resolves correctly if
  *  a page other than the home page is ever added back. */

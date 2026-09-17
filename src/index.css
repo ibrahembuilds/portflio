@@ -369,6 +369,37 @@
     background-color: var(--accent);
     border: 1px solid var(--accent-deep);
   }
+
+  /* A continuously-scrolling logo strip. The track holds the list twice and
+     scrolls exactly half its own width, so the wrap is invisible; masking
+     the container fades the edges instead of hard-cropping a logo mid-icon. */
+  .tech-marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  .tech-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 40px;
+    animation: tech-marquee-scroll 32s linear infinite;
+  }
+
+  .tech-marquee:hover .tech-marquee__track {
+    animation-play-state: paused;
+  }
+
+  .tech-marquee__item {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+  }
 }
 
 @layer utilities {
@@ -400,6 +431,15 @@
   }
 }
 
+@keyframes tech-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -411,6 +451,14 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+
+  /* The generic rule above still leaves this mid-scroll for one frame — it
+     shortens the animation rather than removing it. A continuous logo
+     scroll has no "settled" frame to land on, so it is turned off outright
+     instead of sped up. */
+  .tech-marquee__track {
+    animation: none !important;
   }
 }
 
