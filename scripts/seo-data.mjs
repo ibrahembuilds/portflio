@@ -12,6 +12,7 @@ const SITE = "https://ibrahemahmed.com";
 const AUDIT = "https://audit.ibrahemahmed.com";
 const OG_IMAGE = `${SITE}/og-image.png`;
 const OG_IMAGE_AR = `${SITE}/og-image-ar.png`;
+const PORTRAIT_IMAGE = `${SITE}/portrait.webp`;
 const PERSON_ID = `${SITE}/#person`;
 const SITE_ID = `${SITE}/#website`;
 
@@ -27,6 +28,7 @@ export const PAGES = {
     ogType: "website",
     changefreq: "monthly",
     priority: "1.0",
+    image: { loc: PORTRAIT_IMAGE, caption: "Ibrahem Ahmed Hassan Adam, founder of KanyouAI" },
   },
   "/privacy": {
     path: "/privacy",
@@ -59,6 +61,7 @@ export const PAGES = {
     ogType: "website",
     changefreq: "monthly",
     priority: "1.0",
+    image: { loc: PORTRAIT_IMAGE, caption: "إبراهيم أحمد حسن أدم، مؤسس KanyouAI" },
   },
 };
 
@@ -177,8 +180,9 @@ const personNode = (locale) => ({
       : "Plans, builds and runs custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that have no CTO and no engineers of their own.",
   url: `${SITE}/`,
   email: "mailto:hello@ibrahemahmed.com",
+  image: { "@type": "ImageObject", url: PORTRAIT_IMAGE, contentUrl: PORTRAIT_IMAGE, width: 1280, height: 1280 },
   sameAs: ["https://github.com/ibrahembuilds", "https://www.linkedin.com/in/ibrahem-ahmed-hassan/"],
-  worksFor: { "@type": "Organization", name: "NCASE Consulting Group" },
+  worksFor: { "@type": "Organization", name: "KanyouAI" },
   alumniOf: {
     "@type": "CollegeOrUniversity",
     name: "Multimedia University",
@@ -389,9 +393,18 @@ export const buildSitemap = () => {
     <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${pair.en}" />
 `
         : "";
+      // Google Images crawls this extension independently of the page itself,
+      // which is how a photo ends up indexed even before the page is.
+      const image = page.image
+        ? `    <image:image>
+      <image:loc>${page.image.loc}</image:loc>
+      <image:caption>${escapeText(page.image.caption)}</image:caption>
+    </image:image>
+`
+        : "";
       return `  <url>
     <loc>${url}</loc>
-${alternates}    <lastmod>${today}</lastmod>
+${alternates}${image}    <lastmod>${today}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`;
@@ -402,6 +415,7 @@ ${alternates}    <lastmod>${today}</lastmod>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.googleapis.com/schemas/sitemap-image/1.1"
 >
 ${entries}
 </urlset>

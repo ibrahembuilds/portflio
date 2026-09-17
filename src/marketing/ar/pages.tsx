@@ -270,7 +270,7 @@ export const ArabicHome = () => (
 
 const ArabicExperience = () => {
   const facts = [
-    { label: "العمل الحالي", value: "مطوّر حلول ويب وذكاء اصطناعي، NCASE Consulting Group" },
+    { label: "العمل الحالي", value: "مؤسس KanyouAI" },
     { label: "الدراسة", value: "الذكاء الاصطناعي التطبيقي، جامعة الوسائط المتعددة، ماليزيا" },
     { label: "كود عام", value: `${OWNER.publicRepoCount} مستودعاً على GitHub` },
     { label: "من تتعامل معه", value: "أنا. مباشرة." },

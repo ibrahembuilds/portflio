@@ -17,7 +17,7 @@ Systems Teardown assessment: https://audit.ibrahemahmed.com/
 ## Who
 
 - Name: Ibrahem Ahmed Hassan Adam, usually written Ibrahem Ahmed
-- Works as: Web & AI Solutions Developer at NCASE Consulting Group
+- Works as: Founder, KanyouAI
 - Studying: Applied AI at Multimedia University, Malaysia
 - Public code: 22 repositories at https://github.com/ibrahembuilds, including unit, API, end-to-end and multi-language test suites
 - Works directly with the client. Not an agency. No team.

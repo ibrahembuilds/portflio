@@ -106,6 +106,11 @@ const outputs = [
   { file: "src/assets/portrait-960.webp", width: 960, background: PAGE },
   { file: "src/assets/portrait-1280.webp", width: 1280, background: PAGE },
   { file: "src/assets/portrait-accent-1280.webp", width: 1280, background: ACCENT },
+  // Unhashed copy in public/, so structured data and the image sitemap
+  // (scripts/seo-data.mjs) have a stable URL to point at. Vite fingerprints
+  // everything under src/assets/ on every build, which a search engine's
+  // cached index can't follow.
+  { file: "public/portrait.webp", width: 1280, background: PAGE },
 ];
 
 for (const output of outputs) {

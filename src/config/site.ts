@@ -28,8 +28,8 @@ export const OWNER = {
   legalName: "Ibrahem Ahmed Hassan Adam",
   discipline: "Internal Systems for Small Businesses",
   /** Verifiable: current role. */
-  role: "Web & AI Solutions Developer",
-  employer: "NCASE Consulting Group",
+  role: "Founder",
+  employer: "KanyouAI",
   /** Verifiable: current study. */
   study: "Applied AI",
   university: "Multimedia University, Malaysia",

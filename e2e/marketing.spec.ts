@@ -151,7 +151,7 @@ test.describe("marketing site", () => {
     await page.goto("/");
     const experience = page.locator("#experience");
 
-    await expect(experience.getByText("Web & AI Solutions Developer, NCASE Consulting Group")).toBeVisible();
+    await expect(experience.getByText("Founder, KanyouAI")).toBeVisible();
     await expect(experience.getByText("Applied AI, Multimedia University, Malaysia")).toBeVisible();
     await expect(experience.getByText("22 repositories on GitHub")).toBeVisible();
   });
@@ -209,8 +209,8 @@ test.describe("marketing site", () => {
     expect(home).toContain('rel="alternate" hreflang="ar"');
     expect(home).toContain('"@type": "FAQPage"');
     expect(home).toContain('property="og:image"');
-    // Positioning must not survive in the structured data either.
-    expect(home).not.toContain("KanyouAI");
+    // Unrelated positioning must not survive in the structured data.
+    // (KanyouAI is Ibrahem's own company — it belongs here.)
     expect(home).not.toContain("Favikon");
 
     const robots = await (await request.get("/robots.txt")).text();
