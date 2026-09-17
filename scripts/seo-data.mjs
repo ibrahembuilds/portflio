@@ -12,61 +12,23 @@ const SITE = "https://ibrahemahmed.com";
 const AUDIT = "https://audit.ibrahemahmed.com";
 const OG_IMAGE = `${SITE}/og-image.png`;
 const OG_IMAGE_AR = `${SITE}/og-image-ar.png`;
+const PORTRAIT_IMAGE = `${SITE}/portrait.webp`;
 const PERSON_ID = `${SITE}/#person`;
 const SITE_ID = `${SITE}/#website`;
-const PUBLIC_REPO_COUNT = 22;
 
 
 
 export const PAGES = {
   "/": {
     path: "/",
-    title: "Ibrahem Ahmed — Custom CRMs, Client Portals & Internal Tools for Small Businesses",
+    title: "Ibrahem Ahmed — Technical Partner for Small Businesses Without a CTO",
     description:
-      "I build custom CRMs, client portals, workflow automation and internal tools for 5–50 person businesses without a technical team. Start with a Systems Teardown.",
-    ogTitle: "Your business shouldn't depend on spreadsheets, inboxes and someone's memory.",
+      "I plan, build and run custom CRMs, client portals, workflow automation and internal tools for 5–50 person businesses with no CTO and no engineers of their own. Start with a Systems Teardown.",
+    ogTitle: "The technical partner you don't have on staff.",
     ogType: "website",
     changefreq: "monthly",
     priority: "1.0",
-  },
-  "/services": {
-    path: "/services",
-    title: "Services — Systems Teardown, Core System Build, Automation Sprint | Ibrahem Ahmed",
-    description:
-      "Four ways I work with small businesses: a Systems Teardown to find what is worth fixing, a Core System Build, an Automation Sprint, and an ongoing Care Plan.",
-    ogTitle: "Four ways I work. One place to start.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.9",
-  },
-  "/how-it-works": {
-    path: "/how-it-works",
-    title: "How It Works — Map, Quote, Build, Hand Over | Ibrahem Ahmed",
-    description:
-      "Fixed scope, fixed price, fixed date. You see the system working in week one, and you keep your data, your accounts and your documentation.",
-    ogTitle: "Map. Quote. Build. Hand over.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.8",
-  },
-  "/work": {
-    path: "/work",
-    title: "Work — Client Systems and Public Code | Ibrahem Ahmed",
-    description: `Live client systems you can open, plus ${PUBLIC_REPO_COUNT} public repositories on GitHub including unit, API and end-to-end test suites.`,
-    ogTitle: "Open it and judge it yourself.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.8",
-  },
-  "/about": {
-    path: "/about",
-    title: "About Ibrahem Ahmed — Internal Systems for Small Businesses",
-    description:
-      "Not an agency, not a team. You deal directly with the person writing the code. Web & AI Solutions Developer at NCASE Consulting Group, studying Applied AI at Multimedia University, Malaysia.",
-    ogTitle: "You deal directly with the person writing the code.",
-    ogType: "profile",
-    changefreq: "yearly",
-    priority: "0.7",
+    image: { loc: PORTRAIT_IMAGE, caption: "Ibrahem Ahmed Hassan Adam, founder of KanyouAI" },
   },
   "/privacy": {
     path: "/privacy",
@@ -92,60 +54,14 @@ export const PAGES = {
     path: "/ar/",
     locale: "ar",
     pairedWith: "/",
-    title: "إبراهيم أحمد — أنظمة CRM مخصصة وبوابات عملاء وأتمتة للشركات الصغيرة",
+    title: "إبراهيم أحمد — الشريك التقني للشركات الصغيرة بلا CTO",
     description:
-      "أبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها فريق تقني داخلي. ابدأ بتفكيك الأنظمة.",
-    ogTitle: "شركتك لا يجب أن تعتمد على جداول البيانات وصناديق البريد وذاكرة أحد الموظفين.",
+      "أخطط وأبني وأدير أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً وليس لديها CTO ولا مهندسون داخليون. ابدأ بتفكيك الأنظمة.",
+    ogTitle: "الشريك التقني الذي تفتقده شركتك.",
     ogType: "website",
     changefreq: "monthly",
     priority: "1.0",
-  },
-  "/ar/services/": {
-    path: "/ar/services/",
-    locale: "ar",
-    pairedWith: "/services",
-    title: "الخدمات — تفكيك الأنظمة، بناء النظام الأساسي، جولة الأتمتة | إبراهيم أحمد",
-    description:
-      "أربع طرق للعمل مع الشركات الصغيرة: تفكيك الأنظمة لمعرفة ما يستحق الإصلاح، وبناء النظام الأساسي، وجولة الأتمتة، وخطة الرعاية المستمرة.",
-    ogTitle: "أربع طرق للعمل معي. ونقطة بداية واحدة.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.9",
-  },
-  "/ar/how-it-works/": {
-    path: "/ar/how-it-works/",
-    locale: "ar",
-    pairedWith: "/how-it-works",
-    title: "طريقة العمل — الرسم والتسعير والبناء والتسليم | إبراهيم أحمد",
-    description:
-      "نطاق ثابت وسعر ثابت وتاريخ ثابت. ترى النظام يعمل في الأسبوع الأول، وتحتفظ ببياناتك وحساباتك وتوثيقك.",
-    ogTitle: "الرسم. التسعير. البناء. التسليم.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.8",
-  },
-  "/ar/work/": {
-    path: "/ar/work/",
-    locale: "ar",
-    pairedWith: "/work",
-    title: "الأعمال — أنظمة لعملاء وكود عام | إبراهيم أحمد",
-    description: `أنظمة تعمل الآن يمكنك فتحها، إضافة إلى ${PUBLIC_REPO_COUNT} مستودعاً عاماً على GitHub تتضمن اختبارات وحدة وواجهات برمجية واختبارات شاملة.`,
-    ogTitle: "افتحها واحكم بنفسك.",
-    ogType: "website",
-    changefreq: "monthly",
-    priority: "0.8",
-  },
-  "/ar/about/": {
-    path: "/ar/about/",
-    locale: "ar",
-    pairedWith: "/about",
-    title: "عن إبراهيم أحمد — أنظمة تشغيل داخلية للشركات الصغيرة",
-    description:
-      "لست وكالة ولست فريقاً. تتعامل مباشرة مع من يكتب الكود. مطوّر حلول ويب وذكاء اصطناعي في NCASE Consulting Group، ويدرس الذكاء الاصطناعي التطبيقي في جامعة الوسائط المتعددة بماليزيا.",
-    ogTitle: "تتعامل مباشرة مع من يكتب الكود.",
-    ogType: "profile",
-    changefreq: "yearly",
-    priority: "0.7",
+    image: { loc: PORTRAIT_IMAGE, caption: "إبراهيم أحمد حسن أدم، مؤسس KanyouAI" },
   },
 };
 
@@ -237,9 +153,9 @@ const SERVICES_AR_LD = [
 ];
 
 const AR_PERSON = {
-  jobTitle: "مطوّر برمجيات يبني أنظمة تشغيل داخلية للشركات",
+  jobTitle: "الشريك التقني للشركات الصغيرة التي ليس لديها CTO",
   description:
-    "يبني أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً تقريباً وليس لديها فريق تقني داخلي.",
+    "يخطط ويبني ويدير أنظمة CRM مخصصة وبوابات عملاء وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً تقريباً وليس لديها CTO ولا مهندسون داخليون.",
   knowsAbout: [
     "أنظمة إدارة علاقات العملاء",
     "بوابات العملاء",
@@ -254,18 +170,25 @@ const personNode = (locale) => ({
   "@type": "Person",
   "@id": PERSON_ID,
   name: "Ibrahem Ahmed Hassan Adam",
-  alternateName: ["Ibrahem Ahmed", "Ibrahim Ahmed Hassan Adam", "إبراهيم أحمد حسن أدم", "إبراهيم أحمد"],
+  alternateName: [
+    "Ibrahem Ahmed",
+    "Ibrahim Ahmed Hassan Adam",
+    "ibrahembuilds",
+    "إبراهيم أحمد حسن أدم",
+    "إبراهيم أحمد",
+  ],
   givenName: "Ibrahem",
   familyName: "Adam",
-  jobTitle: locale === "ar" ? AR_PERSON.jobTitle : "Software developer building internal business systems",
+  jobTitle: locale === "ar" ? AR_PERSON.jobTitle : "Technical partner for small businesses without a CTO",
   description:
     locale === "ar"
       ? AR_PERSON.description
-      : "Builds custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that do not have an internal technical team.",
+      : "Plans, builds and runs custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that have no CTO and no engineers of their own.",
   url: `${SITE}/`,
   email: "mailto:hello@ibrahemahmed.com",
+  image: { "@type": "ImageObject", url: PORTRAIT_IMAGE, contentUrl: PORTRAIT_IMAGE, width: 1280, height: 1280 },
   sameAs: ["https://github.com/ibrahembuilds", "https://www.linkedin.com/in/ibrahem-ahmed-hassan/"],
-  worksFor: { "@type": "Organization", name: "NCASE Consulting Group" },
+  worksFor: { "@type": "Organization", name: "KanyouAI" },
   alumniOf: {
     "@type": "CollegeOrUniversity",
     name: "Multimedia University",
@@ -376,8 +299,6 @@ const graphFor = (page) => {
     });
   }
 
-  if (page.path === "/services" || page.path === "/ar/services/") graph.push(...serviceNodes(locale));
-
   return { "@context": "https://schema.org", "@graph": graph };
 };
 
@@ -451,7 +372,7 @@ ${alternates}
     }" />
     <meta property="og:site_name" content="Ibrahem Ahmed" />
     <meta property="og:locale" content="${locale === "ar" ? "ar_AR" : "en_US"}" />
-
+${pair ? `    <meta property="og:locale:alternate" content="${locale === "ar" ? "en_US" : "ar_AR"}" />\n` : ""}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttr(page.ogTitle)}" />
     <meta name="twitter:description" content="${escapeAttr(page.description)}" />
@@ -478,9 +399,18 @@ export const buildSitemap = () => {
     <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${pair.en}" />
 `
         : "";
+      // Google Images crawls this extension independently of the page itself,
+      // which is how a photo ends up indexed even before the page is.
+      const image = page.image
+        ? `    <image:image>
+      <image:loc>${page.image.loc}</image:loc>
+      <image:caption>${escapeText(page.image.caption)}</image:caption>
+    </image:image>
+`
+        : "";
       return `  <url>
     <loc>${url}</loc>
-${alternates}    <lastmod>${today}</lastmod>
+${alternates}${image}    <lastmod>${today}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`;
@@ -491,6 +421,7 @@ ${alternates}    <lastmod>${today}</lastmod>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.googleapis.com/schemas/sitemap-image/1.1"
 >
 ${entries}
 </urlset>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AUDIT_URL, CTA, NAV_LINKS, OWNER } from "../../config/site";
 
-const Nav = ({ current }: { current: string }) => {
+const Nav = () => {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -32,14 +32,14 @@ const Nav = ({ current }: { current: string }) => {
               <a
                 key={link.href}
                 href={link.href}
-                aria-current={current === link.href ? "page" : undefined}
-                className={`text-[14px] transition-colors hover:text-[var(--primary)] ${
-                  current === link.href ? "font-medium text-ink" : "text-muted"
-                }`}
+                className="text-[14px] text-muted transition-colors hover:text-[var(--primary)]"
               >
                 {link.label}
               </a>
             ))}
+            <a href="/ar/" hrefLang="ar" lang="ar" dir="rtl" className="text-[14px] text-muted hover:text-ink">
+              العربية
+            </a>
             <a href={AUDIT_URL} className="btn btn-primary !px-4 !py-2.5 !text-[14px]">
               {CTA.primary}
             </a>
@@ -70,12 +70,15 @@ const Nav = ({ current }: { current: string }) => {
             <a
               key={link.href}
               href={link.href}
-              aria-current={current === link.href ? "page" : undefined}
+              onClick={() => setOpen(false)}
               className="border-b border-border py-3.5 text-[15px]"
             >
               {link.label}
             </a>
           ))}
+          <a href="/ar/" hrefLang="ar" lang="ar" dir="rtl" className="border-b border-border py-3.5 text-[15px]">
+            العربية
+          </a>
           <a href={AUDIT_URL} className="btn btn-primary my-4 w-full">
             {CTA.primary}
           </a>

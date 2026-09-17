@@ -535,7 +535,7 @@ const App = () => {
     return (
       <>
         <Header>
-          <a href={`${SITE_URL}/services`} className="text-[13px] text-muted hover:text-ink">
+          <a href={`${SITE_URL}/#services`} className="text-[13px] text-muted hover:text-ink">
             What I build
           </a>
         </Header>

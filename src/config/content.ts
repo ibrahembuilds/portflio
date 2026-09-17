@@ -9,8 +9,8 @@
 /* -------------------------------------------------------------------------- */
 
 export const HERO = {
-  headline: "Your business shouldn't depend on spreadsheets, inboxes and someone's memory.",
-  body: "I build custom CRMs, client portals, workflow automation and internal tools for 5–50 person businesses that don't have a technical team.",
+  headline: "The technical partner you don't have on staff.",
+  body: "I plan, build and run the internal systems — custom CRMs, client portals, workflow automation, internal tools — for 5–50 person businesses with no CTO and no engineers of their own. One person who owns the technical side properly, the way an in-house hire would, without you having to make that hire.",
   trust:
     "You deal directly with the person writing the code. Your accounts. Your data. Clear documentation. No lock-in.",
 } as const;
@@ -29,33 +29,37 @@ export const PROBLEM_QUOTES = [
 ] as const;
 
 /* -------------------------------------------------------------------------- */
-/* What I build                                                               */
+/* Experience — verified facts only. No invented work history.                 */
 /* -------------------------------------------------------------------------- */
 
-export type BuildItem = { title: string; body: string; examples: string[] };
+export const EXPERIENCE_INTRO = [
+  "Most businesses between 5 and 50 people run on a set of tools that were each added to solve one problem, and never designed to work together. A spreadsheet here, an inbox there, a booking tool that does part of the job, and a person who remembers the rest.",
+  "It works, until it does not. A lead sits unanswered. An invoice never gets raised. The one person who knows how a process runs takes a week off. Nobody set out to build it this way — it accumulated.",
+  "I take on the technical side of that the way an in-house hire would: a custom CRM, a client portal, a job or booking system, an internal dashboard, or the automation that connects what you already pay for. Built around a process you already run, deployed on accounts in your name, documented so your team can use it without me.",
+  "I work on a fixed scope, a fixed price and a fixed date, quoted after I have seen the process. If I do not think I can fix the problem, I say so and we stop.",
+] as const;
 
-export const WHAT_I_BUILD: BuildItem[] = [
-  {
-    title: "Custom CRMs",
-    body: "One place where every lead, quote, job and customer lives, set up the way your business actually sells and delivers.",
-    examples: ["Lead and enquiry tracking", "Quotes and follow-up", "Customer history in one record"],
-  },
-  {
-    title: "Client portals",
-    body: "A login where your customers see their own jobs, documents, invoices and updates instead of emailing you to ask.",
-    examples: ["Job and order status", "Document and file access", "Approvals and sign-off"],
-  },
-  {
-    title: "Workflow automation",
-    body: "The repeated copying, chasing and reminding happens on its own, so nothing waits on someone remembering to do it.",
-    examples: ["Lead capture and response", "Missed-call follow-up", "Reporting and reminders"],
-  },
-  {
-    title: "Internal tools",
-    body: "The screen your team opens every morning: jobs, bookings, stock, staff, or whatever your operation actually runs on.",
-    examples: ["Job and booking boards", "Operations dashboards", "Quoting and pricing tools"],
-  },
-];
+export type FitList = { title: string; items: string[] };
+
+export const GOOD_FIT: FitList = {
+  title: "A good fit",
+  items: [
+    "Roughly 5 to 50 people, with no internal technical team",
+    "An owner, founder or operations manager who can make the decision",
+    "One process you can point at that is costing time or losing work",
+    "Trades and home services, clinics and allied health, professional services, real estate, logistics, education providers",
+  ],
+};
+
+export const NOT_A_FIT: FitList = {
+  title: "Not a fit",
+  items: [
+    "You want a marketing website rather than an operational system",
+    "You want the cheapest possible quote rather than the right fix",
+    "You already have an internal development team who own this work",
+    "Nobody on your side can describe how the process currently runs",
+  ],
+};
 
 /* -------------------------------------------------------------------------- */
 /* How I work                                                                 */
