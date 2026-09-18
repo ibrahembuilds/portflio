@@ -429,14 +429,22 @@ test.describe("marketing site", () => {
     const redirects = vercelConfig.default.redirects as { source: string; destination: string }[];
 
     const expected: [string, string][] = [
-      ["/services/?", "/#services"],
-      ["/how-it-works/?", "/#how-i-work"],
-      ["/work/?", "/#projects"],
-      ["/about/?", "/#experience"],
-      ["/ar/services/?", "/ar/#services"],
-      ["/ar/how-it-works/?", "/ar/#how-i-work"],
-      ["/ar/work/?", "/ar/#projects"],
-      ["/ar/about/?", "/ar/#experience"],
+      ["/services", "/#services"],
+      ["/services/", "/#services"],
+      ["/how-it-works", "/#how-i-work"],
+      ["/how-it-works/", "/#how-i-work"],
+      ["/work", "/#projects"],
+      ["/work/", "/#projects"],
+      ["/about", "/#experience"],
+      ["/about/", "/#experience"],
+      ["/ar/services", "/ar/#services"],
+      ["/ar/services/", "/ar/#services"],
+      ["/ar/how-it-works", "/ar/#how-i-work"],
+      ["/ar/how-it-works/", "/ar/#how-i-work"],
+      ["/ar/work", "/ar/#projects"],
+      ["/ar/work/", "/ar/#projects"],
+      ["/ar/about", "/ar/#experience"],
+      ["/ar/about/", "/ar/#experience"],
     ];
 
     for (const [source, destination] of expected) {

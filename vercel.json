@@ -22,42 +22,82 @@
       "permanent": true
     },
     {
-      "source": "/services/?",
+      "source": "/services",
       "destination": "/#services",
       "permanent": true
     },
     {
-      "source": "/how-it-works/?",
+      "source": "/services/",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/how-it-works",
       "destination": "/#how-i-work",
       "permanent": true
     },
     {
-      "source": "/work/?",
+      "source": "/how-it-works/",
+      "destination": "/#how-i-work",
+      "permanent": true
+    },
+    {
+      "source": "/work",
       "destination": "/#projects",
       "permanent": true
     },
     {
-      "source": "/about/?",
+      "source": "/work/",
+      "destination": "/#projects",
+      "permanent": true
+    },
+    {
+      "source": "/about",
       "destination": "/#experience",
       "permanent": true
     },
     {
-      "source": "/ar/services/?",
+      "source": "/about/",
+      "destination": "/#experience",
+      "permanent": true
+    },
+    {
+      "source": "/ar/services",
       "destination": "/ar/#services",
       "permanent": true
     },
     {
-      "source": "/ar/how-it-works/?",
+      "source": "/ar/services/",
+      "destination": "/ar/#services",
+      "permanent": true
+    },
+    {
+      "source": "/ar/how-it-works",
       "destination": "/ar/#how-i-work",
       "permanent": true
     },
     {
-      "source": "/ar/work/?",
+      "source": "/ar/how-it-works/",
+      "destination": "/ar/#how-i-work",
+      "permanent": true
+    },
+    {
+      "source": "/ar/work",
       "destination": "/ar/#projects",
       "permanent": true
     },
     {
-      "source": "/ar/about/?",
+      "source": "/ar/work/",
+      "destination": "/ar/#projects",
+      "permanent": true
+    },
+    {
+      "source": "/ar/about",
+      "destination": "/ar/#experience",
+      "permanent": true
+    },
+    {
+      "source": "/ar/about/",
       "destination": "/ar/#experience",
       "permanent": true
     }
