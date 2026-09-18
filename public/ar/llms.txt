@@ -10,6 +10,7 @@
 
 - https://ibrahemahmed.com/ar/#experience — الخبرة والخلفية ولمن هذا مناسب
 - https://ibrahemahmed.com/ar/#projects — أنظمة عملاء مُسلَّمة وكود عام
+- https://ibrahemahmed.com/ar/#products — منتجاته الخاصة، مبنية ومُطلَقة باستقلالية
 - https://ibrahemahmed.com/ar/#services — الخدمات الأربع
 - https://ibrahemahmed.com/ar/#how-i-work — طريقة العمل: الرسم، التسعير، البناء، التسليم
 - https://ibrahemahmed.com/ar/#faq — أسئلة يطرحها أصحاب الشركات
@@ -63,13 +64,20 @@
 3. البناء — يرى العميل النظام يعمل في الأسبوع الأول، لا في النهاية
 4. التسليم — بيانات العميل وحساباته وتوثيقه، بلا ارتباط إجباري
 
-## أعمال مختارة
+## أعمال مختارة (لعملاء)
 
 - NCase Consulting (https://ncase.com.sa/) — موقع استشارات ثنائي اللغة خلفه نظام CRM داخلي للعملاء المحتملين والفعاليات والحملات والمتابعة
 - NCASE Intelligence (https://ncaseai.com/) — منصة داخلية ثنائية اللغة لتتبع المنافسين والمراقبة والتقارير
 - Al Mujtahid (https://almujtahidedu.com/) — منصة تقود الطالب من تصفّح البرامج إلى طلب قبول منظم
 - Al-Ghufran (https://al-ghufran.com/) — موقع استشارات تعليمية يبدأ بالعربية
 - Abdul Hai Trading (https://abdulhaitrading.com/) — موقع مؤسسي وتجاري لشركة سلع زراعية
+
+## منتجات (خاصة به، تحت KanyouAI)
+
+- FocusFlow (https://focusflowai.site/) — تطبيق تخطيط مهام وتركيز بالذكاء الاصطناعي، يقسّم الهدف إلى مهام فرعية ويقرنه بمؤقّت بومودورو
+- AI Student (https://ai-student-omega.vercel.app/) — منصة تدريس بالذكاء الاصطناعي تبدأ بالعربية لطلاب المرحلة المتوسطة في السودان، مستندة إلى منهجهم الفعلي
+- Boltfy (https://boltfy-five.vercel.app/) — أداة بناء نماذج ونشرات بريدية بالسحب والإفلات مع لوحة تحليلات لحظية
+- AI Web Builder (https://github.com/ibrahembuilds/AI-web-builder-) — مولّد مواقع بالذكاء الاصطناعي مفتوح المصدر، بلا نسخة تجريبية منشورة
 
 ## التواصل
 

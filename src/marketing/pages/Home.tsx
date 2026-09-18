@@ -11,11 +11,14 @@ import {
   PRICING_NOTE,
   PROBLEM_QUOTES,
   PROCESS,
+  PRODUCTS,
+  PRODUCTS_INTRO,
   SERVICES,
   TEARDOWN_STEPS,
 } from "../../config/content";
 import { SectionHeader } from "../components/Section";
 import { TechMarquee } from "../components/TechMarquee";
+import { CountUp } from "../components/CountUp";
 import portrait640 from "../../assets/portrait-640.webp";
 import portrait960 from "../../assets/portrait-960.webp";
 import portrait1280 from "../../assets/portrait-1280.webp";
@@ -185,7 +188,7 @@ const Projects = () => {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="card group flex flex-col p-6 transition-colors hover:border-[var(--primary)]"
+              className="card group flex flex-col p-6 transition hover:-translate-y-1 hover:border-[var(--primary)] hover:shadow-lg"
               data-reveal
               style={{ "--reveal-delay": `${(index % 3) * 0.05}s` } as React.CSSProperties}
             >
@@ -219,13 +222,79 @@ const Projects = () => {
 
         <div className="card mt-5 flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-7" data-reveal>
           <div>
-            <h3 className="h-card">{OWNER.publicRepoCount} public repositories on GitHub</h3>
+            <h3 className="h-card">
+              <CountUp value={OWNER.publicRepoCount} /> public repositories on GitHub
+            </h3>
             <p className="mt-2 max-w-prose text-[14px] leading-relaxed text-muted">{OPEN_SOURCE_NOTE}</p>
           </div>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary shrink-0">
             Read the code
           </a>
         </div>
+      </div>
+    </section>
+  );
+};
+
+const Products = () => {
+  const featured = PRODUCTS.filter((item) => item.featured);
+  const other = PRODUCTS.filter((item) => !item.featured);
+
+  return (
+    <section className="section border-b border-border bg-surface" id="products">
+      <div className="shell">
+        <SectionHeader
+          eyebrow="Products"
+          title={
+            <>
+              <CountUp value={PRODUCTS.length} /> products, shipped on my own time.
+            </>
+          }
+          body={PRODUCTS_INTRO}
+        />
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {featured.map((item, index) => (
+            <a
+              key={item.name}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card group flex flex-col p-6 transition hover:-translate-y-1 hover:border-[var(--primary)] hover:shadow-lg"
+              data-reveal
+              style={{ "--reveal-delay": `${(index % 3) * 0.05}s` } as React.CSSProperties}
+            >
+              <span className="font-mono text-[12px] text-muted">{item.domain}</span>
+              <h3 className="h-card mt-3 group-hover:text-[var(--primary)]">{item.name}</h3>
+              <p className="mt-1.5 text-[13px] font-medium text-[var(--primary-strong)]">{item.kind}</p>
+              <p className="mt-3 text-[14px] leading-relaxed text-muted">{item.body}</p>
+            </a>
+          ))}
+        </div>
+
+        {other.length > 0 && (
+          <div className="mt-10" data-reveal>
+            <h3 className="eyebrow">Also shipped</h3>
+            <ul
+              className={`mt-4 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] ${other.length > 1 ? "sm:grid-cols-2" : "sm:max-w-md"}`}
+            >
+              {other.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-full flex-col bg-[var(--background)] p-6 transition-colors hover:bg-[var(--primary-soft)]"
+                  >
+                    <span className="font-mono text-[12px] text-muted">{item.domain}</span>
+                    <span className="h-card mt-2 group-hover:text-[var(--primary)]">{item.name}</span>
+                    <span className="mt-1 text-[13px] text-muted">{item.kind}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -439,6 +508,7 @@ const Home = () => (
     <ProblemRecognition />
     <Experience />
     <Projects />
+    <Products />
     <Offers />
     <HowIWork />
     <TeardownExplainer />

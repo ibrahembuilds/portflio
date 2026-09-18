@@ -7,7 +7,7 @@ export const SectionHeader = ({
   align = "start",
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   body?: string;
   align?: "start" | "center";
 }) => (

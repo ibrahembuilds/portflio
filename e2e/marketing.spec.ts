@@ -36,6 +36,7 @@ test.describe("marketing site", () => {
       "I build the internal systems small businesses end up running on.",
       "Owners and operations managers, not procurement committees.",
       "Open it and judge it yourself.",
+      "4 products, shipped on my own time.",
       "Four ways to bring in the technical side you don't have.",
       "Four steps. No open-ended engagements.",
       "Find out what is worth fixing before you spend anything.",
@@ -147,6 +148,18 @@ test.describe("marketing site", () => {
     await expect(projects.getByText("22 public repositories on GitHub")).toBeVisible();
   });
 
+  test("the products section shows real, shipped tools", async ({ page }) => {
+    await page.goto("/");
+    const products = page.locator("#products");
+
+    await expect(products.getByText("4 products, shipped on my own time.")).toBeVisible();
+    await expect(products.getByRole("link", { name: /focusflowai\.site/ })).toHaveAttribute(
+      "href",
+      "https://focusflowai.site/",
+    );
+    await expect(products.getByRole("link", { name: /github\.com\/ibrahembuilds/ })).toBeVisible();
+  });
+
   test("the experience section carries only verified facts", async ({ page }) => {
     await page.goto("/");
     const experience = page.locator("#experience");
@@ -173,6 +186,7 @@ test.describe("marketing site", () => {
     for (const [label, id] of [
       ["Experience", "experience"],
       ["Projects", "projects"],
+      ["Products", "products"],
       ["Services", "services"],
       ["FAQ", "faq"],
     ] as const) {
@@ -241,7 +255,7 @@ test.describe("marketing site", () => {
     await page.goto("/ar/");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
 
-    for (const id of ["experience", "projects", "services", "faq"]) {
+    for (const id of ["experience", "projects", "products", "services", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
 

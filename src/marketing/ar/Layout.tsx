@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, Menu, X } from "lucide-react";
 import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
 import { CTA_AR, NAV_LINKS_AR } from "../../config/content.ar";
@@ -149,7 +149,7 @@ export const ArabicSectionHeader = ({
   body,
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   body?: string;
 }) => (
   <div className="max-w-[46rem]" data-reveal>

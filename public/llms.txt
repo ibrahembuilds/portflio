@@ -10,6 +10,7 @@ Systems Teardown assessment: https://audit.ibrahemahmed.com/
 
 - https://ibrahemahmed.com/#experience — role, background, who this is for
 - https://ibrahemahmed.com/#projects — delivered client systems and public code
+- https://ibrahemahmed.com/#products — his own SaaS products, built and shipped independently
 - https://ibrahemahmed.com/#services — the four offers
 - https://ibrahemahmed.com/#how-i-work — Map, Quote, Build, Hand over
 - https://ibrahemahmed.com/#faq — questions owners ask
@@ -63,13 +64,20 @@ Prices are not published. Every build is quoted as fixed scope, fixed price and 
 3. Build — the client sees it working in week one, not at the end
 4. Hand over — client's data, client's accounts, written documentation, no lock-in
 
-## Selected work
+## Selected work (for clients)
 
 - NCase Consulting (https://ncase.com.sa/) — bilingual consulting website with a private CRM behind it for leads, events, campaigns and follow-up
 - NCASE Intelligence (https://ncaseai.com/) — bilingual internal platform for competitor tracking, monitoring and reports
 - Al Mujtahid (https://almujtahidedu.com/) — Arabic-first platform taking a prospective student from browsing programmes to a structured admissions enquiry
 - Al-Ghufran (https://al-ghufran.com/) — Arabic-first education consultancy website
 - Abdul Hai Trading (https://abdulhaitrading.com/) — bilingual corporate and product website for an agricultural commodities business
+
+## Products (his own, shipped under KanyouAI)
+
+- FocusFlow (https://focusflowai.site/) — AI task planning and focus app: breaks a goal into subtasks, pairs it with a Pomodoro timer
+- AI Student (https://ai-student-omega.vercel.app/) — Arabic-first AI tutoring platform for Sudanese middle school students, grounded in their actual curriculum
+- Boltfy (https://boltfy-five.vercel.app/) — drag-and-drop form and newsletter builder with a real-time analytics dashboard
+- AI Web Builder (https://github.com/ibrahembuilds/AI-web-builder-) — open-source AI website generator, no live demo
 
 ## Contact
 

@@ -33,6 +33,7 @@ export const PROBLEM_QUOTES = [
 /* -------------------------------------------------------------------------- */
 
 export const EXPERIENCE_INTRO = [
+  "I'm Ibrahem Ahmed, founder of KanyouAI. I'm the one who actually writes the code for everything on this page — no account manager, no team assembled behind the scenes.",
   "Most businesses between 5 and 50 people run on a set of tools that were each added to solve one problem, and never designed to work together. A spreadsheet here, an inbox there, a booking tool that does part of the job, and a person who remembers the rest.",
   "It works, until it does not. A lead sits unanswered. An invoice never gets raised. The one person who knows how a process runs takes a week off. Nobody set out to build it this way — it accumulated.",
   "I take on the technical side of that the way an in-house hire would: a custom CRM, a client portal, a job or booking system, an internal dashboard, or the automation that connects what you already pay for. Built around a process you already run, deployed on accounts in your name, documented so your team can use it without me.",
@@ -265,6 +266,50 @@ export const CLIENT_SYSTEMS: ClientSystem[] = [
 
 export const OPEN_SOURCE_NOTE =
   "Public repositories on GitHub, including unit, API, end-to-end and multi-language test suites. You can read how I write and test software before you hire me.";
+
+/* -------------------------------------------------------------------------- */
+/* Products — SaaS tools built and shipped independently, not client work.     */
+/* -------------------------------------------------------------------------- */
+
+export type Product = ClientSystem;
+
+export const PRODUCTS_INTRO =
+  "Alongside client work, I build and ship my own products under KanyouAI. Same habit, aimed at my own ideas instead of someone else's process.";
+
+export const PRODUCTS: Product[] = [
+  {
+    name: "FocusFlow",
+    href: "https://focusflowai.site/",
+    domain: "focusflowai.site",
+    kind: "AI task planning and focus app",
+    body: "Breaks a vague goal down into actionable subtasks, then pairs the list with a Pomodoro focus timer and drag-and-drop organisation.",
+    featured: true,
+  },
+  {
+    name: "AI Student",
+    href: "https://ai-student-omega.vercel.app/",
+    domain: "ai-student-omega.vercel.app",
+    kind: "Arabic-first AI tutoring platform",
+    body: "Built for middle school students in Sudan: pick your grade and textbook, and the AI answers only from that curriculum, grounded with retrieval rather than general knowledge.",
+    featured: true,
+  },
+  {
+    name: "Boltfy",
+    href: "https://boltfy-five.vercel.app/",
+    domain: "boltfy-five.vercel.app",
+    kind: "Drag-and-drop form and newsletter builder",
+    body: "Build forms, manage the people who fill them in, and send them email updates, with a real-time analytics dashboard behind it.",
+    featured: true,
+  },
+  {
+    name: "AI Web Builder",
+    href: "https://github.com/ibrahembuilds/AI-web-builder-",
+    domain: "github.com/ibrahembuilds",
+    kind: "AI website generator, open source",
+    body: "Generates a full site from a written brief, then edits its own HTML, CSS and JavaScript from further prompts.",
+    featured: false,
+  },
+];
 
 /* -------------------------------------------------------------------------- */
 /* FAQ — kept in sync with the FAQPage structured data in scripts/seo-data.mjs  */

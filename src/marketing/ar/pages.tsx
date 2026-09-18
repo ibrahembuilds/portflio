@@ -10,11 +10,14 @@ import {
   PRICING_NOTE_AR,
   PROBLEM_QUOTES_AR,
   PROCESS_AR,
+  PRODUCTS_AR,
+  PRODUCTS_INTRO_AR,
   SERVICES_AR,
   TEARDOWN_STEPS_AR,
 } from "../../config/content.ar";
 import { ArabicCta, ArabicSectionHeader } from "./Layout";
 import { TechMarquee } from "../components/TechMarquee";
+import { CountUp } from "../components/CountUp";
 import portrait640 from "../../assets/portrait-640.webp";
 import portrait960 from "../../assets/portrait-960.webp";
 import portrait1280 from "../../assets/portrait-1280.webp";
@@ -96,6 +99,7 @@ export const ArabicHome = () => (
 
     <ArabicExperience />
     <ArabicProjects />
+    <ArabicProducts />
 
     <section className="section border-b border-border" id="services">
       <div className="shell">
@@ -376,7 +380,7 @@ const ArabicProjects = () => {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="card group flex flex-col p-6 transition-colors hover:border-[var(--primary)]"
+              className="card group flex flex-col p-6 transition hover:-translate-y-1 hover:border-[var(--primary)] hover:shadow-lg"
               data-reveal
               style={{ "--reveal-delay": `${(index % 3) * 0.05}s` } as React.CSSProperties}
             >
@@ -421,7 +425,9 @@ const ArabicProjects = () => {
           data-reveal
         >
           <div>
-            <h3 className="h-card">{OWNER.publicRepoCount} مستودعاً عاماً على GitHub</h3>
+            <h3 className="h-card">
+              <CountUp value={OWNER.publicRepoCount} /> مستودعاً عاماً على GitHub
+            </h3>
             <p className="mt-2 max-w-prose text-[14px] leading-[1.9] text-muted">{OPEN_SOURCE_NOTE_AR}</p>
           </div>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary shrink-0">
@@ -429,6 +435,78 @@ const ArabicProjects = () => {
             <ArrowUpLeft size={16} aria-hidden="true" />
           </a>
         </div>
+      </div>
+    </section>
+  );
+};
+
+const ArabicProducts = () => {
+  const featured = PRODUCTS_AR.filter((item) => item.featured);
+  const other = PRODUCTS_AR.filter((item) => !item.featured);
+
+  return (
+    <section className="section border-b border-border bg-surface" id="products">
+      <div className="shell">
+        <ArabicSectionHeader
+          eyebrow="المنتجات"
+          title={
+            <>
+              <CountUp value={PRODUCTS_AR.length} /> منتجات أطلقتها بنفسي.
+            </>
+          }
+          body={PRODUCTS_INTRO_AR}
+        />
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {featured.map((item, index) => (
+            <a
+              key={item.name}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card group flex flex-col p-6 transition hover:-translate-y-1 hover:border-[var(--primary)] hover:shadow-lg"
+              data-reveal
+              style={{ "--reveal-delay": `${(index % 3) * 0.05}s` } as React.CSSProperties}
+            >
+              <span className="font-mono text-[12px] text-muted" dir="ltr">
+                {item.domain}
+              </span>
+              <h3 className="h-card mt-3 group-hover:text-[var(--primary)]" dir="ltr">
+                {item.name}
+              </h3>
+              <p className="mt-1.5 text-[13px] font-medium text-[var(--primary-strong)]">{item.kind}</p>
+              <p className="mt-3 text-[14px] leading-[1.9] text-muted">{item.body}</p>
+            </a>
+          ))}
+        </div>
+
+        {other.length > 0 && (
+          <div className="mt-10" data-reveal>
+            <h3 className="eyebrow">أُطلقت أيضاً</h3>
+            <ul
+              className={`mt-4 grid gap-px overflow-hidden rounded-xl border border-border bg-[var(--border)] ${other.length > 1 ? "sm:grid-cols-2" : "sm:max-w-md"}`}
+            >
+              {other.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-full flex-col bg-[var(--background)] p-6 transition-colors hover:bg-[var(--primary-soft)]"
+                  >
+                    <span className="font-mono text-[12px] text-muted" dir="ltr">
+                      {item.domain}
+                    </span>
+                    <span className="h-card mt-2 group-hover:text-[var(--primary)]" dir="ltr">
+                      {item.name}
+                    </span>
+                    <span className="mt-1 text-[13px] text-muted">{item.kind}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );
