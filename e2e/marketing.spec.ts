@@ -169,6 +169,60 @@ test.describe("marketing site", () => {
     await expect(experience.getByText("22 repositories on GitHub")).toBeVisible();
   });
 
+  test("the photos pages are indexable, show the portrait and declare it to search engines", async ({
+    page,
+    request,
+  }) => {
+    for (const [path, lang] of [
+      ["/press", "en"],
+      ["/ar/press/", "ar"],
+    ] as const) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+      const photo = page.locator("figure img").first();
+      await expect(photo).toHaveAttribute("src", "/portrait.webp");
+      await expect(photo).toHaveAttribute("alt", lang === "ar" ? /إبراهيم أحمد حسن أدم/ : /Ibrahem Ahmed Hassan Adam/);
+      expect(await photo.evaluate((node: HTMLImageElement) => node.naturalWidth)).toBeGreaterThan(0);
+
+      const html = await (await request.get(path)).text();
+      expect(html, `${path} must be indexable`).not.toContain("noindex");
+      expect(html).toContain('"@type": "ProfilePage"');
+      expect(html).toContain('"contentUrl": "https://ibrahemahmed.com/portrait.webp"');
+    }
+
+    const sitemap = await (await request.get("/sitemap.xml")).text();
+    for (const loc of ["https://ibrahemahmed.com/press", "https://ibrahemahmed.com/ar/press/"]) {
+      expect(sitemap).toContain(`<loc>${loc}</loc>`);
+    }
+
+    const llms = await (await request.get("/llms.txt")).text();
+    expect(llms).toContain("https://ibrahemahmed.com/press");
+    expect(llms).toContain("https://ibrahemahmed.com/portrait.webp");
+  });
+
+  test("the photos pages are deliberately unlinked from every other page", async ({ request }) => {
+    // Reachable by direct URL, the sitemap and llms.txt only. A link from the
+    // site chrome would make them part of the public navigation.
+    for (const path of ["/", "/ar/", "/privacy", "/terms"]) {
+      const html = await (await request.get(path)).text();
+      expect(html, `${path} must not link to /press`).not.toMatch(/href="\/press\/?"/);
+      expect(html, `${path} must not link to /ar/press/`).not.toMatch(/href="\/ar\/press\/?"/);
+    }
+  });
+
+  test("every published photo loads on the photos pages", async ({ page }) => {
+    for (const path of ["/press", "/ar/press/"]) {
+      await page.goto(path);
+      const images = page.locator("figure img");
+      expect(await images.count()).toBeGreaterThanOrEqual(4);
+      for (const image of await images.all()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth)).toBeGreaterThan(0);
+      }
+    }
+  });
+
   test("legal pages are reachable and noindexed", async ({ page, request }) => {
     await page.goto("/privacy");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("What I collect");
@@ -410,7 +464,7 @@ test.describe("marketing site", () => {
   test("layout does not scroll horizontally at phone width", async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
 
-    for (const path of ["/", "/ar/"]) {
+    for (const path of ["/", "/ar/", "/press", "/ar/press/"]) {
       await page.goto(path);
       const overflows = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,

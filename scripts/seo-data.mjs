@@ -8,11 +8,22 @@
  * counts, no metrics, no awards, no testimonials.
  */
 
+import { readFileSync } from "node:fs";
+
 const SITE = "https://ibrahemahmed.com";
 const AUDIT = "https://audit.ibrahemahmed.com";
 const OG_IMAGE = `${SITE}/og-image.png`;
 const OG_IMAGE_AR = `${SITE}/og-image-ar.png`;
 const PORTRAIT_IMAGE = `${SITE}/portrait.webp`;
+
+/**
+ * Every published photograph, from the same file the /press pages render, so
+ * the page, the Person structured data and the image sitemap cannot disagree.
+ */
+const PHOTOS = JSON.parse(readFileSync(new URL("../src/config/photos.json", import.meta.url), "utf8")).map((photo) => ({
+  ...photo,
+  url: `${SITE}${photo.src}`,
+}));
 const PERSON_ID = `${SITE}/#person`;
 const SITE_ID = `${SITE}/#website`;
 
@@ -29,6 +40,17 @@ export const PAGES = {
     changefreq: "monthly",
     priority: "1.0",
     image: { loc: PORTRAIT_IMAGE, caption: "Ibrahem Ahmed Hassan Adam, founder of KanyouAI" },
+  },
+  "/press": {
+    path: "/press",
+    title: "Ibrahem Ahmed — Photos, Bio and Key Facts",
+    description:
+      "Photos of Ibrahem Ahmed Hassan Adam, founder of KanyouAI, with his name as written, role, studies and public code — for anyone writing about him.",
+    ogTitle: "Ibrahem Ahmed: photos, bio and key facts",
+    ogType: "profile",
+    changefreq: "monthly",
+    priority: "0.6",
+    images: "all",
   },
   "/privacy": {
     path: "/privacy",
@@ -62,6 +84,19 @@ export const PAGES = {
     changefreq: "monthly",
     priority: "1.0",
     image: { loc: PORTRAIT_IMAGE, caption: "إبراهيم أحمد حسن أدم، مؤسس KanyouAI" },
+  },
+  "/ar/press/": {
+    path: "/ar/press/",
+    locale: "ar",
+    pairedWith: "/press",
+    title: "إبراهيم أحمد — صور وسيرة وحقائق أساسية",
+    description:
+      "صور إبراهيم أحمد حسن أدم، مؤسس KanyouAI، مع اسمه كما يُكتب ومنصبه ودراسته وشيفرته العامة، لمن يكتب عنه.",
+    ogTitle: "إبراهيم أحمد: صور وسيرة وحقائق أساسية",
+    ogType: "profile",
+    changefreq: "monthly",
+    priority: "0.6",
+    images: "all",
   },
 };
 
@@ -186,7 +221,16 @@ const personNode = (locale) => ({
       : "Plans, builds and runs custom CRMs, client portals, workflow automation and internal tools for businesses of roughly 5 to 50 people that have no CTO and no engineers of their own.",
   url: `${SITE}/`,
   email: "mailto:hello@ibrahemahmed.com",
-  image: { "@type": "ImageObject", url: PORTRAIT_IMAGE, contentUrl: PORTRAIT_IMAGE, width: 1280, height: 1280 },
+  image: PHOTOS.map((photo) => ({
+    "@type": "ImageObject",
+    "@id": `${photo.url}#image`,
+    url: photo.url,
+    contentUrl: photo.url,
+    width: photo.width,
+    height: photo.height,
+    caption: photo[locale].caption,
+    inLanguage: locale,
+  })),
   sameAs: ["https://github.com/ibrahembuilds", "https://www.linkedin.com/in/ibrahem-ahmed-hassan/"],
   worksFor: { "@type": "Organization", name: "KanyouAI" },
   alumniOf: {
@@ -280,6 +324,11 @@ const graphFor = (page) => {
       isPartOf: { "@id": SITE_ID },
       about: { "@id": PERSON_ID },
       inLanguage: locale,
+      // A profile page is, by definition, about one entity, and its lead
+      // image is that person's photograph.
+      ...(page.ogType === "profile"
+        ? { mainEntity: { "@id": PERSON_ID }, primaryImageOfPage: { "@id": `${PHOTOS[0].url}#image` } }
+        : {}),
     },
   ];
 
@@ -401,13 +450,22 @@ export const buildSitemap = () => {
         : "";
       // Google Images crawls this extension independently of the page itself,
       // which is how a photo ends up indexed even before the page is.
-      const image = page.image
-        ? `    <image:image>
-      <image:loc>${page.image.loc}</image:loc>
-      <image:caption>${escapeText(page.image.caption)}</image:caption>
+      const locale = page.locale === "ar" ? "ar" : "en";
+      const images =
+        page.images === "all"
+          ? PHOTOS.map((photo) => ({ loc: photo.url, caption: photo[locale].caption }))
+          : page.image
+            ? [page.image]
+            : [];
+      const image = images
+        .map(
+          (entry) => `    <image:image>
+      <image:loc>${entry.loc}</image:loc>
+      <image:caption>${escapeText(entry.caption)}</image:caption>
     </image:image>
-`
-        : "";
+`,
+        )
+        .join("");
       return `  <url>
     <loc>${url}</loc>
 ${alternates}${image}    <lastmod>${today}</lastmod>

@@ -58,7 +58,7 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-export const ROUTES = ["/", "/privacy", "/terms"] as const;
+export const ROUTES = ["/", "/privacy", "/terms", "/press"] as const;
 
 export type Route = (typeof ROUTES)[number];
 

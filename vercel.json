@@ -62,6 +62,11 @@
       "permanent": true
     },
     {
+      "source": "/ar/press",
+      "destination": "/ar/press/",
+      "permanent": true
+    },
+    {
       "source": "/ar/services",
       "destination": "/ar/#services",
       "permanent": true

@@ -1,5 +1,6 @@
-import { ArrowLeft, ArrowUpLeft, Check } from "lucide-react";
-import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER } from "../../config/site";
+import { ArrowLeft, ArrowUpLeft, Check, Download } from "lucide-react";
+import { AUDIT_URL, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, OWNER, SITE_URL } from "../../config/site";
+import { PHOTOS } from "../../config/photos";
 import {
   ABOUT_AR,
   CLIENT_SYSTEMS_AR,
@@ -511,3 +512,114 @@ const ArabicProducts = () => {
     </section>
   );
 };
+
+/**
+ * Arabic counterpart of /press: the same photographs and the same checkable
+ * facts, written for Arabic readers. Latin strings carry dir="ltr" so they are
+ * not reordered inside the Arabic text.
+ */
+const PRESS_FACTS_AR: [string, string, boolean][] = [
+  ["الاسم الكامل", "إبراهيم أحمد حسن أدم", false],
+  ["يُكتب عادةً", "إبراهيم أحمد", false],
+  ["الاسم بالإنجليزية", OWNER.legalName, true],
+  ["المعرّف", "ibrahembuilds", true],
+  ["المنصب", "مؤسس KanyouAI", false],
+  ["الدراسة", "الذكاء الاصطناعي التطبيقي، جامعة الوسائط المتعددة، ماليزيا", false],
+  ["الشيفرة العامة", `${OWNER.publicRepoCount} مستودعاً على GitHub`, false],
+];
+
+export const ArabicPress = () => (
+  <>
+    <section className="border-b border-border">
+      <div className="shell pb-12 pt-14 md:pb-16 md:pt-20">
+        <p className="eyebrow">صور وسيرة</p>
+        <h1 className="h-display mt-4 max-w-[20ch] leading-[1.3]">إبراهيم أحمد: صور وسيرة وحقائق أساسية.</h1>
+        <p className="lede mt-6 max-w-prose leading-[1.9]">
+          إبراهيم أحمد حسن أدم، ويُكتب عادةً إبراهيم أحمد، مؤسس KanyouAI. يخطط ويبني ويدير أنظمة CRM مخصصة وبوابات عملاء
+          وأتمتة لسير العمل وأدوات تشغيل داخلية للشركات التي يعمل فيها من 5 إلى 50 شخصاً تقريباً وليس لديها CTO ولا
+          مهندسون داخليون.
+        </p>
+      </div>
+    </section>
+
+    <section className="section border-b border-border" aria-labelledby="photos">
+      <div className="shell">
+        <h2 id="photos" className="h-section leading-[1.35]">
+          الصور
+        </h2>
+        <ul className="mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {PHOTOS.map((photo, index) => (
+            <li key={photo.src}>
+              <figure className="overflow-hidden rounded-xl border border-border">
+                <img
+                  src={photo.src}
+                  width={photo.width}
+                  height={photo.height}
+                  alt={photo.ar.alt}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="h-auto w-full bg-[var(--background)]"
+                />
+                <figcaption className="flex items-start justify-between gap-4 border-t border-border bg-surface px-5 py-4">
+                  <span className="text-[14px] leading-[1.8] text-ink">{photo.ar.caption}</span>
+                  <a
+                    href={photo.src}
+                    download
+                    dir="ltr"
+                    className="inline-flex shrink-0 items-center gap-1.5 text-[13px] text-[var(--primary)] underline-offset-4 hover:underline"
+                  >
+                    <Download size={14} aria-hidden="true" />
+                    {photo.width}×{photo.height}
+                  </a>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section className="section" aria-labelledby="facts">
+      <div className="shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 id="facts" className="h-section leading-[1.35]">
+            حقائق أساسية
+          </h2>
+          <p className="lede mt-4 max-w-prose leading-[1.9]">
+            يُرجى استخدام الاسم كما هو مكتوب أدناه. وفي أي أمر لا تغطيه هذه الصفحة راسلني على{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} dir="ltr">
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </p>
+        </div>
+
+        <dl className="divide-y divide-border border-y border-border">
+          {PRESS_FACTS_AR.map(([term, value, latin]) => (
+            <div key={term} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]">
+              <dt className="text-[14px] text-muted">{term}</dt>
+              <dd className="text-[15px] leading-[1.8] text-ink" dir={latin ? "ltr" : undefined}>
+                {value}
+              </dd>
+            </div>
+          ))}
+          <div className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]">
+            <dt className="text-[14px] text-muted">روابط أخرى</dt>
+            <dd className="flex flex-wrap gap-x-5 gap-y-1 text-[15px]">
+              <a href="/ar/">الصفحة الرئيسية</a>
+              <a href={SITE_URL} hrefLang="en" lang="en" dir="ltr">
+                English
+              </a>
+              <a href={GITHUB_URL} rel="noopener noreferrer" target="_blank" dir="ltr">
+                GitHub
+              </a>
+              <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank" dir="ltr">
+                LinkedIn
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  </>
+);

@@ -1,0 +1,54 @@
+[
+  {
+    "src": "/portrait.webp",
+    "width": 1280,
+    "height": 1280,
+    "en": {
+      "alt": "Portrait of Ibrahem Ahmed Hassan Adam, founder of KanyouAI",
+      "caption": "Ibrahem Ahmed Hassan Adam, founder of KanyouAI"
+    },
+    "ar": {
+      "alt": "صورة شخصية لإبراهيم أحمد حسن أدم، مؤسس KanyouAI",
+      "caption": "إبراهيم أحمد حسن أدم، مؤسس KanyouAI"
+    }
+  },
+  {
+    "src": "/photos/ibrahem-ahmed-hassan-adam-outdoor-portrait.webp",
+    "width": 1024,
+    "height": 1280,
+    "en": {
+      "alt": "Outdoor portrait of Ibrahem Ahmed Hassan Adam in a grey-beige collarless shirt, with trees and a road behind him",
+      "caption": "Ibrahem Ahmed Hassan Adam, outdoor portrait"
+    },
+    "ar": {
+      "alt": "صورة شخصية في الهواء الطلق لإبراهيم أحمد حسن أدم يرتدي قميصاً رمادياً بيجياً بلا ياقة، وخلفه أشجار وطريق",
+      "caption": "إبراهيم أحمد حسن أدم، صورة شخصية في الهواء الطلق"
+    }
+  },
+  {
+    "src": "/photos/ibrahem-ahmed-hassan-adam-speaking.webp",
+    "width": 1024,
+    "height": 1280,
+    "en": {
+      "alt": "Ibrahem Ahmed Hassan Adam speaking into a microphone during a presentation, gesturing with one hand",
+      "caption": "Ibrahem Ahmed Hassan Adam speaking during a presentation"
+    },
+    "ar": {
+      "alt": "إبراهيم أحمد حسن أدم يتحدث عبر الميكروفون أثناء عرض تقديمي ويشير بيده",
+      "caption": "إبراهيم أحمد حسن أدم يتحدث خلال عرض تقديمي"
+    }
+  },
+  {
+    "src": "/photos/ibrahem-ahmed-hassan-adam-white-thobe.webp",
+    "width": 960,
+    "height": 1280,
+    "en": {
+      "alt": "Ibrahem Ahmed Hassan Adam smiling, in a white thobe and a patterned scarf, standing outdoors between apartment buildings",
+      "caption": "Ibrahem Ahmed Hassan Adam, full-length portrait"
+    },
+    "ar": {
+      "alt": "إبراهيم أحمد حسن أدم مبتسماً، يرتدي ثوباً أبيض ووشاحاً منقوشاً، واقفاً في الهواء الطلق بين مبانٍ سكنية",
+      "caption": "إبراهيم أحمد حسن أدم، صورة بالطول"
+    }
+  }
+]
