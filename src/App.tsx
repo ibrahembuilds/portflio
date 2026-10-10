@@ -4,20 +4,23 @@ import Nav from "./marketing/components/Nav";
 import Footer from "./marketing/components/Footer";
 import Home from "./marketing/pages/Home";
 import { Privacy, Terms } from "./marketing/pages/Legal";
+import { Press } from "./marketing/pages/Press";
 import { ArabicFooter, ArabicNav } from "./marketing/ar/Layout";
-import { ArabicHome } from "./marketing/ar/pages";
+import { ArabicHome, ArabicPress } from "./marketing/ar/pages";
 
-export type Route = "/" | "/privacy" | "/terms" | "/ar/";
+export type Route = "/" | "/privacy" | "/terms" | "/press" | "/ar/" | "/ar/press/";
 
 const PAGES: Record<string, () => JSX.Element> = {
   "/": Home,
   "/privacy": Privacy,
   "/terms": Terms,
+  "/press": Press,
 };
 
 /** Arabic routes keep a trailing slash, which is how they are already indexed. */
 const ARABIC_PAGES: Record<string, () => JSX.Element> = {
   "/ar/": ArabicHome,
+  "/ar/press/": ArabicPress,
 };
 
 /** One short reveal on scroll, skipped entirely under reduced motion. */

@@ -29,6 +29,9 @@ const Footer = () => (
         <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank" className="text-muted hover:text-ink">
           LinkedIn
         </a>
+        <a href="/press" className="text-muted hover:text-ink">
+          Photos and bio
+        </a>
         <a href="/privacy" className="text-muted hover:text-ink">
           Privacy
         </a>

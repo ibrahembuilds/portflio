@@ -124,6 +124,9 @@ export const ArabicFooter = () => (
         <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-ink">
           LinkedIn
         </a>
+        <a href="/ar/press/" className="text-muted hover:text-ink">
+          صور وسيرة
+        </a>
         <a href="/privacy" hrefLang="en" className="text-muted hover:text-ink">
           الخصوصية
         </a>

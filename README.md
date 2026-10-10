@@ -146,6 +146,27 @@ capture silently slid the Arabic card sideways and sheared the type off its own
 gutter. `e2e/marketing.spec.ts` now measures the generated PNGs and fails if ink
 reaches the edge on the text side.
 
+### Adding photos
+
+The photos on `/press` and `/ar/press/` come from one file, `src/config/photos.json`.
+The page, the `Person` structured data and the image sitemap all read it, so
+adding a photo there is the only step that matters.
+
+1. Export the photo as WebP (or JPEG), at least 1000px on the long side, under
+   about 300KB. Name it for what it is: `ibrahem-ahmed-hassan-adam-<what-it-shows>.webp`,
+   for example `ibrahem-ahmed-hassan-adam-speaking.webp`. Search engines read the
+   filename.
+2. Put it in `public/photos/`. Keep it unhashed — a search engine's index can't
+   follow a URL that changes on every build.
+3. Add an entry to `src/config/photos.json` with its real pixel `width` and
+   `height`, and an `alt` and `caption` in both `en` and `ar`. Describe what is
+   actually in the photo; do not repeat the name five times.
+4. `npm run verify`. `tests/photos.test.ts` fails if a file is missing, its size
+   does not match the entry, or a caption is empty.
+
+Google decides what to index and when. Expect days to weeks, request indexing of
+`/press` in Search Console, and treat any promise of a guaranteed result as false.
+
 ## Deployment
 
 1. Attach a Postgres store to the Vercel project and apply the migration:

@@ -23,6 +23,8 @@ Systems Teardown assessment: https://audit.ibrahemahmed.com/
 - Studying: Applied AI at Multimedia University, Malaysia
 - Public code: 22 repositories at https://github.com/ibrahembuilds, including unit, API, end-to-end and multi-language test suites
 - Works directly with the client. Not an agency. No team.
+- Photos, bio and key facts: https://ibrahemahmed.com/press (Arabic: https://ibrahemahmed.com/ar/press/)
+- Portrait of Ibrahem Ahmed Hassan Adam: https://ibrahemahmed.com/portrait.webp
 
 ## What he builds
 

@@ -1,0 +1,15 @@
+[
+  {
+    "src": "/portrait.webp",
+    "width": 1280,
+    "height": 1280,
+    "en": {
+      "alt": "Portrait of Ibrahem Ahmed Hassan Adam, founder of KanyouAI",
+      "caption": "Ibrahem Ahmed Hassan Adam, founder of KanyouAI"
+    },
+    "ar": {
+      "alt": "صورة شخصية لإبراهيم أحمد حسن أدم، مؤسس KanyouAI",
+      "caption": "إبراهيم أحمد حسن أدم، مؤسس KanyouAI"
+    }
+  }
+]
