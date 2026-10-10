@@ -30,7 +30,7 @@ export const Press = () => (
         <h2 id="photos" className="h-section">
           Photos
         </h2>
-        <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {PHOTOS.map((photo, index) => (
             <li key={photo.src}>
               <figure className="overflow-hidden rounded-xl border border-border">
@@ -41,7 +41,7 @@ export const Press = () => (
                   alt={photo.en.alt}
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  className="aspect-square w-full bg-[var(--background)] object-cover"
+                  className="h-auto w-full bg-[var(--background)]"
                 />
                 <figcaption className="flex items-start justify-between gap-4 border-t border-border bg-surface px-5 py-4">
                   <span className="text-[14px] text-ink">{photo.en.caption}</span>

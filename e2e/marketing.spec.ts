@@ -201,6 +201,28 @@ test.describe("marketing site", () => {
     expect(llms).toContain("https://ibrahemahmed.com/portrait.webp");
   });
 
+  test("the photos pages are deliberately unlinked from every other page", async ({ request }) => {
+    // Reachable by direct URL, the sitemap and llms.txt only. A link from the
+    // site chrome would make them part of the public navigation.
+    for (const path of ["/", "/ar/", "/privacy", "/terms"]) {
+      const html = await (await request.get(path)).text();
+      expect(html, `${path} must not link to /press`).not.toMatch(/href="\/press\/?"/);
+      expect(html, `${path} must not link to /ar/press/`).not.toMatch(/href="\/ar\/press\/?"/);
+    }
+  });
+
+  test("every published photo loads on the photos pages", async ({ page }) => {
+    for (const path of ["/press", "/ar/press/"]) {
+      await page.goto(path);
+      const images = page.locator("figure img");
+      expect(await images.count()).toBeGreaterThanOrEqual(4);
+      for (const image of await images.all()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth)).toBeGreaterThan(0);
+      }
+    }
+  });
+
   test("legal pages are reachable and noindexed", async ({ page, request }) => {
     await page.goto("/privacy");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("What I collect");

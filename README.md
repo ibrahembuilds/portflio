@@ -164,6 +164,16 @@ adding a photo there is the only step that matters.
 4. `npm run verify`. `tests/photos.test.ts` fails if a file is missing, its size
    does not match the entry, or a caption is empty.
 
+`/press` and `/ar/press/` are deliberately not linked from the nav, the footer or
+any other page, and `tests` fail if one is added. Search engines find them
+through `sitemap.xml`, and answer engines through `llms.txt`. That makes them
+unlisted, not private: anyone with the URL, or who finds them in search, can open
+them, so only put photos here that you are happy to have public.
+
+Strip metadata before publishing. Phone photos carry GPS coordinates in EXIF;
+re-encoding with Pillow (`Image.save` with no `exif=` argument) or `cwebp`
+without `-metadata` removes it. Crop out anything personal, such as an ID card.
+
 Google decides what to index and when. Expect days to weeks, request indexing of
 `/press` in Search Console, and treat any promise of a guaranteed result as false.
 
